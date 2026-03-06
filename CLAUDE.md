@@ -4,7 +4,7 @@
 Name: Marko Stankovic
 Role: Game Developer (Unity 3D, Unreal Engine, Godot)
 Location: Serbia
-Email target: contact@markostankovic.com
+Email target: contact@markostankovic.org
 GitHub: Idzuo32
 LinkedIn: https://www.linkedin.com/in/markostankovicepicurl/
 
