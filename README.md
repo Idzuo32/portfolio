@@ -61,18 +61,6 @@ Contributed to Unity 3D projects in a studio environment. Gained experience with
 
 ---
 
-## GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Idzuo32&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub Stats" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Idzuo32&layout=compact&theme=tokyonight&hide_border=true" alt="Top Languages" />
-</p>
-
----
-
 ## Contact
 
 - **Email:** [contact@markostankovic.org](mailto:contact@markostankovic.org)
