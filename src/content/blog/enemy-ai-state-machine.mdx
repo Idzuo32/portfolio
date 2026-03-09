@@ -1,0 +1,113 @@
+---
+title: "Building an Enemy AI State Machine in Unity"
+date: 2025-11-12
+excerpt: "How I replaced a tangled update loop with a generic IState/StateMachine pattern — and what I learned about allocation, separation of concerns, and designing for change."
+tags: ["Unity", "Architecture"]
+draft: false
+---
+
+{/*
+  TO ADD A NEW POST:
+  1. Duplicate this file into src/content/blog/your-post-slug.mdx
+  2. Update frontmatter: title, date, excerpt, tags
+  3. Write content using h2/h3 headings (the // prefix is added by CSS)
+  4. Set draft: false when ready to publish
+  5. The post will appear automatically on /blog and the homepage teaser
+*/}
+
+## The Problem
+
+The first version of the Hide & Seek enemy was a single `Update()` method with a chain of `if/else` blocks. Patrol logic, detection checks, chase behaviour, and navigation calls were all in one place. Every time I added a new behaviour — a search phase, an alert scan — the method grew, and changing one behaviour meant carefully reading the whole thing to understand what it might break.
+
+[YOUR NOTES: describe the specific pain point that made you refactor — e.g. adding the Search state broke the Chase-to-Patrol transition]
+
+The problem isn't just readability. A monolithic update loop has hidden coupling: the `chase` branch reads variables set by the `patrol` branch, transition conditions are scattered across the function, and there's no clear moment where one behaviour ends and another begins. Any new state has to understand all the other states to slot in correctly.
+
+## The IState Interface
+
+The solution was to extract each behaviour into its own class implementing a three-method interface. Each state owns its entry logic, its per-frame update, and its exit cleanup — nothing more.
+
+```cs
+// Infrastructure/Interfaces/IState.cs
+public interface IState
+{
+    void Enter();
+    void Tick();
+    void Exit();
+}
+```
+
+`Enter()` runs once when a state becomes active — a good place to set NavMesh destinations, start animations, or reset local timers. `Tick()` runs every frame from the owner's `Update()`. `Exit()` cleans up before the next state takes over.
+
+A concrete state looks like this:
+
+```cs
+// AI/Enemy/States/EnemyPatrolState.cs
+public class EnemyPatrolState : BaseState
+{
+    readonly EnemyController _enemy;
+    int _waypointIndex;
+
+    public EnemyPatrolState(EnemyController enemy)
+    {
+        _enemy = enemy;
+    }
+
+    public override void Enter()
+    {
+        _enemy.Navigation.SetSpeed(_enemy.Data.patrolSpeed);
+        MoveToNextWaypoint();
+    }
+
+    public override void Tick()
+    {
+        if (_enemy.Navigation.IsAtDestination)
+            MoveToNextWaypoint();
+
+        if (_enemy.SuspicionMeter.State == SeekState.Alert)
+            _enemy.ChangeState(new EnemyAlertState(_enemy));
+    }
+
+    void MoveToNextWaypoint()
+    {
+        var wp = _enemy.Waypoints[_waypointIndex % _enemy.Waypoints.Length];
+        _enemy.Navigation.SetDestination(wp.position);
+        _waypointIndex++;
+    }
+}
+```
+
+The state doesn't know about other states. It reads from `EnemyController` (which owns the suspicion meter, navigation wrapper, and shared data) and calls `_enemy.ChangeState(...)` when it decides to transition. The controller is a dumb service locator — it exposes subsystems and delegates all behaviour decisions to the active state.
+
+## State Transitions
+
+`StateMachine` manages the active state and drives transitions:
+
+```cs
+// Infrastructure/StateMachine/StateMachine.cs
+public class StateMachine
+{
+    IState _currentState;
+
+    public void ChangeState(IState newState)
+    {
+        _currentState?.Exit();
+        _currentState = newState;
+        _currentState?.Enter();
+    }
+
+    public void Tick() => _currentState?.Tick();
+}
+```
+
+`EnemyController` owns one `StateMachine`, calls `Tick()` from `Update()`, and exposes a `ChangeState(IState)` wrapper so states can trigger transitions. The machine doesn't know what the states are — it only knows the `IState` interface.
+
+[YOUR NOTES: describe a specific transition that was tricky, e.g. Search → Patrol after all waypoints are exhausted, or Chase → Search on losing line of sight]
+
+## What I Learned
+
+The biggest practical benefit wasn't cleanliness — it was **testability**. Each state is a plain C# class with no MonoBehaviour dependency. I can instantiate `EnemyPatrolState` in a unit test, feed it a mock `EnemyController`, and verify that it transitions when suspicion crosses the threshold. That's impossible with a monolithic update method.
+
+The thing I'd do differently: **pre-allocate states at `Awake()`** rather than calling `new EnemyChaseState(this)` on every transition. Each call allocates a new heap object. With six states and frequent transitions, this generates GC pressure. Creating all six states once at startup and passing them by reference eliminates that entirely.
+
+[YOUR NOTES: any other observations about this pattern — where it works well, where it starts to break down (e.g. parallel states, blended transitions)]
