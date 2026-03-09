@@ -1,0 +1,136 @@
+---
+title: "Zero-Allocation Object Pooling for an Endless Runner"
+date: "2025-10-04"
+excerpt: "Why Instantiate/Destroy caused frame spikes in my Unity thesis project, how a Queue-based pool and a static PoolManager fixed it, and the trade-offs that came with that design."
+tags: ["Unity", "Performance"]
+draft: false
+---
+
+{/*
+TO ADD A NEW POST:
+
+1. Duplicate this file into src/content/blog/your-post-slug.mdx
+2. Update frontmatter: title, date, excerpt, tags
+3. Write content using h2/h3 headings (the // prefix is added by CSS)
+4. Set draft: false when ready to publish
+5. The post will appear automatically on /blog and the homepage teaser
+   */}
+
+## The Problem
+
+The first version of the Endless Runner spawned obstacles with `Instantiate()` and removed them with `Destroy()`. On a modern PC the frame times looked fine — but Unity's profiler told a different story. Every time a new chunk scrolled into view and populated its obstacle slots, there was a GC allocation spike. On lower-end devices (the kind that actually run mobile games) those spikes turned into visible hitches.
+
+The cause is straightforward: `Instantiate` allocates memory for the new GameObject and all its components. `Destroy` doesn't free that memory immediately — it queues the object for destruction, and the garbage collector reclaims it later in a stop-the-world pause. The more objects you spawn and destroy per second, the more GC pressure you generate.
+
+The fix is an object pool: a pre-allocated collection of objects that you borrow and return instead of creating and destroying.
+
+## The Pool Implementation
+
+The project uses a non-generic, `Queue<GameObject>`-based pool. Each pool manages one prefab type, and a static `PoolManager` maps prefab references to their pools.
+
+```cs
+// ObjectPooling/ObjectPool.cs
+public class ObjectPool
+{
+    readonly GameObject _prefab;
+    readonly Queue<GameObject> _pool = new();
+    readonly Transform _parent;
+
+    public ObjectPool(GameObject prefab, int initialSize, Transform parent)
+    {
+        _prefab = prefab;
+        _parent = parent;
+        for (int i = 0; i < initialSize; i++)
+            _pool.Enqueue(CreateNew());
+    }
+
+    public GameObject Get()
+    {
+        var obj = _pool.Count > 0 ? _pool.Dequeue() : CreateNew();
+        obj.SetActive(true);
+        return obj;
+    }
+
+    public void Release(GameObject obj)
+    {
+        obj.SetActive(false);
+        obj.transform.SetParent(_parent);
+        _pool.Enqueue(obj);
+    }
+
+    GameObject CreateNew()
+    {
+        var obj = Object.Instantiate(_prefab, _parent);
+        obj.SetActive(false);
+        // Tag the object so it can release itself
+        obj.AddComponent<PooledObject>().Pool = this;
+        return obj;
+    }
+}
+```
+
+`PooledObject` is a lightweight MonoBehaviour tag that holds a reference back to its pool. This lets any component on the object return itself without knowing about `PoolManager`:
+
+```cs
+// ObjectPooling/PooledObject.cs
+public class PooledObject : MonoBehaviour
+{
+    public ObjectPool Pool { get; set; }
+
+    public void Release()
+    {
+        // If this object has children that are also pooled, release them first
+        foreach (var child in GetComponentsInChildren<PooledObject>(true))
+            if (child != this) child.Release();
+
+        Pool?.Release(gameObject);
+    }
+}
+```
+
+`PoolManager` is a static class that initialises pools at scene load and serves as the single access point:
+
+```cs
+// ObjectPooling/PoolManager.cs
+public static class PoolManager
+{
+    static readonly Dictionary<GameObject, ObjectPool> _pools = new();
+
+    public static void CreatePool(GameObject prefab, int size, Transform parent)
+    {
+        if (!_pools.ContainsKey(prefab))
+            _pools[prefab] = new ObjectPool(prefab, size, parent);
+    }
+
+    public static GameObject Get(GameObject prefab)
+    {
+        if (_pools.TryGetValue(prefab, out var pool))
+            return pool.Get();
+
+        Debug.LogWarning($"No pool for {prefab.name} — falling back to Instantiate");
+        return Object.Instantiate(prefab);
+    }
+
+    public static void Release(GameObject prefab, GameObject obj)
+    {
+        if (_pools.TryGetValue(prefab, out var pool))
+            pool.Release(obj);
+        else
+            Object.Destroy(obj);
+    }
+}
+```
+
+`Chunk.OnEnable()` calls `PoolManager.Get()` to populate its obstacle slots; `Chunk.OnDisable()` calls `GetComponent<PooledObject>().Release()` on each obstacle, returning them to their respective pools.
+
+## Results
+
+With the pool in place, the GC allocation during chunk population dropped to near-zero after the initial warm-up. The pool pre-allocates enough objects at startup to cover the maximum number of obstacles visible at any time. Beyond that point, `Instantiate` is only called on a cache miss — which doesn't happen during normal gameplay if the initial size is set correctly.
+
+The frame time spikes from GC collection disappeared.
+
+## What I Learned
+
+The biggest trade-off is **pool sizing**. If you pre-allocate too few objects, you get cache misses and fall back to `Instantiate` — defeating the purpose. If you pre-allocate too many, you waste memory on objects that are never used. The right number depends on the maximum concurrent active count, which you need to measure or calculate from your spawn rates.
+
+The design I'd change is **`PoolManager` being static**. A static class can't be injected or mocked, which makes `ObstacleSpawner` untestable in isolation — any test that exercises spawning implicitly exercises the pool. A non-static `IPoolManager` interface with a concrete implementation would let me inject a fake pool in tests and verify spawn logic independently of pooling logic.

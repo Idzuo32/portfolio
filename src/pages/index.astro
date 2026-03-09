@@ -1,5 +1,16 @@
 ---
 import "../styles/global.css";
+import { getCollection } from 'astro:content';
+import BlogCard from '../components/BlogCard.astro';
+
+const recentPosts = (await getCollection('blog'))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 2)
+  .map(post => {
+    const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+    return { ...post, readingTime: Math.max(1, Math.ceil(words / 200)) };
+  });
 ---
 
 <!doctype html>
@@ -17,43 +28,190 @@ import "../styles/global.css";
       href={`${import.meta.env.BASE_URL}favicon.svg`}
     />
     <title>Marko Stankovic — Game Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Thumbnail hover scale ── */
+      .thumb-wrap {
+        overflow: hidden;
+      }
+      .thumb-wrap video,
+      .thumb-wrap img {
+        transition: transform 0.3s ease;
+        will-change: transform;
+      }
+      .project-card:hover .thumb-wrap video,
+      .project-card:hover .thumb-wrap img {
+        transform: scale(1.03);
+      }
+
+      /* ── Lightbox ── */
+      #lightbox {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      #lightbox.lb-open {
+        display: flex;
+        opacity: 1;
+      }
+      #lightbox-content {
+        transform: scale(0.95);
+        transition: transform 0.2s ease;
+      }
+      #lightbox.lb-open #lightbox-content {
+        transform: scale(1);
+      }
+      #lightbox-img {
+        max-width: 90vw;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 0.5rem;
+        display: block;
+      }
+      .lb-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 9999px;
+        background: rgba(31, 31, 31, 0.8);
+        border: 1px solid #2a2a2a;
+        color: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .lb-btn:hover {
+        background: rgba(50, 50, 50, 0.9);
+        border-color: #888;
+      }
+      .lb-btn:disabled {
+        opacity: 0.3;
+        cursor: default;
+      }
+      #lightbox-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+    </style>
   </head>
 
-  <body
-    class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-violet-500/30 selection:text-white"
-  >
+  <body class="font-sans antialiased">
     <!-- ─── NAV ──────────────────────────────────────────────────────────── -->
     <header
-      class="fixed top-0 inset-x-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-md"
+      class="fixed top-0 inset-x-0 z-50 border-b border-[#1F1F1F]/60 bg-[#0D0D0D]/80 backdrop-blur-md"
     >
       <nav
         class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between"
       >
-        <a href="#hero" class="font-bold tracking-tight text-white text-lg"
+        <a
+          href="#hero"
+          class="font-bold font-mono tracking-tight text-[#F0F0F0] text-lg"
           >MS</a
         >
-        <ul class="flex gap-6 text-sm text-slate-400">
+
+        <!-- Desktop nav -->
+        <ul class="hidden sm:flex gap-6 text-sm text-[#888888]">
           <li>
             <a
               href="#skills"
-              class="hover:text-white transition-colors duration-150">Skills</a
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
+              >Skills</a
             >
           </li>
           <li>
             <a
               href="#projects"
-              class="hover:text-white transition-colors duration-150"
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
               >Projects</a
             >
           </li>
           <li>
             <a
+              href="/blog"
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
+              >Devlog</a
+            >
+          </li>
+          <li>
+            <a
               href="#contact"
-              class="hover:text-white transition-colors duration-150">Contact</a
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
+              >Contact</a
             >
           </li>
         </ul>
+
+        <!-- Hamburger button (mobile only) -->
+        <button
+          id="menu-btn"
+          class="sm:hidden w-11 h-11 flex items-center justify-center text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <svg
+            id="icon-menu"
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg
+            id="icon-close"
+            class="w-5 h-5 hidden"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
       </nav>
+
+      <!-- Mobile nav dropdown -->
+      <div id="mobile-nav" aria-hidden="true">
+        <div class="max-w-5xl mx-auto px-6 py-2 flex flex-col">
+          <a
+            href="#skills"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Skills</a
+          >
+          <a
+            href="#projects"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Projects</a
+          >
+          <a
+            href="/blog"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Devlog</a
+          >
+          <a
+            href="#contact"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Contact</a
+          >
+        </div>
+      </div>
     </header>
 
     <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
@@ -64,46 +222,57 @@ import "../styles/global.css";
         aria-hidden="true"
       >
         <div
-          class="absolute top-1/4 left-1/3 w-[700px] h-[700px] bg-violet-700/8 rounded-full blur-3xl"
+          class="absolute top-1/4 left-1/3 w-[700px] h-[700px] bg-[#00FFC8]/5 rounded-full blur-3xl"
         >
         </div>
         <div
-          class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-700/6 rounded-full blur-3xl"
+          class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#00FFC8]/3 rounded-full blur-3xl"
         >
         </div>
       </div>
 
       <div class="relative max-w-5xl mx-auto px-6 py-28">
-        <p class="text-violet-400 font-mono text-sm mb-5 tracking-wide">
+        <p
+          class="hero-enter text-[#00FFC8] font-mono text-sm mb-5 tracking-wide"
+          style="--delay: 0.1s"
+        >
           Hello, I'm
         </p>
 
         <h1
-          class="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-none mb-5"
+          class="hero-enter hero-name font-bold text-[#F0F0F0] mb-5"
+          style="--delay: 0.4s"
         >
           Marko Stankovic
         </h1>
 
-        <p class="text-2xl sm:text-3xl text-slate-300 font-light mb-8">
+        <p
+          class="hero-enter text-2xl sm:text-3xl text-[#888888] font-light mb-8 cursor-blink"
+          style="--delay: 0.7s"
+        >
           Game Developer
         </p>
 
-        <p class="text-slate-400 text-lg max-w-xl mb-12 leading-relaxed">
-          Building games with Unity&nbsp;3D, Unreal Engine, and Godot. 3+ years
-          shipping systems — AI state machines, procedural generation, and
-          editor tooling. Based in Serbia, open to remote.
+        <p
+          class="hero-enter text-[#888888] text-lg max-w-xl mb-12 leading-relaxed"
+          style="--delay: 0.85s"
+        >
+          I love writing the systems that make games feel alive — AI state
+          machines that think, procedural worlds that surprise, editor tools
+          that get out of the way. Three years of that in Unity&nbsp;3D, Unreal
+          Engine, and Godot. Based in Serbia, open to remote.
         </p>
 
-        <div class="flex flex-wrap gap-4">
+        <div class="hero-enter flex flex-wrap gap-4" style="--delay: 1s">
           <a
             href="#contact"
-            class="px-6 py-3 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium transition-colors duration-150"
+            class="px-6 py-3 bg-[#00FFC8] hover:bg-[#00FFD0] text-[#0D0D0D] rounded-lg font-medium transition-colors duration-150"
           >
-            Get in Touch
+            Let's Talk
           </a>
           <a
             href="#projects"
-            class="px-6 py-3 border border-slate-700 hover:border-slate-500 text-slate-300 hover:text-white rounded-lg font-medium transition-colors duration-150"
+            class="px-6 py-3 border border-[#1F1F1F] hover:border-[#888888] text-[#888888] hover:text-[#F0F0F0] rounded-lg font-medium transition-colors duration-150"
           >
             View Projects
           </a>
@@ -112,41 +281,45 @@ import "../styles/global.css";
     </section>
 
     <!-- ─── SKILLS ────────────────────────────────────────────────────────── -->
-    <section id="skills" class="py-24 border-t border-slate-800/50">
+    <section id="skills" class="py-24 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-white mb-2">Skills</h2>
-        <p class="text-slate-400 mb-12">The tools I think in and build with.</p>
+        <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">Skills</h2>
+        <p class="reveal text-[#888888] mb-12" style="--delay: 100ms">
+          Not a stack I landed on by accident — these are the tools I reached
+          for and stayed with.
+        </p>
 
         <!-- Primary engine cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <!-- Unity 3D -->
           <div
-            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-violet-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-violet-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(167,139,250); --card-accent-dim: rgba(139,92,246,0.18); --delay: 0ms"
           >
             <div
-              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+              class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
               <span class="font-bold text-violet-400 font-mono text-base"
                 >U3D</span
               >
             </div>
-            <h3 class="font-semibold text-white mb-1">Unity 3D</h3>
-            <p class="text-slate-500 text-xs mb-4">3+ years</p>
+            <h3 class="font-semibold text-[#F0F0F0] mb-1">Unity 3D</h3>
+            <p class="text-[#888888] text-xs mb-4">3+ years</p>
             <div class="flex flex-wrap gap-1.5">
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >C#</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Strategy</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Event-Driven</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Object Pooling</span
               >
             </div>
@@ -154,27 +327,28 @@ import "../styles/global.css";
 
           <!-- Unreal Engine -->
           <div
-            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-blue-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-blue-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(96,165,250); --card-accent-dim: rgba(96,165,250,0.18); --delay: 100ms"
           >
             <div
-              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+              class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
               <span class="font-bold text-blue-400 font-mono text-base">UE</span
               >
             </div>
-            <h3 class="font-semibold text-white mb-1">Unreal Engine</h3>
-            <p class="text-slate-500 text-xs mb-4">Blueprints + C++</p>
+            <h3 class="font-semibold text-[#F0F0F0] mb-1">Unreal Engine</h3>
+            <p class="text-[#888888] text-xs mb-4">Blueprints + C++</p>
             <div class="flex flex-wrap gap-1.5">
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Blueprints</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >C++</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Gameplay</span
               >
             </div>
@@ -182,27 +356,28 @@ import "../styles/global.css";
 
           <!-- Godot -->
           <div
-            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-cyan-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(34,211,238); --card-accent-dim: rgba(34,211,238,0.18); --delay: 200ms"
           >
             <div
-              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+              class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
               <span class="font-bold text-cyan-400 font-mono text-base">G4</span
               >
             </div>
-            <h3 class="font-semibold text-white mb-1">Godot</h3>
-            <p class="text-slate-500 text-xs mb-4">GDScript · 2D & 3D</p>
+            <h3 class="font-semibold text-[#F0F0F0] mb-1">Godot</h3>
+            <p class="text-[#888888] text-xs mb-4">GDScript · 2D & 3D</p>
             <div class="flex flex-wrap gap-1.5">
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >GDScript</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >2D</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >3D</span
               >
             </div>
@@ -210,32 +385,33 @@ import "../styles/global.css";
 
           <!-- C# -->
           <div
-            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-green-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-green-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(74,222,128); --card-accent-dim: rgba(74,222,128,0.18); --delay: 300ms"
           >
             <div
-              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+              class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
               <span class="font-bold text-green-400 font-mono text-base"
                 >C#</span
               >
             </div>
-            <h3 class="font-semibold text-white mb-1">C#</h3>
-            <p class="text-slate-500 text-xs mb-4">Primary language</p>
+            <h3 class="font-semibold text-[#F0F0F0] mb-1">C#</h3>
+            <p class="text-[#888888] text-xs mb-4">Primary language</p>
             <div class="flex flex-wrap gap-1.5">
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >OOP</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Interfaces</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Events</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Patterns</span
               >
             </div>
@@ -246,34 +422,35 @@ import "../styles/global.css";
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <!-- Arch Linux -->
           <div
-            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-sky-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-sky-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(56,189,248); --card-accent-dim: rgba(56,189,248,0.18); --delay: 0ms"
           >
             <div
-              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+              class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
               <span class="font-bold text-sky-400 font-mono text-base">>_</span>
             </div>
-            <h3 class="font-semibold text-white mb-1">Arch Linux</h3>
-            <p class="text-slate-500 text-xs mb-4">Daily driver</p>
+            <h3 class="font-semibold text-[#F0F0F0] mb-1">Arch Linux</h3>
+            <p class="text-[#888888] text-xs mb-4">Daily driver</p>
             <div class="flex flex-wrap gap-1.5">
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Bash scripting</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Neovim</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Hyprland</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Waybar</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Omarchy setup & configuration</span
               >
             </div>
@@ -281,32 +458,33 @@ import "../styles/global.css";
 
           <!-- AI Tools -->
           <div
-            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-purple-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-purple-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(192,132,252); --card-accent-dim: rgba(192,132,252,0.18); --delay: 100ms"
           >
             <div
-              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+              class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
               <span class="font-bold text-purple-400 font-mono text-base"
                 >AI</span
               >
             </div>
-            <h3 class="font-semibold text-white mb-1">AI Tools</h3>
-            <p class="text-slate-500 text-xs mb-4">Coding & design workflow</p>
+            <h3 class="font-semibold text-[#F0F0F0] mb-1">AI Tools</h3>
+            <p class="text-[#888888] text-xs mb-4">Coding & design workflow</p>
             <div class="flex flex-wrap gap-1.5">
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Claude Code</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >OpenCode</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Meshy AI</span
               >
               <span
-                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                class="badge skill-badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
                 >Flowith AI</span
               >
             </div>
@@ -314,7 +492,7 @@ import "../styles/global.css";
         </div>
 
         <!-- Additional skill pills -->
-        <div class="flex flex-wrap gap-2.5">
+        <div class="reveal flex flex-wrap gap-2.5" style="--delay: 150ms">
           {
             [
               "AI State Machines",
@@ -326,7 +504,7 @@ import "../styles/global.css";
               "Git / GitHub",
               "Version Control",
             ].map((skill) => (
-              <span class="text-sm bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-lg">
+              <span class="text-sm bg-[#141414] border border-[#1F1F1F] text-[#888888] px-3 py-1.5 rounded-lg">
                 {skill}
               </span>
             ))
@@ -336,168 +514,260 @@ import "../styles/global.css";
     </section>
 
     <!-- ─── PROJECTS ──────────────────────────────────────────────────────── -->
-    <section id="projects" class="py-24 border-t border-slate-800/50">
+    <section id="projects" class="py-24 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-white mb-2">Projects</h2>
-        <p class="text-slate-400 mb-12">What I've been building.</p>
+        <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">Projects</h2>
+        <p class="reveal text-[#888888] mb-8" style="--delay: 100ms">
+          Things built with intent, not just output.
+        </p>
+
+        <!-- Filter Bar — JS populates buttons -->
+        <div
+          id="filter-bar"
+          class="reveal flex gap-2 overflow-x-auto pb-1 mb-10"
+          role="group"
+          aria-label="Filter projects by tag"
+          style="--delay: 150ms"
+        >
+        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Hide & Seek -->
           <article
-            class="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-violet-800/50 transition-colors duration-150 flex flex-col"
+            class="project-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl overflow-hidden hover:border-violet-800/50 transition-colors duration-150 flex flex-col"
+            style="--card-glow: rgba(139,92,246,0.1); --delay: 0ms"
+            data-tags="Data-Driven,State Machine,Strategy Pattern,Hiding System,Detection System"
+            data-screenshots="/assets/screenshots/hide-and-seek-1.png,/assets/screenshots/hide-and-seek-2.png"
           >
-            <header class="flex items-start justify-between mb-5">
-              <span
-                class="text-xs font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full"
+            <!-- 16:9 thumbnail -->
+            <div
+              class="thumb-wrap w-full aspect-video shrink-0 cursor-pointer relative"
+              role="button"
+              tabindex="0"
+              aria-label="Open Hide &amp; Seek screenshots"
+            >
+              <video
+                class="w-full h-full object-cover"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="none"
+                poster="/assets/screenshots/hide-and-seek-1.png"
               >
-                In Development
-              </span>
-              <span class="text-xs text-slate-500 font-mono">Unity 3D</span>
-            </header>
-
-            <h3 class="text-xl font-bold text-white mb-3">Hide & Seek</h3>
-
-            <p class="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
-              Top-down 3D stealth game. Built a full enemy AI using the
-              <code
-                class="font-mono text-violet-300 text-xs bg-violet-950/50 px-1 rounded"
-                >IEnemyState</code
-              >
-              interface — five states: Idle, Patrol, Chase, Investigate, Search.
-              <code
-                class="font-mono text-violet-300 text-xs bg-violet-950/50 px-1 rounded"
-                >NavMeshAgent</code
-              >
-              drives pathfinding; Cinemachine handles the dynamic camera. Level layout
-              built with custom Editor utilities.
-            </p>
-
-            <div class="flex flex-wrap gap-2 mb-6">
-              {
-                [
-                  "Data-Driven",
-                  "State Machine",
-                  "Strategy Pattern",
-                  "Hiding System",
-                  "Detection System",
-                ].map((tag) => (
-                  <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">
-                    {tag}
-                  </span>
-                ))
-              }
+                <source src="/assets/thumbnails/hide-and-seek-thumb.mp4" type="video/mp4" />
+              </video>
             </div>
 
-            <a
-              href="https://github.com/Idzuo32/hide_and_seek_3d"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-violet-300 transition-colors duration-150"
-            >
-              View on GitHub
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </a>
+            <!-- Card content -->
+            <div class="p-8 flex flex-col flex-1">
+              <header class="flex items-start justify-between mb-5">
+                <span
+                  class="text-xs font-mono bg-[#00FFC8]/10 text-[#00FFC8] border border-[#00FFC8]/20 px-3 py-1 rounded-full"
+                >
+                  In Development
+                </span>
+                <span class="text-xs text-[#444444] font-mono">Unity 3D</span>
+              </header>
+
+              <h3 class="text-xl font-bold text-[#F0F0F0] mb-3">Hide & Seek</h3>
+
+              <p class="text-[#888888] text-sm leading-relaxed mb-5 flex-1">
+                Top-down 3D stealth game. Built a full enemy AI using the
+                <code
+                  class="font-mono text-[#00FFC8] text-xs bg-[#00FFC8]/10 px-1 rounded"
+                  >IEnemyState</code
+                >
+                interface — five states: Idle, Patrol, Chase, Investigate, Search.
+                <code
+                  class="font-mono text-[#00FFC8] text-xs bg-[#00FFC8]/10 px-1 rounded"
+                  >NavMeshAgent</code
+                >
+                drives pathfinding; Cinemachine handles the dynamic camera. Level
+                layout built with custom Editor utilities.
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                {
+                  [
+                    "Data-Driven",
+                    "State Machine",
+                    "Strategy Pattern",
+                    "Hiding System",
+                    "Detection System",
+                  ].map((tag) => (
+                    <span class="project-tag text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">
+                      {tag}
+                    </span>
+                  ))
+                }
+              </div>
+
+              <!-- CTAs -->
+              <div class="flex flex-wrap gap-3">
+                <a
+                  href="https://github.com/Idzuo32/hide_and_seek_3d"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#1F1F1F] hover:border-[#888888] text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px]"
+                >
+                  View on GitHub
+                  <svg
+                    class="arrow w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </a>
+                <a
+                  href="/projects/hide-and-seek"
+                  class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#00FFC8]/10 hover:bg-[#00FFC8]/20 text-[#00FFC8] border border-[#00FFC8]/20 text-sm transition-colors duration-150 min-h-[44px]"
+                >
+                  View Details →
+                </a>
+              </div>
+            </div>
           </article>
 
           <!-- Endless Runner -->
           <article
-            class="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-cyan-800/50 transition-colors duration-150 flex flex-col"
+            class="project-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl overflow-hidden hover:border-cyan-800/50 transition-colors duration-150 flex flex-col"
+            style="--card-glow: rgba(34,211,238,0.1); --delay: 150ms"
+            data-tags="Proc Gen,Object Pooling,Event-Driven,Utility Scripts,Lane Movement,C#"
+            data-screenshots="/assets/screenshots/endless-runner-1.png,/assets/screenshots/endless-runner-2.png"
           >
-            <header class="flex items-start justify-between mb-5">
-              <span
-                class="text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full"
+            <!-- 16:9 thumbnail -->
+            <div
+              class="thumb-wrap w-full aspect-video shrink-0 cursor-pointer relative"
+              role="button"
+              tabindex="0"
+              aria-label="Open Endless Runner screenshots"
+            >
+              <video
+                class="w-full h-full object-cover"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="none"
+                poster="/assets/screenshots/endless-runner-1.png"
               >
-                Completed
-              </span>
-              <span class="text-xs text-slate-500 font-mono">Unity 3D</span>
-            </header>
-
-            <h3 class="text-xl font-bold text-white mb-3">Endless Runner</h3>
-
-            <p class="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
-              Third-person 3D runner with infinite levels. Chunk-based
-              procedural generation spawns terrain, obstacles, and collectibles
-              at runtime. Object pooling handles obstacles, VFX, and SFX with
-              zero allocations during play. Event-driven architecture keeps all
-              systems decoupled. Lane-based movement with Cinemachine camera.
-            </p>
-
-            <div class="flex flex-wrap gap-2 mb-6">
-              {
-                [
-                  "Proc Gen",
-                  "Object Pooling",
-                  "Event-Driven",
-                  "Utility Scripts",
-                  "Lane Movement",
-                  "C#",
-                ].map((tag) => (
-                  <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">
-                    {tag}
-                  </span>
-                ))
-              }
+                <source src="/assets/thumbnails/endless-runner-thumb.mp4" type="video/mp4" />
+              </video>
             </div>
 
-            <a
-              href="https://github.com/Idzuo32/DiplomskiRad"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-300 transition-colors duration-150"
-            >
-              View on GitHub
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-              </svg>
-            </a>
+            <!-- Card content -->
+            <div class="p-8 flex flex-col flex-1">
+              <header class="flex items-start justify-between mb-5">
+                <span
+                  class="text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full"
+                >
+                  Completed
+                </span>
+                <span class="text-xs text-[#444444] font-mono">Unity 3D</span>
+              </header>
+
+              <h3 class="text-xl font-bold text-[#F0F0F0] mb-3">
+                Endless Runner
+              </h3>
+
+              <p class="text-[#888888] text-sm leading-relaxed mb-5 flex-1">
+                Third-person 3D runner with infinite levels. Chunk-based
+                procedural generation spawns terrain, obstacles, and
+                collectibles at runtime. Object pooling handles obstacles, VFX,
+                and SFX with zero allocations during play. Event-driven
+                architecture keeps all systems decoupled. Lane-based movement
+                with Cinemachine camera.
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                {
+                  [
+                    "Proc Gen",
+                    "Object Pooling",
+                    "Event-Driven",
+                    "Utility Scripts",
+                    "Lane Movement",
+                    "C#",
+                  ].map((tag) => (
+                    <span class="project-tag text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">
+                      {tag}
+                    </span>
+                  ))
+                }
+              </div>
+
+              <!-- CTAs -->
+              <div class="flex flex-wrap gap-3">
+                <a
+                  href="https://github.com/Idzuo32/DiplomskiRad"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-[#1F1F1F] hover:border-[#888888] text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px]"
+                >
+                  View on GitHub
+                  <svg
+                    class="arrow w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                  </svg>
+                </a>
+                <a
+                  href="/projects/endless-runner"
+                  class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#00FFC8]/10 hover:bg-[#00FFC8]/20 text-[#00FFC8] border border-[#00FFC8]/20 text-sm transition-colors duration-150 min-h-[44px]"
+                >
+                  View Details →
+                </a>
+              </div>
+            </div>
           </article>
         </div>
       </div>
     </section>
 
     <!-- ─── CONTACT ──────────────────────────────────────────────────────── -->
-    <section id="contact" class="py-24 border-t border-slate-800/50">
+    <section id="contact" class="py-24 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
         <div class="max-w-lg">
-          <h2 class="text-3xl font-bold text-white mb-2">Get in Touch</h2>
-          <p class="text-slate-400 mb-10 leading-relaxed">
-            Looking for game dev roles in Serbia and remote. If you have a
-            project or a role that fits, let's talk.
+          <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">
+            Let's Work Together
+          </h2>
+          <p
+            class="reveal text-[#888888] mb-10 leading-relaxed"
+            style="--delay: 100ms"
+          >
+            If you're building something and need a developer who cares about
+            how the systems feel — reach out. And if you're hiring for a game
+            dev role in Serbia or remote, I'd genuinely love to hear about it.
           </p>
 
           <div class="flex flex-col gap-3">
             <!-- Email -->
             <a
               href="mailto:contact@markostankovic.org"
-              class="flex items-center gap-4 p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-600 transition-colors duration-150 group"
+              class="contact-link reveal flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group min-h-[44px]"
+              style="--delay: 0ms"
             >
               <div
-                class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0"
+                class="contact-icon w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
               >
                 <svg
-                  class="w-5 h-5 text-violet-400"
+                  class="w-5 h-5 text-[#00FFC8]"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -512,9 +782,9 @@ import "../styles/global.css";
                 </svg>
               </div>
               <div class="min-w-0">
-                <p class="text-xs text-slate-500 mb-0.5">Email</p>
+                <p class="text-xs text-[#444444] mb-0.5">Email</p>
                 <p
-                  class="text-white group-hover:text-violet-300 transition-colors duration-150 text-sm truncate"
+                  class="contact-text text-[#F0F0F0] group-hover:text-[#00FFC8] transition-colors duration-150 text-sm truncate"
                 >
                   contact@markostankovic.org
                 </p>
@@ -526,13 +796,14 @@ import "../styles/global.css";
               href="https://github.com/Idzuo32"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-4 p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-600 transition-colors duration-150 group"
+              class="contact-link reveal flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group min-h-[44px]"
+              style="--delay: 100ms"
             >
               <div
-                class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0"
+                class="contact-icon w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
               >
                 <svg
-                  class="w-5 h-5 text-slate-300"
+                  class="w-5 h-5 text-[#888888]"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   aria-hidden="true"
@@ -543,9 +814,9 @@ import "../styles/global.css";
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-slate-500 mb-0.5">GitHub</p>
+                <p class="text-xs text-[#444444] mb-0.5">GitHub</p>
                 <p
-                  class="text-white group-hover:text-slate-300 transition-colors duration-150 text-sm"
+                  class="contact-text text-[#F0F0F0] group-hover:text-[#888888] transition-colors duration-150 text-sm"
                 >
                   github.com/Idzuo32
                 </p>
@@ -557,10 +828,11 @@ import "../styles/global.css";
               href="https://www.linkedin.com/in/markostankovicepicurl/"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-4 p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-600 transition-colors duration-150 group"
+              class="contact-link reveal flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group min-h-[44px]"
+              style="--delay: 200ms"
             >
               <div
-                class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0"
+                class="contact-icon w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
               >
                 <svg
                   class="w-5 h-5 text-blue-400"
@@ -574,27 +846,500 @@ import "../styles/global.css";
                 </svg>
               </div>
               <div>
-                <p class="text-xs text-slate-500 mb-0.5">LinkedIn</p>
+                <p class="text-xs text-[#444444] mb-0.5">LinkedIn</p>
                 <p
-                  class="text-white group-hover:text-blue-300 transition-colors duration-150 text-sm"
+                  class="contact-text text-[#F0F0F0] group-hover:text-blue-300 transition-colors duration-150 text-sm"
                 >
                   Marko Stankovic
                 </p>
               </div>
             </a>
           </div>
+
+          <!-- Contact Form -->
+          <form
+            id="contact-form"
+            class="mt-12"
+            action="https://formspree.io/f/xlgpgwva"
+            method="POST"
+            novalidate
+          >
+            <p
+              class="text-xs font-mono text-[#444444] uppercase tracking-wider mb-6"
+            >
+              Or send a message directly
+            </p>
+            <div class="flex flex-col gap-4">
+              <div>
+                <label
+                  for="cf-name"
+                  class="block text-xs text-[#444444] mb-1.5 font-mono"
+                  >Name</label
+                >
+                <input
+                  type="text"
+                  id="cf-name"
+                  name="name"
+                  required
+                  autocomplete="name"
+                  placeholder="Your name"
+                  class="contact-input w-full bg-[#141414] border border-[#1F1F1F] text-[#F0F0F0] rounded-lg px-4 py-3 text-sm transition-colors duration-150"
+                />
+              </div>
+              <div>
+                <label
+                  for="cf-email"
+                  class="block text-xs text-[#444444] mb-1.5 font-mono"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  id="cf-email"
+                  name="email"
+                  required
+                  autocomplete="email"
+                  placeholder="your@email.com"
+                  class="contact-input w-full bg-[#141414] border border-[#1F1F1F] text-[#F0F0F0] rounded-lg px-4 py-3 text-sm transition-colors duration-150"
+                />
+              </div>
+              <div>
+                <label
+                  for="cf-message"
+                  class="block text-xs text-[#444444] mb-1.5 font-mono"
+                  >Message</label
+                >
+                <textarea
+                  id="cf-message"
+                  name="message"
+                  rows="5"
+                  required
+                  placeholder="What's on your mind?"
+                  class="contact-input w-full bg-[#141414] border border-[#1F1F1F] text-[#F0F0F0] rounded-lg px-4 py-3 text-sm transition-colors duration-150 resize-none"
+                ></textarea>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  class="px-6 py-3 bg-[#00FFC8] hover:bg-[#00FFD0] text-[#0D0D0D] rounded-lg font-medium text-sm transition-colors duration-150 min-h-[44px]"
+                >
+                  Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Form success message -->
+          <div
+            id="form-success"
+            class="hidden mt-12 p-4 bg-[#00FFC8]/10 border border-[#00FFC8]/20 rounded-xl"
+          >
+            <p class="text-[#00FFC8] text-sm font-mono">
+              Message received — I'll get back to you soon.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- ─── LATEST WRITING ───────────────────────────────────────────────── -->
+    {recentPosts.length > 0 && (
+      <section id="writing" class="py-24 border-t border-[#1F1F1F]/50">
+        <div class="max-w-5xl mx-auto px-6">
+          <div class="flex items-end justify-between mb-10">
+            <div>
+              <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">Latest Writing</h2>
+              <p class="reveal text-[#888888] text-sm" style="--delay: 80ms">
+                Notes on game systems and the work behind the projects.
+              </p>
+            </div>
+            <a
+              href="/blog"
+              class="reveal github-link hidden sm:inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+              style="--delay: 100ms"
+            >
+              All posts
+              <svg class="arrow w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+          </div>
+
+          <div class="max-w-[740px] space-y-4">
+            {recentPosts.map((post, i) => (
+              <div style={`--delay: ${i * 80}ms`}>
+                <BlogCard
+                  title={post.data.title}
+                  date={post.data.date}
+                  excerpt={post.data.excerpt}
+                  tags={post.data.tags}
+                  slug={post.slug}
+                  readingTime={post.readingTime}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div class="mt-8 sm:hidden">
+            <a href="/blog" class="github-link inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150">
+              All posts
+              <svg class="arrow w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+    )}
+
     <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
-    <footer class="border-t border-slate-800/50 py-8">
+    <footer class="border-t border-[#1F1F1F]/50 py-8">
       <div
         class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3"
       >
-        <p class="text-slate-500 text-sm">© 2026 Marko Stankovic</p>
-        <p class="text-slate-700 text-xs font-mono">Game Developer · Serbia</p>
+        <p class="text-[#888888] text-sm">© 2026 Marko Stankovic</p>
+        <p class="text-[#444444] text-xs font-mono">Game Developer · Serbia</p>
       </div>
     </footer>
+
+    <!-- ─── LIGHTBOX ─────────────────────────────────────────────────────── -->
+    <div
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Screenshot viewer"
+      class="fixed inset-0 z-[200] items-center justify-center"
+    >
+      <!-- Backdrop -->
+      <div id="lightbox-backdrop" class="absolute inset-0 bg-[#0D0D0D]/95"></div>
+
+      <!-- Content row: prev · image · next -->
+      <div
+        id="lightbox-content"
+        class="relative z-10 flex items-center gap-3 px-4"
+      >
+        <button id="lightbox-prev" class="lb-btn" aria-label="Previous screenshot">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <img id="lightbox-img" src="" alt="Project screenshot" />
+
+        <button id="lightbox-next" class="lb-btn" aria-label="Next screenshot">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Close button -->
+      <button id="lightbox-close" class="lb-btn z-10" aria-label="Close lightbox">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <script>
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      // ─── Scroll Reveal ──────────────────────────────────────────────────
+      const revealEls = document.querySelectorAll(".reveal");
+
+      if (!prefersReduced) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15 },
+        );
+        revealEls.forEach((el) => revealObserver.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add("visible"));
+      }
+
+      // ─── Active Nav Section ─────────────────────────────────────────────
+      const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+      const sections = document.querySelectorAll("section[id]");
+      const sectionIds = Array.from(sections).map((s) => s.id);
+      const activeSet = new Set<string>();
+
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) activeSet.add(entry.target.id);
+            else activeSet.delete(entry.target.id);
+          });
+
+          const topId = sectionIds.find((id) => activeSet.has(id));
+
+          navLinks.forEach((link) => {
+            link.classList.toggle(
+              "nav-active",
+              link.getAttribute("href") === `#${topId}`,
+            );
+          });
+        },
+        { rootMargin: "-20% 0px -50% 0px" },
+      );
+
+      sections.forEach((s) => sectionObserver.observe(s));
+
+      // ─── Hamburger Nav ──────────────────────────────────────────────────
+      const menuBtn = document.getElementById("menu-btn");
+      const mobileNav = document.getElementById("mobile-nav");
+      const iconMenu = document.getElementById("icon-menu");
+      const iconClose = document.getElementById("icon-close");
+
+      function closeMobileNav() {
+        mobileNav?.classList.remove("open");
+        menuBtn?.setAttribute("aria-expanded", "false");
+        iconMenu?.classList.remove("hidden");
+        iconClose?.classList.add("hidden");
+      }
+
+      menuBtn?.addEventListener("click", () => {
+        const isOpen = mobileNav?.classList.toggle("open");
+        menuBtn.setAttribute("aria-expanded", String(isOpen));
+        iconMenu?.classList.toggle("hidden", !!isOpen);
+        iconClose?.classList.toggle("hidden", !isOpen);
+      });
+
+      // Close mobile nav when a link is clicked
+      document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+        link.addEventListener("click", closeMobileNav);
+      });
+
+      // ─── Filter Bar ─────────────────────────────────────────────────────
+      const filterBar = document.getElementById("filter-bar");
+      const projectCards =
+        document.querySelectorAll<HTMLElement>(".project-card");
+
+      if (filterBar) {
+        // Collect unique tags from skill badges and project tags
+        const tagSet = new Set<string>();
+        document.querySelectorAll(".skill-badge").forEach((el) => {
+          const t = el.textContent?.trim();
+          if (t) tagSet.add(t);
+        });
+        document.querySelectorAll(".project-tag").forEach((el) => {
+          const t = el.textContent?.trim();
+          if (t) tagSet.add(t);
+        });
+
+        const tags = ["All", ...Array.from(tagSet).sort()];
+
+        tags.forEach((tag) => {
+          const btn = document.createElement("button");
+          btn.textContent = tag;
+          btn.dataset.filter = tag;
+          btn.className = "filter-btn";
+          if (tag === "All") btn.classList.add("active");
+          filterBar.appendChild(btn);
+        });
+
+        filterBar.addEventListener("click", (e) => {
+          const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
+            ".filter-btn",
+          );
+          if (!btn) return;
+
+          const filter = btn.dataset.filter ?? "All";
+
+          document
+            .querySelectorAll(".filter-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          projectCards.forEach((card) => {
+            if (filter === "All") {
+              card.classList.remove("filtered-out");
+            } else {
+              const cardTags = (card.dataset.tags ?? "")
+                .split(",")
+                .map((t) => t.trim());
+              card.classList.toggle("filtered-out", !cardTags.includes(filter));
+            }
+          });
+        });
+      }
+
+      // ─── Video Lazy Load (IntersectionObserver) ──────────────────────────
+      const thumbVideos = document.querySelectorAll<HTMLVideoElement>(".thumb-wrap video");
+
+      const videoObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target as HTMLVideoElement;
+            if (entry.isIntersecting) {
+              if (video.readyState === 0) video.load();
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        },
+        { threshold: 0.25 },
+      );
+
+      thumbVideos.forEach((v) => videoObserver.observe(v));
+
+      // ─── Lightbox ────────────────────────────────────────────────────────
+      const lightbox = document.getElementById("lightbox")!;
+      const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
+      const lbPrev = document.getElementById("lightbox-prev") as HTMLButtonElement;
+      const lbNext = document.getElementById("lightbox-next") as HTMLButtonElement;
+      const lbClose = document.getElementById("lightbox-close")!;
+      const lbBackdrop = document.getElementById("lightbox-backdrop")!;
+
+      let lbScreenshots: string[] = [];
+      let lbIndex = 0;
+      let lbPrevFocus: HTMLElement | null = null;
+
+      const lbFocusable = () =>
+        Array.from(lightbox.querySelectorAll<HTMLElement>("button, img[tabindex]")).filter(
+          (el) => !el.hasAttribute("disabled"),
+        );
+
+      function lbShow(screenshots: string[], startIndex: number) {
+        lbScreenshots = screenshots;
+        lbIndex = startIndex;
+        lbPrevFocus = document.activeElement as HTMLElement;
+        lbUpdate();
+        lightbox.style.display = "flex";
+        // Force reflow then add open class for transition
+        lightbox.getBoundingClientRect();
+        lightbox.classList.add("lb-open");
+        document.body.style.overflow = "hidden";
+        lbClose.focus();
+      }
+
+      function lbHide() {
+        lightbox.classList.remove("lb-open");
+        // Wait for transition then hide
+        lightbox.addEventListener(
+          "transitionend",
+          () => {
+            lightbox.style.display = "none";
+            document.body.style.overflow = "";
+            lbPrevFocus?.focus();
+          },
+          { once: true },
+        );
+      }
+
+      function lbUpdate() {
+        lbImg.src = lbScreenshots[lbIndex];
+        lbImg.alt = `Screenshot ${lbIndex + 1} of ${lbScreenshots.length}`;
+        lbPrev.disabled = lbIndex === 0;
+        lbNext.disabled = lbIndex === lbScreenshots.length - 1;
+      }
+
+      // Open lightbox when a thumb-wrap is clicked/keydown
+      document.querySelectorAll<HTMLElement>(".thumb-wrap").forEach((wrap) => {
+        const openLightbox = () => {
+          const card = wrap.closest<HTMLElement>("[data-screenshots]");
+          if (!card) return;
+          const shots = (card.dataset.screenshots ?? "")
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+          if (!shots.length) return;
+          lbShow(shots, 0);
+        };
+
+        wrap.addEventListener("click", openLightbox);
+        wrap.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openLightbox();
+          }
+        });
+      });
+
+      lbClose.addEventListener("click", lbHide);
+      lbBackdrop.addEventListener("click", lbHide);
+
+      lbPrev.addEventListener("click", () => {
+        if (lbIndex > 0) {
+          lbIndex--;
+          lbUpdate();
+        }
+      });
+
+      lbNext.addEventListener("click", () => {
+        if (lbIndex < lbScreenshots.length - 1) {
+          lbIndex++;
+          lbUpdate();
+        }
+      });
+
+      // Keyboard navigation
+      lightbox.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          lbHide();
+        } else if (e.key === "ArrowLeft") {
+          if (lbIndex > 0) { lbIndex--; lbUpdate(); }
+        } else if (e.key === "ArrowRight") {
+          if (lbIndex < lbScreenshots.length - 1) { lbIndex++; lbUpdate(); }
+        } else if (e.key === "Tab") {
+          // Focus trap
+          const focusable = lbFocusable();
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        }
+      });
+
+      // ─── Contact Form ────────────────────────────────────────────────────
+      const contactForm = document.getElementById(
+        "contact-form",
+      ) as HTMLFormElement | null;
+      const formSuccess = document.getElementById("form-success");
+
+      contactForm?.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = (
+          contactForm.querySelector('[name="name"]') as HTMLInputElement
+        ).value;
+        const email = (
+          contactForm.querySelector('[name="email"]') as HTMLInputElement
+        ).value;
+        const message = (
+          contactForm.querySelector('[name="message"]') as HTMLTextAreaElement
+        ).value;
+
+        // mailto fallback — opens native email client
+        const subject = encodeURIComponent(`Portfolio contact — ${name}`);
+        const body = encodeURIComponent(
+          `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+        );
+        window.open(
+          `mailto:contact@markostankovic.org?subject=${subject}&body=${body}`,
+        );
+
+        // Show success, hide form
+        contactForm.classList.add("hidden");
+        formSuccess?.classList.remove("hidden");
+      });
+    </script>
   </body>
 </html>

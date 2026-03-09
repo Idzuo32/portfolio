@@ -1,0 +1,391 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  date: Date;
+  excerpt: string;
+  tags: string[];
+  readingTime: number;
+}
+
+const { title, date, excerpt, tags, readingTime } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const formattedDate = date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={excerpt} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <title>{title} — Marko Stankovic</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- highlight.js -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+
+    <style>
+      /* ── Code blocks ── */
+      pre code.hljs {
+        background: #141414;
+        border: 1px solid #1F1F1F;
+        border-radius: 0.5rem;
+        font-size: 0.8125rem;
+        line-height: 1.6;
+        padding: 1.25rem 1.5rem;
+      }
+
+      /* ── Copy button ── */
+      .pre-wrap {
+        position: relative;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.6rem;
+        right: 0.6rem;
+        padding: 0.25rem 0.6rem;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.6875rem;
+        background: #1F1F1F;
+        color: #888888;
+        border: 1px solid #2a2a2a;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        z-index: 10;
+      }
+      .copy-btn:hover {
+        background: #2a2a2a;
+        color: #F0F0F0;
+        border-color: #888;
+      }
+      .copy-btn.copied {
+        color: #00FFC8;
+        border-color: #00FFC820;
+      }
+
+      /* ── Long-form prose ── */
+      .prose {
+        font-family: 'Geist', system-ui, sans-serif;
+        font-size: 1.05rem;
+        line-height: 1.85;
+        color: #888888;
+        max-width: 680px;
+      }
+
+      .prose p {
+        margin-bottom: 1.4rem;
+      }
+
+      .prose h2,
+      .prose h3 {
+        font-family: 'JetBrains Mono', monospace;
+        color: #F0F0F0;
+        margin-top: 2.5rem;
+        margin-bottom: 0.75rem;
+        line-height: 1.3;
+      }
+
+      .prose h2 {
+        font-size: 1.3rem;
+        font-weight: 600;
+      }
+
+      .prose h3 {
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .prose h2::before {
+        content: '// ';
+        color: #00FFC8;
+      }
+
+      .prose h3::before {
+        content: '// ';
+        color: #00FFC840;
+      }
+
+      /* Inline code */
+      .prose :not(pre) > code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875em;
+        color: #00FFC8;
+        background: rgba(0, 255, 200, 0.08);
+        padding: 0.15em 0.4em;
+        border-radius: 0.25rem;
+      }
+
+      /* Code blocks — wrap in .pre-wrap via JS */
+      .prose pre {
+        margin-bottom: 1.5rem;
+      }
+
+      /* Blockquotes */
+      .prose blockquote {
+        border-left: 2px solid #00FFC8;
+        padding-left: 1.25rem;
+        margin-left: 0;
+        color: #888888;
+        font-style: italic;
+      }
+
+      /* Images */
+      .prose img {
+        width: 100%;
+        border-radius: 0.5rem;
+        border: 1px solid #1F1F1F;
+        display: block;
+        margin: 1.5rem 0 0.5rem;
+      }
+
+      .prose figcaption {
+        text-align: center;
+        font-size: 0.8rem;
+        font-family: 'JetBrains Mono', monospace;
+        color: #444444;
+        margin-bottom: 1.5rem;
+      }
+
+      /* HR */
+      .prose hr {
+        border: none;
+        border-top: 1px solid #00FFC820;
+        margin: 2rem 0;
+      }
+
+      /* Links */
+      .prose a {
+        color: #888888;
+        text-decoration: underline;
+        text-decoration-color: transparent;
+        transition: color 0.15s ease, text-decoration-color 0.15s ease;
+      }
+
+      .prose a:hover {
+        color: #00FFC8;
+        text-decoration-color: #00FFC840;
+      }
+
+      /* Lists */
+      .prose ul,
+      .prose ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1.4rem;
+      }
+
+      .prose li {
+        margin-bottom: 0.4rem;
+      }
+
+      .prose ul li::marker {
+        color: #00FFC8;
+      }
+
+      .prose ol li::marker {
+        color: #444444;
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+
+  <body class="font-sans antialiased">
+
+    <!-- ─── NAV ─────────────────────────────────────────────────────────── -->
+    <header class="fixed top-0 inset-x-0 z-50 border-b border-[#1F1F1F]/60 bg-[#0D0D0D]/80 backdrop-blur-md">
+      <nav class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-5">
+          <a
+            href="/blog"
+            class="nav-link text-sm text-[#888888] hover:text-[#00FFC8] transition-colors duration-150 flex items-center gap-1.5"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            More Posts
+          </a>
+          <span class="text-[#1F1F1F]">|</span>
+          <a href="/" class="font-bold font-mono tracking-tight text-[#F0F0F0] text-lg">MS</a>
+        </div>
+
+        <ul class="hidden sm:flex gap-6 text-sm text-[#888888]">
+          <li><a href="/#skills"   class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Skills</a></li>
+          <li><a href="/#projects" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Projects</a></li>
+          <li><a href="/blog"      class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Devlog</a></li>
+          <li><a href="/#contact"  class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Contact</a></li>
+        </ul>
+
+        <button id="menu-btn" class="sm:hidden w-11 h-11 flex items-center justify-center text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150" aria-label="Toggle menu" aria-expanded="false">
+          <svg id="icon-menu" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </nav>
+
+      <div id="mobile-nav" aria-hidden="true">
+        <div class="max-w-5xl mx-auto px-6 py-2 flex flex-col">
+          <a href="/#skills"   class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Skills</a>
+          <a href="/#projects" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Projects</a>
+          <a href="/blog"      class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Devlog</a>
+          <a href="/#contact"  class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px] flex items-center">Contact</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── POST HERO ──────────────────────────────────────────────────────── -->
+    <div class="relative pt-14">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div class="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#00FFC8]/4 rounded-full blur-3xl"></div>
+      </div>
+
+      <div class="relative max-w-3xl mx-auto px-6 py-16">
+        <p class="hero-enter text-[#444444] font-mono text-xs mb-5 tracking-wide" style="--delay: 0.05s">
+          Devlog
+        </p>
+
+        <h1 class="hero-enter font-mono font-bold text-[#F0F0F0] mb-5" style="font-size: clamp(1.75rem, 4vw, 2.75rem); line-height: 1.1; letter-spacing: -0.02em; --delay: 0.15s">
+          {title}
+        </h1>
+
+        <div class="hero-enter flex flex-wrap items-center gap-4 mb-5" style="--delay: 0.25s">
+          <time class="font-mono text-sm text-[#444444]">{formattedDate}</time>
+          <span class="text-[#1F1F1F]">·</span>
+          <span class="font-mono text-sm text-[#444444]">{readingTime} min read</span>
+        </div>
+
+        <div class="hero-enter flex flex-wrap gap-2 mb-6" style="--delay: 0.35s">
+          {tags.map(tag => (
+            <span class="text-xs font-mono bg-[#00FFC8]/10 text-[#00FFC8] border border-[#00FFC8]/20 px-3 py-1 rounded-full">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <p class="hero-enter text-[#888888] text-base leading-relaxed" style="--delay: 0.45s">
+          {excerpt}
+        </p>
+
+        <div class="hero-enter mt-6 pt-6 border-t border-[#1F1F1F] flex items-center gap-2 text-sm" style="--delay: 0.5s">
+          <span class="text-[#444444]">By</span>
+          <a href="/" class="font-mono text-[#888888] hover:text-[#00FFC8] transition-colors duration-150">Marko Stankovic</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── POST BODY ──────────────────────────────────────────────────────── -->
+    <div class="border-t border-[#1F1F1F]/50 py-16">
+      <div class="max-w-3xl mx-auto px-6">
+        <article class="prose">
+          <slot />
+        </article>
+      </div>
+    </div>
+
+    <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
+    <footer class="border-t border-[#1F1F1F]/50 py-10">
+      <div class="max-w-3xl mx-auto px-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <a
+          href="/blog"
+          class="nav-link inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#00FFC8] transition-colors duration-150"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          More posts
+        </a>
+        <p class="text-[#444444] text-xs font-mono">© 2026 Marko Stankovic</p>
+      </div>
+    </footer>
+
+    <script>
+      // Syntax highlighting
+      // @ts-ignore
+      if (typeof hljs !== 'undefined') hljs.highlightAll();
+      document.addEventListener('DOMContentLoaded', () => {
+        // @ts-ignore
+        if (typeof hljs !== 'undefined') hljs.highlightAll();
+      });
+
+      // Wrap pre blocks in .pre-wrap and add copy button
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('article.prose pre').forEach((pre) => {
+          const wrap = document.createElement('div');
+          wrap.className = 'pre-wrap';
+          pre.parentNode?.insertBefore(wrap, pre);
+          wrap.appendChild(pre);
+
+          const btn = document.createElement('button');
+          btn.className = 'copy-btn';
+          btn.textContent = 'copy';
+          btn.setAttribute('aria-label', 'Copy code');
+          wrap.appendChild(btn);
+
+          btn.addEventListener('click', () => {
+            const code = pre.querySelector('code');
+            const text = code?.textContent ?? '';
+            navigator.clipboard.writeText(text).then(() => {
+              btn.textContent = 'copied!';
+              btn.classList.add('copied');
+              setTimeout(() => {
+                btn.textContent = 'copy';
+                btn.classList.remove('copied');
+              }, 2000);
+            });
+          });
+        });
+      });
+
+      // Scroll reveal
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealEls = document.querySelectorAll('.reveal');
+      if (!prefersReduced) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        revealEls.forEach((el) => obs.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('visible'));
+      }
+
+      // Mobile menu
+      const menuBtn = document.getElementById('menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      const iconMenu = document.getElementById('icon-menu');
+      const iconClose = document.getElementById('icon-close');
+      menuBtn?.addEventListener('click', () => {
+        const isOpen = mobileNav?.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', String(isOpen));
+        iconMenu?.classList.toggle('hidden', !!isOpen);
+        iconClose?.classList.toggle('hidden', !isOpen);
+      });
+      document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+        link.addEventListener('click', () => {
+          mobileNav?.classList.remove('open');
+          menuBtn?.setAttribute('aria-expanded', 'false');
+          iconMenu?.classList.remove('hidden');
+          iconClose?.classList.add('hidden');
+        });
+      });
+    </script>
+  </body>
+</html>
