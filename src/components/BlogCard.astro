@@ -25,7 +25,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
     </div>
 
     <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-2 leading-snug">
-      <a href={`/blog/${slug}`} class="hover:text-[#00FFC8] transition-colors duration-150">{title}</a>
+      <a href={`/devlog/${slug}`} class="hover:text-[#00FFC8] transition-colors duration-150">{title}</a>
     </h3>
 
     <p class="text-[#888888] text-sm leading-relaxed mb-4">{excerpt}</p>
@@ -39,7 +39,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
         ))}
       </div>
       <a
-        href={`/blog/${slug}`}
+        href={`/devlog/${slug}`}
         class="github-link inline-flex items-center gap-1 text-sm text-[#00FFC8] hover:text-[#00FFD0] transition-colors duration-150 shrink-0 ml-4"
         aria-label={`Read ${title}`}
       >

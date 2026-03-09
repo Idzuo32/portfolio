@@ -1,14 +1,14 @@
 ---
 import "../styles/global.css";
-import { getCollection } from 'astro:content';
-import BlogCard from '../components/BlogCard.astro';
+import { getCollection } from "astro:content";
+import BlogCard from "../components/BlogCard.astro";
 
-const recentPosts = (await getCollection('blog'))
-  .filter(p => !p.data.draft)
+const recentPosts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 2)
-  .map(post => {
-    const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+  .map((post) => {
+    const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
     return { ...post, readingTime: Math.max(1, Math.ceil(words / 200)) };
   });
 ---
@@ -85,7 +85,9 @@ const recentPosts = (await getCollection('blog'))
         justify-content: center;
         cursor: pointer;
         flex-shrink: 0;
-        transition: background 0.15s ease, border-color 0.15s ease;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease;
       }
       .lb-btn:hover {
         background: rgba(50, 50, 50, 0.9);
@@ -135,7 +137,7 @@ const recentPosts = (await getCollection('blog'))
           </li>
           <li>
             <a
-              href="/blog"
+              href="/devlog"
               class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
               >Devlog</a
             >
@@ -201,7 +203,7 @@ const recentPosts = (await getCollection('blog'))
             >Projects</a
           >
           <a
-            href="/blog"
+            href="/devlog"
             class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
             >Devlog</a
           >
@@ -257,10 +259,10 @@ const recentPosts = (await getCollection('blog'))
           class="hero-enter text-[#888888] text-lg max-w-xl mb-12 leading-relaxed"
           style="--delay: 0.85s"
         >
-          I love writing the systems that make games feel alive — AI state
-          machines that think, procedural worlds that surprise, editor tools
-          that get out of the way. Three years of that in Unity&nbsp;3D, Unreal
-          Engine, and Godot. Based in Serbia, open to remote.
+          I build the systems that make games feel alive — AI that thinks,
+          procedural worlds that surprise, editor tools that get out of the way.
+          Three years deep in Unity 3D, Unreal Engine, and Godot. Based in
+          Serbia, open to remote.
         </p>
 
         <div class="hero-enter flex flex-wrap gap-4" style="--delay: 1s">
@@ -544,7 +546,7 @@ const recentPosts = (await getCollection('blog'))
               class="thumb-wrap w-full aspect-video shrink-0 cursor-pointer relative"
               role="button"
               tabindex="0"
-              aria-label="Open Hide &amp; Seek screenshots"
+              aria-label="Open Hide & Seek screenshots"
             >
               <video
                 class="w-full h-full object-cover"
@@ -555,7 +557,10 @@ const recentPosts = (await getCollection('blog'))
                 preload="none"
                 poster="/assets/screenshots/hide-and-seek-1.png"
               >
-                <source src="/assets/thumbnails/hide-and-seek-thumb.mp4" type="video/mp4" />
+                <source
+                  src="/assets/thumbnails/hide-and-seek-thumb.mp4"
+                  type="video/mp4"
+                />
               </video>
             </div>
 
@@ -659,7 +664,10 @@ const recentPosts = (await getCollection('blog'))
                 preload="none"
                 poster="/assets/screenshots/endless-runner-1.png"
               >
-                <source src="/assets/thumbnails/endless-runner-thumb.mp4" type="video/mp4" />
+                <source
+                  src="/assets/thumbnails/endless-runner-thumb.mp4"
+                  type="video/mp4"
+                />
               </video>
             </div>
 
@@ -942,54 +950,83 @@ const recentPosts = (await getCollection('blog'))
     </section>
 
     <!-- ─── LATEST WRITING ───────────────────────────────────────────────── -->
-    {recentPosts.length > 0 && (
-      <section id="writing" class="py-24 border-t border-[#1F1F1F]/50">
-        <div class="max-w-5xl mx-auto px-6">
-          <div class="flex items-end justify-between mb-10">
-            <div>
-              <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">Latest Writing</h2>
-              <p class="reveal text-[#888888] text-sm" style="--delay: 80ms">
-                Notes on game systems and the work behind the projects.
-              </p>
-            </div>
-            <a
-              href="/blog"
-              class="reveal github-link hidden sm:inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
-              style="--delay: 100ms"
-            >
-              All posts
-              <svg class="arrow w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-              </svg>
-            </a>
-          </div>
-
-          <div class="max-w-[740px] space-y-4">
-            {recentPosts.map((post, i) => (
-              <div style={`--delay: ${i * 80}ms`}>
-                <BlogCard
-                  title={post.data.title}
-                  date={post.data.date}
-                  excerpt={post.data.excerpt}
-                  tags={post.data.tags}
-                  slug={post.slug}
-                  readingTime={post.readingTime}
-                />
+    {
+      recentPosts.length > 0 && (
+        <section id="writing" class="py-24 border-t border-[#1F1F1F]/50">
+          <div class="max-w-5xl mx-auto px-6">
+            <div class="flex items-end justify-between mb-10">
+              <div>
+                <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">
+                  Latest Writing
+                </h2>
+                <p class="reveal text-[#888888] text-sm" style="--delay: 80ms">
+                  Notes on game systems and the work behind the projects.
+                </p>
               </div>
-            ))}
-          </div>
+              <a
+                href="/devlog"
+                class="reveal github-link hidden sm:inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+                style="--delay: 100ms"
+              >
+                All posts
+                <svg
+                  class="arrow w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </a>
+            </div>
 
-          <div class="mt-8 sm:hidden">
-            <a href="/blog" class="github-link inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150">
-              All posts
-              <svg class="arrow w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-              </svg>
-            </a>
+            <div class="max-w-[740px] space-y-4">
+              {recentPosts.map((post, i) => (
+                <div style={`--delay: ${i * 80}ms`}>
+                  <BlogCard
+                    title={post.data.title}
+                    date={post.data.date}
+                    excerpt={post.data.excerpt}
+                    tags={post.data.tags}
+                    slug={post.slug}
+                    readingTime={post.readingTime}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div class="mt-8 sm:hidden">
+              <a
+                href="/devlog"
+                class="github-link inline-flex items-center gap-1.5 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+              >
+                All posts
+                <svg
+                  class="arrow w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
-    )}
+        </section>
+      )
+    }
 
     <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
     <footer class="border-t border-[#1F1F1F]/50 py-8">
@@ -1010,32 +1047,74 @@ const recentPosts = (await getCollection('blog'))
       class="fixed inset-0 z-[200] items-center justify-center"
     >
       <!-- Backdrop -->
-      <div id="lightbox-backdrop" class="absolute inset-0 bg-[#0D0D0D]/95"></div>
+      <div id="lightbox-backdrop" class="absolute inset-0 bg-[#0D0D0D]/95">
+      </div>
 
       <!-- Content row: prev · image · next -->
       <div
         id="lightbox-content"
         class="relative z-10 flex items-center gap-3 px-4"
       >
-        <button id="lightbox-prev" class="lb-btn" aria-label="Previous screenshot">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        <button
+          id="lightbox-prev"
+          class="lb-btn"
+          aria-label="Previous screenshot"
+        >
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 19l-7-7 7-7"></path>
           </svg>
         </button>
 
         <img id="lightbox-img" src="" alt="Project screenshot" />
 
         <button id="lightbox-next" class="lb-btn" aria-label="Next screenshot">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 5l7 7-7 7"></path>
           </svg>
         </button>
       </div>
 
       <!-- Close button -->
-      <button id="lightbox-close" class="lb-btn z-10" aria-label="Close lightbox">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+      <button
+        id="lightbox-close"
+        class="lb-btn z-10"
+        aria-label="Close lightbox"
+      >
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"></path>
         </svg>
       </button>
     </div>
@@ -1172,7 +1251,8 @@ const recentPosts = (await getCollection('blog'))
       }
 
       // ─── Video Lazy Load (IntersectionObserver) ──────────────────────────
-      const thumbVideos = document.querySelectorAll<HTMLVideoElement>(".thumb-wrap video");
+      const thumbVideos =
+        document.querySelectorAll<HTMLVideoElement>(".thumb-wrap video");
 
       const videoObserver = new IntersectionObserver(
         (entries) => {
@@ -1194,8 +1274,12 @@ const recentPosts = (await getCollection('blog'))
       // ─── Lightbox ────────────────────────────────────────────────────────
       const lightbox = document.getElementById("lightbox")!;
       const lbImg = document.getElementById("lightbox-img") as HTMLImageElement;
-      const lbPrev = document.getElementById("lightbox-prev") as HTMLButtonElement;
-      const lbNext = document.getElementById("lightbox-next") as HTMLButtonElement;
+      const lbPrev = document.getElementById(
+        "lightbox-prev",
+      ) as HTMLButtonElement;
+      const lbNext = document.getElementById(
+        "lightbox-next",
+      ) as HTMLButtonElement;
       const lbClose = document.getElementById("lightbox-close")!;
       const lbBackdrop = document.getElementById("lightbox-backdrop")!;
 
@@ -1204,9 +1288,9 @@ const recentPosts = (await getCollection('blog'))
       let lbPrevFocus: HTMLElement | null = null;
 
       const lbFocusable = () =>
-        Array.from(lightbox.querySelectorAll<HTMLElement>("button, img[tabindex]")).filter(
-          (el) => !el.hasAttribute("disabled"),
-        );
+        Array.from(
+          lightbox.querySelectorAll<HTMLElement>("button, img[tabindex]"),
+        ).filter((el) => !el.hasAttribute("disabled"));
 
       function lbShow(screenshots: string[], startIndex: number) {
         lbScreenshots = screenshots;
@@ -1286,9 +1370,15 @@ const recentPosts = (await getCollection('blog'))
         if (e.key === "Escape") {
           lbHide();
         } else if (e.key === "ArrowLeft") {
-          if (lbIndex > 0) { lbIndex--; lbUpdate(); }
+          if (lbIndex > 0) {
+            lbIndex--;
+            lbUpdate();
+          }
         } else if (e.key === "ArrowRight") {
-          if (lbIndex < lbScreenshots.length - 1) { lbIndex++; lbUpdate(); }
+          if (lbIndex < lbScreenshots.length - 1) {
+            lbIndex++;
+            lbUpdate();
+          }
         } else if (e.key === "Tab") {
           // Focus trap
           const focusable = lbFocusable();

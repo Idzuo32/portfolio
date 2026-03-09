@@ -6,6 +6,10 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://markostankovic.org',
+  redirects: {
+    '/blog': '/devlog',
+    '/blog/[slug]': '/devlog/[slug]',
+  },
   integrations: [mdx()],
   vite: {
     plugins: [tailwindcss()],
