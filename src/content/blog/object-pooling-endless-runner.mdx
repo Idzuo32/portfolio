@@ -6,22 +6,21 @@ tags: ["Unity", "Performance"]
 draft: false
 ---
 
-{/*
-  TO ADD A NEW POST:
-  1. Duplicate this file into src/content/blog/your-post-slug.mdx
-  2. Update frontmatter: title, date, excerpt, tags
-  3. Write content using h2/h3 headings (the // prefix is added by CSS)
-  4. Set draft: false when ready to publish
-  5. The post will appear automatically on /blog and the homepage teaser
-*/}
+{/\*
+TO ADD A NEW POST:
+
+1. Duplicate this file into src/content/blog/your-post-slug.mdx
+2. Update frontmatter: title, date, excerpt, tags
+3. Write content using h2/h3 headings (the // prefix is added by CSS)
+4. Set draft: false when ready to publish
+5. The post will appear automatically on /blog and the homepage teaser
+   \*/}
 
 ## The Problem
 
 The first version of the Endless Runner spawned obstacles with `Instantiate()` and removed them with `Destroy()`. On a modern PC the frame times looked fine — but Unity's profiler told a different story. Every time a new chunk scrolled into view and populated its obstacle slots, there was a GC allocation spike. On lower-end devices (the kind that actually run mobile games) those spikes turned into visible hitches.
 
 The cause is straightforward: `Instantiate` allocates memory for the new GameObject and all its components. `Destroy` doesn't free that memory immediately — it queues the object for destruction, and the garbage collector reclaims it later in a stop-the-world pause. The more objects you spawn and destroy per second, the more GC pressure you generate.
-
-[YOUR NOTES: describe what the profiler showed — allocation size, GC time, frame time spikes on a specific device or quality setting]
 
 The fix is an object pool: a pre-allocated collection of objects that you borrow and return instead of creating and destroying.
 
@@ -126,16 +125,12 @@ public static class PoolManager
 
 ## Results
 
-[YOUR NOTES: describe the measurable improvement — GC alloc per frame before vs after, frame time variance, profiler screenshots if available]
-
 With the pool in place, the GC allocation during chunk population dropped to near-zero after the initial warm-up. The pool pre-allocates enough objects at startup to cover the maximum number of obstacles visible at any time. Beyond that point, `Instantiate` is only called on a cache miss — which doesn't happen during normal gameplay if the initial size is set correctly.
 
-The frame time spikes from GC collection disappeared. [YOUR NOTES: specific device or quality setting where this was most visible]
+The frame time spikes from GC collection disappeared.
 
 ## What I Learned
 
 The biggest trade-off is **pool sizing**. If you pre-allocate too few objects, you get cache misses and fall back to `Instantiate` — defeating the purpose. If you pre-allocate too many, you waste memory on objects that are never used. The right number depends on the maximum concurrent active count, which you need to measure or calculate from your spawn rates.
 
 The design I'd change is **`PoolManager` being static**. A static class can't be injected or mocked, which makes `ObstacleSpawner` untestable in isolation — any test that exercises spawning implicitly exercises the pool. A non-static `IPoolManager` interface with a concrete implementation would let me inject a fake pool in tests and verify spawn logic independently of pooling logic.
-
-[YOUR NOTES: anything else you'd add — e.g. typed pools, pool warming strategies, integration with Addressables for async loading]

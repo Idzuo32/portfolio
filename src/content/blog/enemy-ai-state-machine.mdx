@@ -6,20 +6,19 @@ tags: ["Unity", "Architecture"]
 draft: false
 ---
 
-{/*
-  TO ADD A NEW POST:
-  1. Duplicate this file into src/content/blog/your-post-slug.mdx
-  2. Update frontmatter: title, date, excerpt, tags
-  3. Write content using h2/h3 headings (the // prefix is added by CSS)
-  4. Set draft: false when ready to publish
-  5. The post will appear automatically on /blog and the homepage teaser
-*/}
+{/\*
+TO ADD A NEW POST:
+
+1. Duplicate this file into src/content/blog/your-post-slug.mdx
+2. Update frontmatter: title, date, excerpt, tags
+3. Write content using h2/h3 headings (the // prefix is added by CSS)
+4. Set draft: false when ready to publish
+5. The post will appear automatically on /blog and the homepage teaser
+   \*/}
 
 ## The Problem
 
 The first version of the Hide & Seek enemy was a single `Update()` method with a chain of `if/else` blocks. Patrol logic, detection checks, chase behaviour, and navigation calls were all in one place. Every time I added a new behaviour — a search phase, an alert scan — the method grew, and changing one behaviour meant carefully reading the whole thing to understand what it might break.
-
-[YOUR NOTES: describe the specific pain point that made you refactor — e.g. adding the Search state broke the Chase-to-Patrol transition]
 
 The problem isn't just readability. A monolithic update loop has hidden coupling: the `chase` branch reads variables set by the `patrol` branch, transition conditions are scattered across the function, and there's no clear moment where one behaviour ends and another begins. Any new state has to understand all the other states to slot in correctly.
 
@@ -102,12 +101,8 @@ public class StateMachine
 
 `EnemyController` owns one `StateMachine`, calls `Tick()` from `Update()`, and exposes a `ChangeState(IState)` wrapper so states can trigger transitions. The machine doesn't know what the states are — it only knows the `IState` interface.
 
-[YOUR NOTES: describe a specific transition that was tricky, e.g. Search → Patrol after all waypoints are exhausted, or Chase → Search on losing line of sight]
-
 ## What I Learned
 
 The biggest practical benefit wasn't cleanliness — it was **testability**. Each state is a plain C# class with no MonoBehaviour dependency. I can instantiate `EnemyPatrolState` in a unit test, feed it a mock `EnemyController`, and verify that it transitions when suspicion crosses the threshold. That's impossible with a monolithic update method.
 
 The thing I'd do differently: **pre-allocate states at `Awake()`** rather than calling `new EnemyChaseState(this)` on every transition. Each call allocates a new heap object. With six states and frequent transitions, this generates GC pressure. Creating all six states once at startup and passing them by reference eliminates that entirely.
-
-[YOUR NOTES: any other observations about this pattern — where it works well, where it starts to break down (e.g. parallel states, blended transitions)]
