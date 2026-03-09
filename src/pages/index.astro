@@ -1227,12 +1227,8 @@ const personSchema = {
         document.querySelectorAll<HTMLElement>(".project-card");
 
       if (filterBar) {
-        // Collect unique tags from skill badges and project tags
+        // Collect unique tags from project tags
         const tagSet = new Set<string>();
-        document.querySelectorAll(".skill-badge").forEach((el) => {
-          const t = el.textContent?.trim();
-          if (t) tagSet.add(t);
-        });
         document.querySelectorAll(".project-tag").forEach((el) => {
           const t = el.textContent?.trim();
           if (t) tagSet.add(t);
