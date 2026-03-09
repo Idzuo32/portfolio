@@ -10,7 +10,7 @@ const base = import.meta.env.BASE_URL;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Endless Runner — Unity 3D infinite runner with chunk-based procedural generation, zero-allocation object pooling, and a fully event-driven architecture."
+      content="Endless Runner — Unity 2022 thesis project. World-scrolling proc gen via LevelGenerator, Queue-based ObjectPool managed by a static PoolManager, Chunk self-management in OnEnable/OnDisable, and exponentially decaying difficulty escalation."
     />
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <title>Endless Runner — Marko Stankovic</title>
@@ -30,7 +30,6 @@ const base = import.meta.env.BASE_URL;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
 
     <style>
-      /* ── Code block overrides ── */
       pre code.hljs {
         background: #141414;
         border: 1px solid #1F1F1F;
@@ -92,7 +91,6 @@ const base = import.meta.env.BASE_URL;
         right: 1rem;
       }
 
-      /* ── Screenshot grid images ── */
       .screenshot-wrap {
         overflow: hidden;
         border-radius: 0.5rem;
@@ -135,26 +133,13 @@ const base = import.meta.env.BASE_URL;
           <a href="/" class="font-bold font-mono tracking-tight text-[#F0F0F0] text-lg">MS</a>
         </div>
 
-        <!-- Desktop nav -->
         <ul class="hidden sm:flex gap-6 text-sm text-[#888888]">
-          <li>
-            <a href="/#skills" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Skills</a>
-          </li>
-          <li>
-            <a href="/#projects" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Projects</a>
-          </li>
-          <li>
-            <a href="/#contact" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Contact</a>
-          </li>
+          <li><a href="/#skills"   class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Skills</a></li>
+          <li><a href="/#projects" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Projects</a></li>
+          <li><a href="/#contact"  class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Contact</a></li>
         </ul>
 
-        <!-- Hamburger (mobile) -->
-        <button
-          id="menu-btn"
-          class="sm:hidden w-11 h-11 flex items-center justify-center text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
-          aria-label="Toggle menu"
-          aria-expanded="false"
-        >
+        <button id="menu-btn" class="sm:hidden w-11 h-11 flex items-center justify-center text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150" aria-label="Toggle menu" aria-expanded="false">
           <svg id="icon-menu" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
           </svg>
@@ -164,52 +149,45 @@ const base = import.meta.env.BASE_URL;
         </button>
       </nav>
 
-      <!-- Mobile dropdown -->
       <div id="mobile-nav" aria-hidden="true">
         <div class="max-w-5xl mx-auto px-6 py-2 flex flex-col">
-          <a href="/" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#00FFC8] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">← Back to Portfolio</a>
-          <a href="/#skills" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Skills</a>
+          <a href="/"          class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#00FFC8] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">← Back to Portfolio</a>
+          <a href="/#skills"   class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Skills</a>
           <a href="/#projects" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Projects</a>
-          <a href="/#contact" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px] flex items-center">Contact</a>
+          <a href="/#contact"  class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px] flex items-center">Contact</a>
         </div>
       </div>
     </header>
 
     <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
     <div class="relative pt-14">
-      <!-- Decorative glow -->
       <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div class="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-3xl"></div>
         <div class="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-[#00FFC8]/3 rounded-full blur-3xl"></div>
       </div>
 
       <div class="relative max-w-5xl mx-auto px-6 py-20">
-        <!-- Breadcrumb -->
         <p class="hero-enter text-[#444444] font-mono text-xs mb-6 tracking-wide" style="--delay: 0.05s">
           Projects / Endless Runner
         </p>
 
-        <!-- Badges -->
         <div class="hero-enter flex flex-wrap gap-2 mb-6" style="--delay: 0.15s">
           <span class="text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full">
-            Completed
+            Completed · Bachelor's Thesis 2025
           </span>
           <span class="text-xs font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full">
-            Unity 3D
+            Unity 2022 · URP
           </span>
         </div>
 
-        <!-- Project name -->
         <h1 class="hero-enter font-mono font-bold text-[#F0F0F0] mb-5" style="font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; --delay: 0.3s">
           Endless Runner
         </h1>
 
-        <!-- Hook -->
         <p class="hero-enter text-[#888888] text-lg max-w-2xl leading-relaxed mb-8" style="--delay: 0.5s">
-          Infinite terrain that never runs out of memory — chunk-based generation with an object pool that pre-warms at startup and makes zero allocations during play.
+          The world scrolls, the player stays fixed — <code class="font-mono text-[#00FFC8] text-base bg-[#00FFC8]/10 px-1.5 rounded">LevelGenerator</code> moves chunks toward a stationary <code class="font-mono text-[#00FFC8] text-base bg-[#00FFC8]/10 px-1.5 rounded">PlayerController</code>, each chunk self-manages its pooled obstacles in <code class="font-mono text-[#00FFC8] text-base bg-[#00FFC8]/10 px-1.5 rounded">OnEnable/OnDisable</code>, and difficulty escalates via an exponentially decaying spawn interval.
         </p>
 
-        <!-- GitHub link -->
         <div class="hero-enter" style="--delay: 0.65s">
           <a
             href="https://github.com/Idzuo32/DiplomskiRad"
@@ -246,7 +224,7 @@ const base = import.meta.env.BASE_URL;
           </video>
         </div>
         <p class="reveal text-[#444444] text-xs font-mono mt-3 text-center" style="--delay: 100ms">
-          Gameplay preview — chunk generation, lane switching, obstacle pool in action
+          Gameplay preview — world scrolling, obstacle pool recycling, checkpoint difficulty spike
         </p>
       </div>
     </div>
@@ -258,13 +236,13 @@ const base = import.meta.env.BASE_URL;
 
         <div class="reveal max-w-3xl space-y-5 text-[#888888] leading-relaxed" style="--delay: 100ms">
           <p>
-            An endless runner has one invariant that can't break: the world must always feel infinite without the game ever running out of memory or stuttering. Naive instantiation destroys that — spawning a new obstacle prefab every few seconds generates garbage, and the GC eventually pauses to clean it up, which players feel as a hitch. The solution was an object pool that pre-warms every obstacle type at startup, then recycles rather than destroys.
+            Infinite generation has one hard constraint: the active object count must stay constant regardless of how long the run lasts. Spawning a new prefab for every obstacle would cause GC pauses that players feel as hitches. A <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Queue</code>-based <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ObjectPool</code>, managed by a static <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PoolManager</code> keyed by prefab, pre-warms instances at load time and then recycles without ever calling <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Instantiate</code> again during play. Each <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PooledObject</code> component acts as a type tag so <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PoolManager.Release()</code> can recursively return a chunk and all its children in one call.
           </p>
           <p>
-            Generation itself needed to be predictable enough to be fair but varied enough to feel different on every run. A chunk-based system solved this: each chunk is a self-contained segment of track with a predefined obstacle layout, and the manager selects and places them randomly as the player moves forward. Old chunks are returned to the pool when the player passes them, keeping the active scene count constant regardless of how long the run is.
+            Moving the player forward while keeping the camera fixed would require adding a camera-follow system and managing floating-point precision over long distances. A simpler inversion: keep the <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PlayerController</code> at a fixed world position and move the chunks toward it. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">LevelGenerator</code> translates every active chunk by <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">-Vector3.forward * moveSpeed * dt</code> in <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Update()</code> and recycles via <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PoolManager.Release()</code> when a chunk passes the camera.
           </p>
           <p>
-            With five distinct systems — generation, pooling, scoring, UI, and lane movement — tight coupling would have made testing and changes painful. An event bus kept every system completely independent: the <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Player</code> fires events, everything else subscribes. Adding a new system like a combo multiplier meant one new subscriber, zero changes to existing code.
+            Difficulty had to feel like a smooth curve, not a step function. Each <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Checkpoint</code> trigger decreases <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ObstacleSpawner.obstacleSpawnTime</code> by an exponentially decaying amount — the first checkpoints feel dangerous, later ones barely tighten the interval — and simultaneously increases world speed while pushing <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Physics.gravity.z</code> and camera FOV for visceral speed feedback.
           </p>
         </div>
       </div>
@@ -277,186 +255,279 @@ const base = import.meta.env.BASE_URL;
 
         <div class="space-y-14">
 
-          <!-- Decision 1: Chunk-based proc gen -->
+          <!-- Decision 1: LevelGenerator + Chunk -->
           <div class="reveal" style="--delay: 0ms">
             <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
               <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
-                Chunk-Based Procedural Generation
+                LevelGenerator + Chunk — World Scrolls, Player Stays Fixed
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                The world is divided into fixed-length chunks, each containing a spawned obstacle layout. The <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ChunkManager</code> maintains a queue of active chunks, spawns new ones ahead of the player as needed, and recycles old ones back into the pool as the player moves past them. Active chunk count stays constant at runtime — no unbounded growth.
+                <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">LevelGenerator</code> maintains a <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">List&lt;GameObject&gt; chunks</code>, moves them each frame, and recycles the rearmost chunk when it passes the camera. Every <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">checkpointChunkInterval</code> spawns it places a <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">checkpointChunkPrefab</code> instead of a standard chunk. Each <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Chunk</code> handles its own content entirely in <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">OnEnable/OnDisable</code> — no external system tells it what to spawn or clean up.
               </p>
-              <pre><code class="language-csharp" set:text={`public class ChunkManager : MonoBehaviour
+              <pre><code class="language-csharp" set:text={`// Proc Gen/LevelGenerator.cs (namespace ProceduralGeneration)
+public class LevelGenerator : MonoBehaviour
 {
-    [SerializeField] private ChunkData[] chunkTemplates;
-    [SerializeField] private int chunksAhead = 4;
-    [SerializeField] private float chunkLength = 20f;
+    [SerializeField] GameObject[]  chunkPrefabs;
+    [SerializeField] GameObject    checkpointChunkPrefab;
+    [SerializeField] int           startingChunksAmount = 12;
+    [SerializeField] int           checkpointChunkInterval = 8;
+    [SerializeField] float         chunkLength = 10f;
 
-    private readonly Queue<GameObject> _activeChunks = new();
-    private float _spawnZ;
-
-    void Start()
-    {
-        // Pre-spawn initial chunks
-        for (int i = 0; i < chunksAhead; i++) SpawnChunk();
-    }
+    float moveSpeed = 10f;
+    readonly List<GameObject> chunks = new();
+    int chunksSpawned;
 
     void Update()
     {
-        while (_activeChunks.Count < chunksAhead + 1) SpawnChunk();
-
-        if (PlayerPassedTail()) RecycleChunk();
+        MoveChunks();
+        if (ChunkPassedCamera()) RecycleAndSpawn();
     }
+
+    void MoveChunks()
+    {
+        foreach (var chunk in chunks)
+            chunk.transform.position -= Vector3.forward * moveSpeed * Time.deltaTime;
+    }
+
+    GameObject ChooseChunkToSpawn() =>
+        chunksSpawned % checkpointChunkInterval == 0
+            ? checkpointChunkPrefab
+            : chunkPrefabs[Random.Range(0, chunkPrefabs.Length)];
 
     void SpawnChunk()
     {
-        var template = chunkTemplates[Random.Range(0, chunkTemplates.Length)];
-        var chunk    = _pool.Get(template.Prefab, new Vector3(0, 0, _spawnZ));
-        _spawnZ += chunkLength;
-        _activeChunks.Enqueue(chunk);
+        var prefab = ChooseChunkToSpawn();
+        var go     = PoolManager.Get(prefab, SpawnPosition(), Quaternion.identity);
+        chunks.Add(go);
+        chunksSpawned++;
     }
 
-    void RecycleChunk()
+    void RecycleAndSpawn()
     {
-        var old = _activeChunks.Dequeue();
-        _pool.Return(old);
+        PoolManager.Release(chunks[0]);  // recursive — releases chunk + all children
+        chunks.RemoveAt(0);
+        SpawnChunk();
+    }
+}
+
+// Proc Gen/Chunk.cs — self-managing content lifecycle
+public class Chunk : MonoBehaviour
+{
+    float[] lanes = { -2.5f, 0f, 2.5f };  // three fixed X-axis lanes
+
+    void OnEnable()   // called when pool hands this chunk out
+    {
+        SpawnFences();   // up to 2, random lane selection without replacement
+        SpawnApple();    // appleSpawnChance = 0.3f
+        SpawnCoins();    // coinSpawnChance  = 0.5f, up to 6 in a line
+    }
+
+    void OnDisable()  // called when PoolManager.Release() deactivates this chunk
+    {
+        // PoolManager.Release() already handles recursive child release
+        // clearing the spawnRoot children here is a safety cleanup
     }
 }`}></code></pre>
             </div>
           </div>
 
-          <!-- Decision 2: Object pooling -->
+          <!-- Decision 2: ObjectPool + PoolManager + PooledObject -->
           <div class="reveal" style="--delay: 50ms">
             <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
               <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
-                Generic Object Pool with Pre-Warming
+                ObjectPool + PoolManager + PooledObject — Queue-Based, Keyed by Prefab
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                A generic <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ObjectPool&lt;T&gt;</code> handles obstacles, VFX, and SFX sources. Pre-warming happens in <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Start()</code>, so the first frame of gameplay never triggers an allocation. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Get()</code> pops from the inactive stack; <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Return()</code> deactivates and pushes back. If the pool runs dry it instantiates a new instance as a safety valve without crashing.
+                <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ObjectPool</code> is a plain class (not a MonoBehaviour) using a <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Queue&lt;GameObject&gt;</code> — FIFO recycling means the longest-inactive object is reused first, distributing heat evenly. The static <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PoolManager</code> maps each prefab <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">GameObject</code> to its pool and creates pools on first use with no pre-registration. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PooledObject</code> is added as a component tag during <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">CreateInstance()</code>, storing the prefab key — this lets <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Release()</code> recursively return nested pooled children before returning the parent.
               </p>
-              <pre><code class="language-csharp" set:text={`public class ObjectPool<T> where T : Component
+              <pre><code class="language-csharp" set:text={`// Pooling/ObjectPool.cs (namespace Pooling) — plain class, not MonoBehaviour
+public class ObjectPool
 {
-    private readonly Stack<T> _inactive = new();
-    private readonly T _prefab;
+    readonly GameObject        _prefab;
+    readonly Transform         _poolRoot;
+    readonly Queue<GameObject> _items = new();
 
-    public ObjectPool(T prefab, int preWarm)
+    public ObjectPool(GameObject prefab, Transform poolRoot, int prewarm = 0)
     {
-        _prefab = prefab;
-        for (int i = 0; i < preWarm; i++)
+        _prefab   = prefab;
+        _poolRoot = poolRoot;
+        for (int i = 0; i < prewarm; i++) _items.Enqueue(CreateInstance());
+    }
+
+    public GameObject Get(Vector3 position, Quaternion rotation, Transform parent)
+    {
+        var go = _items.Count > 0 ? _items.Dequeue() : CreateInstance();
+        go.transform.SetPositionAndRotation(position, rotation);
+        go.transform.SetParent(parent);
+        go.SetActive(true);
+        return go;
+    }
+
+    public void Return(GameObject go)
+    {
+        go.SetActive(false);
+        go.transform.SetParent(_poolRoot);
+        _items.Enqueue(go);
+    }
+
+    GameObject CreateInstance()
+    {
+        var go = Object.Instantiate(_prefab, _poolRoot);
+        go.SetActive(false);
+        if (!go.TryGetComponent<PooledObject>(out _))
+            go.AddComponent<PooledObject>().PrefabKey = _prefab;
+        return go;
+    }
+}
+
+// Managers/PoolManager.cs — static registry, one pool per prefab
+public static class PoolManager
+{
+    static readonly Dictionary<GameObject, ObjectPool> Pools = new();
+    static Transform _root;
+    static Transform Root   // lazy DontDestroyOnLoad container
+    {
+        get
         {
-            var instance = Object.Instantiate(prefab);
-            instance.gameObject.SetActive(false);
-            _inactive.Push(instance);
+            if (_root == null)
+            {
+                _root = new GameObject("[PoolManager]").transform;
+                Object.DontDestroyOnLoad(_root.gameObject);
+            }
+            return _root;
         }
     }
 
-    public T Get(Vector3 position, Quaternion rotation = default)
+    public static GameObject Get(GameObject prefab, Vector3 pos, Quaternion rot,
+                                  Transform parent = null)
     {
-        var obj = _inactive.Count > 0
-            ? _inactive.Pop()
-            : Object.Instantiate(_prefab);  // safety valve
-
-        obj.transform.SetPositionAndRotation(position, rotation);
-        obj.gameObject.SetActive(true);
-        return obj;
+        if (!Pools.TryGetValue(prefab, out var pool))
+            Pools[prefab] = pool = new ObjectPool(prefab, Root);
+        return pool.Get(pos, rot, parent);
     }
 
-    public void Return(T obj)
+    public static void Release(GameObject go)
     {
-        obj.gameObject.SetActive(false);
-        _inactive.Push(obj);
+        // Recursively release pooled children before returning parent
+        foreach (Transform child in go.transform)
+            ReleaseIfPooled(child.gameObject);
+
+        if (go.TryGetComponent<PooledObject>(out var pooled))
+            Pools[pooled.PrefabKey].Return(go);
     }
 }`}></code></pre>
             </div>
           </div>
 
-          <!-- Decision 3: Event-driven architecture -->
+          <!-- Decision 3: Difficulty escalation -->
           <div class="reveal" style="--delay: 100ms">
             <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
               <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
-                Event Bus for Zero-Coupling Systems
+                Difficulty Escalation — Checkpoints, Gravity, and Exponential Decay
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                A static <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">GameEvents</code> class acts as the message bus. The <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Player</code> fires events; UI, audio, and analytics all subscribe independently. No system holds a reference to any other — adding a leaderboard or combo system later required zero changes to existing code.
+                Each <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Checkpoint</code> that the player passes triggers two things: <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">GameManager.IncreaseTime()</code> (time reward) and <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ObstacleSpawner.DecreaseObstacleSpawnTime()</code> (difficulty increase). The decrease amount starts at <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">0.1f</code> and is multiplied by <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">decayRate=0.8f</code> each checkpoint — so early checkpoints are punishing and later ones barely change the interval. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">LevelGenerator.ApplySpeedDelta()</code> also adjusts <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Physics.gravity.z</code> and calls <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">CameraController.ChangeCameraFOV()</code> to make speed increases feel physical.
               </p>
-              <pre><code class="language-csharp" set:text={`public static class GameEvents
+              <pre><code class="language-csharp" set:text={`// Proc Gen/ObstacleSpawner.cs
+public class ObstacleSpawner : MonoBehaviour
 {
-    public static event Action<int>  OnScoreChanged;
-    public static event Action       OnPlayerDied;
-    public static event Action       OnGameStarted;
-    public static event Action<int>  OnCoinCollected;
+    [SerializeField] float obstacleSpawnTime    = 1f;
+    [SerializeField] float minObstacleSpawnTime = 0.2f;
+    [SerializeField] float initialDecreaseAmount = 0.1f;
+    [SerializeField] float decayRate             = 0.8f;
+    [SerializeField] float minimumDecreaseAmount = 0.01f;
 
-    // Convenience invokers — null-safe
-    public static void ScoreChanged(int score)   => OnScoreChanged?.Invoke(score);
-    public static void PlayerDied()              => OnPlayerDied?.Invoke();
-    public static void GameStarted()             => OnGameStarted?.Invoke();
-    public static void CoinCollected(int value)  => OnCoinCollected?.Invoke(value);
+    float currentDecreaseAmount;
+
+    void Start() => currentDecreaseAmount = initialDecreaseAmount;
+
+    // Called by Checkpoint.OnTriggerEnter() each time the player passes a checkpoint
+    public void DecreaseObstacleSpawnTime()
+    {
+        obstacleSpawnTime = Mathf.Max(obstacleSpawnTime - currentDecreaseAmount,
+                                      minObstacleSpawnTime);
+        // Exponential decay: each call has less impact than the last
+        currentDecreaseAmount = Mathf.Max(currentDecreaseAmount * decayRate,
+                                           minimumDecreaseAmount);
+    }
 }
 
-// UIManager never references Player — it only listens
-public class UIManager : MonoBehaviour
+// Proc Gen/Checkpoint.cs
+public class Checkpoint : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _scoreText;
+    [SerializeField] float checkpointTimeExtension = 5f;
 
-    void OnEnable()  => GameEvents.OnScoreChanged += UpdateScoreUI;
-    void OnDisable() => GameEvents.OnScoreChanged -= UpdateScoreUI;
+    void OnTriggerEnter(Collider other)
+    {
+        GameManager.Instance.IncreaseTime(checkpointTimeExtension);
+        _obstacleSpawner.DecreaseObstacleSpawnTime();
+    }
+}
 
-    void UpdateScoreUI(int score) => _scoreText.text = score.ToString("N0");
+// Proc Gen/LevelGenerator.cs — speed coupled to gravity + FOV
+float ApplySpeedDelta(float delta)
+{
+    float clamped = Mathf.Clamp(moveSpeed + delta, minMoveSpeed, maxMoveSpeed);
+    float applied = clamped - moveSpeed;
+    moveSpeed     = clamped;
+
+    // Remap speed to gravity.z — faster world = stronger Z pull
+    float t = Mathf.InverseLerp(minMoveSpeed, maxMoveSpeed, moveSpeed);
+    Physics.gravity = new Vector3(0, Physics.gravity.y,
+                                  Mathf.Lerp(minGravityZ, maxGravityZ, t));
+    cameraController.ChangeCameraFOV(applied);
+    return applied;
 }`}></code></pre>
             </div>
           </div>
 
-          <!-- Decision 4: Lane movement -->
+          <!-- Decision 4: PlayerController analog movement -->
           <div class="reveal" style="--delay: 150ms">
             <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
               <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
-                Lane-Based Movement with Smooth Lerp
+                PlayerController — Analog X Clamping, Not Discrete Lanes
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                Three discrete lanes defined by world-space X positions give the player a predictable movement space while keeping controls simple. Input moves the current lane index, and the transform lerps toward the target X each frame. This means the player always lands exactly on a lane center — no floating-point drift — while still feeling smooth.
+                <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">PlayerController</code> reads a <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Vector2</code> from <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">InputManager.MoveEvent</code>, scales it by <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">moveSpeed</code>, and moves the Rigidbody on the X axis only — clamped to <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">±xClamp=3f</code>. Movement is analog, not discrete: holding a direction slides the player to the edge rather than snapping to a lane center. The <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Chunk</code> obstacles are placed at three fixed X positions (<code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">-2.5f, 0f, 2.5f</code>) so the player can dodge without snapping — you pass between fences by reading lane width rather than pressing a lane key.
               </p>
-              <pre><code class="language-csharp" set:text={`public class PlayerMovement : MonoBehaviour
+              <pre><code class="language-csharp" set:text={`// Player/PlayerController.cs (namespace Player)
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerController : MonoBehaviour
 {
-    private static readonly float[] LanePositions = { -2f, 0f, 2f };
+    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float xClamp    = 3f;   // hard edge at ±3 world units
 
-    [SerializeField] private float laneSpeed = 12f;
-    [SerializeField] private float forwardSpeed = 8f;
+    Vector2   movement;
+    Rigidbody rigidBody;
+    bool      canControl = false;
 
-    private int   _currentLane = 1;
-    private float _targetX;
-
-    void Start() => _targetX = LanePositions[_currentLane];
-
-    void Update()
+    void OnEnable()
     {
-        HandleLaneInput();
-        MoveForward();
-        SmoothToLane();
+        // Subscribes to static events — no direct reference to InputManager scene object
+        InputManager.Instance.MoveEvent   += HandleMove;
+        GameManager.OnGameStart            += () => canControl = true;
+        GameManager.OnGameOver             += () => canControl = false;
     }
 
-    void HandleLaneInput()
+    void HandleMove(Vector2 dir) => movement = dir;
+
+    void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow)  || SwipeLeft())  MoveLane(-1);
-        if (Input.GetKeyDown(KeyCode.RightArrow) || SwipeRight()) MoveLane(1);
+        if (!canControl) return;
+        HandleMovement();
     }
 
-    void MoveLane(int direction)
+    void HandleMovement()
     {
-        _currentLane = Mathf.Clamp(_currentLane + direction, 0, LanePositions.Length - 1);
-        _targetX     = LanePositions[_currentLane];
+        Vector3 pos = rigidBody.position;
+        pos.x = Mathf.Clamp(pos.x + movement.x * moveSpeed * Time.fixedDeltaTime,
+                             -xClamp, xClamp);
+        rigidBody.MovePosition(pos);
     }
+}
 
-    void MoveForward()
-    {
-        transform.position += Vector3.forward * forwardSpeed * Time.deltaTime;
-    }
-
-    void SmoothToLane()
-    {
-        float x = Mathf.Lerp(transform.position.x, _targetX, laneSpeed * Time.deltaTime);
-        transform.position = new Vector3(x, transform.position.y, transform.position.z);
-    }
-}`}></code></pre>
+// Chunk obstacle lane positions for reference:
+// float[] lanes = { -2.5f, 0f, 2.5f }  →  Chunk.cs`}></code></pre>
             </div>
           </div>
 
@@ -474,40 +545,18 @@ public class UIManager : MonoBehaviour
         <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">Screenshots</h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Screenshot 1 -->
           <div class="reveal" style="--delay: 0ms">
-            <div
-              class="screenshot-wrap"
-              role="button"
-              tabindex="0"
-              aria-label="Open screenshot 1"
-              data-index="0"
-            >
-              <img
-                src={`${base}assets/screenshots/endless-runner-1.png`}
-                alt="Endless Runner — third-person view during a run"
-                loading="lazy"
-              />
+            <div class="screenshot-wrap" role="button" tabindex="0" aria-label="Open screenshot 1" data-index="0">
+              <img src={`${base}assets/screenshots/endless-runner-1.png`} alt="Endless Runner — third-person view during a run" loading="lazy" />
             </div>
-            <p class="text-[#444444] text-xs font-mono mt-2">Third-person gameplay — chunk seam invisible at full speed</p>
+            <p class="text-[#444444] text-xs font-mono mt-2">Third-person gameplay — chunks scrolling at full speed</p>
           </div>
 
-          <!-- Screenshot 2 -->
           <div class="reveal" style="--delay: 100ms">
-            <div
-              class="screenshot-wrap"
-              role="button"
-              tabindex="0"
-              aria-label="Open screenshot 2"
-              data-index="1"
-            >
-              <img
-                src={`${base}assets/screenshots/endless-runner-2.png`}
-                alt="Endless Runner — obstacle density increases over time"
-                loading="lazy"
-              />
+            <div class="screenshot-wrap" role="button" tabindex="0" aria-label="Open screenshot 2" data-index="1">
+              <img src={`${base}assets/screenshots/endless-runner-2.png`} alt="Endless Runner — obstacle density mid-run" loading="lazy" />
             </div>
-            <p class="text-[#444444] text-xs font-mono mt-2">Obstacle density scales with distance — difficulty curve baked into chunk selection weights</p>
+            <p class="text-[#444444] text-xs font-mono mt-2">Mid-run — obstacle spawn interval decreasing after several checkpoints</p>
           </div>
         </div>
       </div>
@@ -522,25 +571,22 @@ public class UIManager : MonoBehaviour
           <li class="flex gap-3 text-[#888888] leading-relaxed">
             <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
             <span>
-              <!-- [YOUR NOTES HERE] -->
-              <strong class="text-[#F0F0F0] font-medium">The difficulty curve needs data, not intuition.</strong>
-              I tuned obstacle density by feel during development. A better approach would be logging player survival times per chunk type and using that data to build a weighted selection curve that adapts based on run duration rather than guessing at it.
+              <strong class="text-[#F0F0F0] font-medium">There's a typo in the public API.</strong>
+              <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">LevelGenerator.HangleChangeChunkMoveSpeed()</code> should be <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">HandleChangeChunkMoveSpeed()</code>. It's called by at least one other system, so renaming it now would cascade. A small thing, but a good reminder that public method names live longer than you expect.
             </span>
           </li>
           <li class="flex gap-3 text-[#888888] leading-relaxed">
             <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
             <span>
-              <!-- [YOUR NOTES HERE] -->
-              <strong class="text-[#F0F0F0] font-medium">The event bus should be interface-typed, not static.</strong>
-              A static class makes testing hard — you can't inject a mock event bus in unit tests. A <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">IGameEvents</code> interface injected via a service locator or DI container would have made the score and death logic much easier to test in isolation.
+              <strong class="text-[#F0F0F0] font-medium">Analog movement doesn't give the player a clear lane model.</strong>
+              Obstacle fences are placed at <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">-2.5f, 0f, 2.5f</code>, but the player slides freely between them. This means experienced players treat it as analog — which works — but it makes the game harder to learn because there's no satisfying snap-to-lane feedback. Discrete lane input would have made the safe zones more legible without much gameplay cost.
             </span>
           </li>
           <li class="flex gap-3 text-[#888888] leading-relaxed">
             <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
             <span>
-              <!-- [YOUR NOTES HERE] -->
-              <strong class="text-[#F0F0F0] font-medium">Chunk seams are invisible at runtime but brittle at edit time.</strong>
-              All chunks assume the same Z-length. I enforce this with a constant, but a mismatch isn't caught until runtime. A custom Editor validator that checks each chunk prefab's bounds against the expected length would catch that class of bug at asset-save time instead of during play-testing.
+              <strong class="text-[#F0F0F0] font-medium">Static PoolManager is untestable as written.</strong>
+              Because it's a static class with a static dictionary, you can't inject a mock or reset state between tests without reflection hacks. An <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">IPoolManager</code> interface with the current static class as the default would cost one extra line per call site but make the system fully testable.
             </span>
           </li>
         </ul>
@@ -551,58 +597,35 @@ public class UIManager : MonoBehaviour
     <footer class="border-t border-[#1F1F1F]/50 py-8">
       <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p class="text-[#888888] text-sm">© 2026 Marko Stankovic</p>
-
-        <!-- Prev / Next project navigation -->
         <div class="flex items-center gap-6 text-sm">
-          <a
-            href="/projects/hide-and-seek"
-            class="nav-link text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
-          >
+          <a href="/projects/hide-and-seek" class="nav-link text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150">
             ← Hide &amp; Seek
           </a>
           <span class="text-[#1F1F1F]">·</span>
           <span class="text-[#1F1F1F] font-mono">next →</span>
         </div>
-
         <p class="text-[#444444] text-xs font-mono">Game Developer · Serbia</p>
       </div>
     </footer>
 
     <!-- ─── LIGHTBOX ──────────────────────────────────────────────────────── -->
-    <div
-      id="lightbox"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Screenshot viewer"
-      class="fixed inset-0 z-[200] items-center justify-center"
-    >
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot viewer" class="fixed inset-0 z-[200] items-center justify-center">
       <div id="lightbox-backdrop" class="absolute inset-0 bg-[#0D0D0D]/95"></div>
-
       <div id="lightbox-content" class="relative z-10 flex items-center gap-3 px-4">
         <button id="lightbox-prev" class="lb-btn" aria-label="Previous screenshot">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-          </svg>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
         </button>
-
         <img id="lightbox-img" src="" alt="Project screenshot" />
-
         <button id="lightbox-next" class="lb-btn" aria-label="Next screenshot">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-          </svg>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
         </button>
       </div>
-
       <button id="lightbox-close" class="lb-btn z-10" aria-label="Close lightbox">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
 
     <script>
-      // ── Highlight.js init ────────────────────────────────────────────────
       // @ts-ignore
       if (typeof hljs !== 'undefined') hljs.highlightAll();
       document.addEventListener('DOMContentLoaded', () => {
@@ -610,40 +633,27 @@ public class UIManager : MonoBehaviour
         if (typeof hljs !== 'undefined') hljs.highlightAll();
       });
 
-      // ── Scroll Reveal ─────────────────────────────────────────────────────
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const revealEls = document.querySelectorAll('.reveal');
-
       if (!prefersReduced) {
-        const obs = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                obs.unobserve(entry.target);
-              }
-            });
-          },
-          { threshold: 0.1 }
-        );
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        }, { threshold: 0.1 });
         revealEls.forEach((el) => obs.observe(el));
       } else {
         revealEls.forEach((el) => el.classList.add('visible'));
       }
 
-      // ── Hamburger Nav ─────────────────────────────────────────────────────
-      const menuBtn   = document.getElementById('menu-btn');
+      const menuBtn = document.getElementById('menu-btn');
       const mobileNav = document.getElementById('mobile-nav');
-      const iconMenu  = document.getElementById('icon-menu');
+      const iconMenu = document.getElementById('icon-menu');
       const iconClose = document.getElementById('icon-close');
-
       menuBtn?.addEventListener('click', () => {
         const isOpen = mobileNav?.classList.toggle('open');
         menuBtn.setAttribute('aria-expanded', String(isOpen));
         iconMenu?.classList.toggle('hidden', !!isOpen);
         iconClose?.classList.toggle('hidden', !isOpen);
       });
-
       document.querySelectorAll('.mobile-nav-link').forEach((link) => {
         link.addEventListener('click', () => {
           mobileNav?.classList.remove('open');
@@ -653,41 +663,28 @@ public class UIManager : MonoBehaviour
         });
       });
 
-      // ── Lightbox ──────────────────────────────────────────────────────────
-      const lightbox   = document.getElementById('lightbox')!;
-      const lbImg      = document.getElementById('lightbox-img') as HTMLImageElement;
-      const lbPrev     = document.getElementById('lightbox-prev') as HTMLButtonElement;
-      const lbNext     = document.getElementById('lightbox-next') as HTMLButtonElement;
-      const lbClose    = document.getElementById('lightbox-close')!;
-      const lbBackdrop = document.getElementById('lightbox-backdrop')!;
-
-      const section = document.getElementById('screenshots')!;
-      const lbScreenshots = (section?.dataset.screenshots ?? '')
-        .split(',').map((s) => s.trim()).filter(Boolean);
-
+      const lightbox   = document.getElementById('lightbox');
+      const lbImg      = document.getElementById('lightbox-img');
+      const lbPrev     = document.getElementById('lightbox-prev');
+      const lbNext     = document.getElementById('lightbox-next');
+      const lbClose    = document.getElementById('lightbox-close');
+      const lbBackdrop = document.getElementById('lightbox-backdrop');
+      const section    = document.getElementById('screenshots');
+      const lbScreenshots = (section?.dataset.screenshots ?? '').split(',').map((s) => s.trim()).filter(Boolean);
       let lbIndex = 0;
-      let lbPrevFocus: HTMLElement | null = null;
+      let lbPrevFocus = null;
 
-      function lbShow(index: number) {
-        lbIndex = index;
-        lbPrevFocus = document.activeElement as HTMLElement;
-        lbUpdate();
-        lightbox.style.display = 'flex';
-        lightbox.getBoundingClientRect();
-        lightbox.classList.add('lb-open');
-        document.body.style.overflow = 'hidden';
-        lbClose.focus();
+      function lbShow(index) {
+        lbIndex = index; lbPrevFocus = document.activeElement; lbUpdate();
+        lightbox.style.display = 'flex'; lightbox.getBoundingClientRect();
+        lightbox.classList.add('lb-open'); document.body.style.overflow = 'hidden'; lbClose.focus();
       }
-
       function lbHide() {
         lightbox.classList.remove('lb-open');
         lightbox.addEventListener('transitionend', () => {
-          lightbox.style.display = 'none';
-          document.body.style.overflow = '';
-          lbPrevFocus?.focus();
+          lightbox.style.display = 'none'; document.body.style.overflow = ''; lbPrevFocus?.focus();
         }, { once: true });
       }
-
       function lbUpdate() {
         lbImg.src = lbScreenshots[lbIndex];
         lbImg.alt = `Screenshot ${lbIndex + 1} of ${lbScreenshots.length}`;
@@ -695,26 +692,19 @@ public class UIManager : MonoBehaviour
         lbNext.disabled = lbIndex === lbScreenshots.length - 1;
       }
 
-      document.querySelectorAll<HTMLElement>('.screenshot-wrap').forEach((wrap) => {
-        const open = () => {
-          const idx = parseInt(wrap.dataset.index ?? '0', 10);
-          lbShow(idx);
-        };
+      document.querySelectorAll('.screenshot-wrap').forEach((wrap) => {
+        const open = () => lbShow(parseInt(wrap.dataset.index ?? '0', 10));
         wrap.addEventListener('click', open);
-        wrap.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
-        });
+        wrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
       });
-
       lbClose.addEventListener('click', lbHide);
       lbBackdrop.addEventListener('click', lbHide);
       lbPrev.addEventListener('click', () => { if (lbIndex > 0) { lbIndex--; lbUpdate(); } });
       lbNext.addEventListener('click', () => { if (lbIndex < lbScreenshots.length - 1) { lbIndex++; lbUpdate(); } });
-
       lightbox.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') lbHide();
-        else if (e.key === 'ArrowLeft'  && lbIndex > 0)                         { lbIndex--; lbUpdate(); }
-        else if (e.key === 'ArrowRight' && lbIndex < lbScreenshots.length - 1)  { lbIndex++; lbUpdate(); }
+        else if (e.key === 'ArrowLeft'  && lbIndex > 0)                        { lbIndex--; lbUpdate(); }
+        else if (e.key === 'ArrowRight' && lbIndex < lbScreenshots.length - 1) { lbIndex++; lbUpdate(); }
       });
     </script>
   </body>
