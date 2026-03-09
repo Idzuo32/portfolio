@@ -1,1 +1,96 @@
 @import "tailwindcss";
+
+/* ─── Custom Font Families (Tailwind v4 @theme) ──────────────────────── */
+@theme {
+  --font-sans: 'Geist', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ─── Design Token Variables ─────────────────────────────────────────── */
+:root {
+  --color-bg: #0D0D0D;
+  --color-surface: #141414;
+  --color-border: #1F1F1F;
+  --color-accent: #00FFC8;
+  --color-accent-dim: #00FFC820;
+  --color-text-primary: #F0F0F0;
+  --color-text-secondary: #888888;
+  --color-text-muted: #444444;
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────── */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-mono);
+}
+
+/* ─── Top accent border ──────────────────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-accent);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ─── Section heading // prefix ──────────────────────────────────────── */
+section h2::before {
+  content: '// ';
+  color: var(--color-accent);
+}
+
+/* ─── Hero name ──────────────────────────────────────────────────────── */
+.hero-name {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ─── Blinking cursor ────────────────────────────────────────────────── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '_';
+  color: var(--color-accent);
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────── */
+::selection {
+  background-color: var(--color-accent);
+  color: #0D0D0D;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
