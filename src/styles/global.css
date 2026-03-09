@@ -190,7 +190,13 @@ section h2::before {
 
 /* ─── Project Cards ──────────────────────────────────────────────────── */
 .project-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.project-card.filtered-out {
+  opacity: 0.3;
+  pointer-events: none;
+  transform: scale(0.98);
 }
 
 .project-card:hover {
@@ -239,6 +245,68 @@ section h2::before {
   width: 100%;
 }
 
+/* ─── Filter Bar ─────────────────────────────────────────────────────── */
+#filter-bar {
+  scrollbar-width: none;
+}
+
+#filter-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.875rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--color-text-secondary);
+  color: var(--color-text-primary);
+}
+
+.filter-btn.active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-accent);
+}
+
+/* ─── Mobile Nav ─────────────────────────────────────────────────────── */
+#mobile-nav {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+}
+
+#mobile-nav.open {
+  max-height: 240px;
+}
+
+/* ─── Contact Form Inputs ────────────────────────────────────────────── */
+.contact-input {
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+.contact-input:focus {
+  border-color: var(--color-accent);
+}
+
+.contact-input::placeholder {
+  color: var(--color-text-muted);
+}
+
 /* ─── Reduced Motion ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   /* Immediately show all scroll-reveal elements */
@@ -270,7 +338,10 @@ section h2::before {
 
   .badge,
   .arrow,
-  .contact-text::after {
+  .contact-text::after,
+  .filter-btn,
+  .contact-input,
+  #mobile-nav {
     transition: none;
   }
 
