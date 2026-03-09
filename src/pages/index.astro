@@ -40,20 +40,20 @@ import "../styles/global.css";
           <li>
             <a
               href="#skills"
-              class="hover:text-[#F0F0F0] transition-colors duration-150">Skills</a
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Skills</a
             >
           </li>
           <li>
             <a
               href="#projects"
-              class="hover:text-[#F0F0F0] transition-colors duration-150"
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
               >Projects</a
             >
           </li>
           <li>
             <a
               href="#contact"
-              class="hover:text-[#F0F0F0] transition-colors duration-150">Contact</a
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Contact</a
             >
           </li>
         </ul>
@@ -78,28 +78,38 @@ import "../styles/global.css";
       </div>
 
       <div class="relative max-w-5xl mx-auto px-6 py-28">
-        <p class="text-[#00FFC8] font-mono text-sm mb-5 tracking-wide">
+        <p
+          class="hero-enter text-[#00FFC8] font-mono text-sm mb-5 tracking-wide"
+          style="--delay: 0.1s"
+        >
           Hello, I'm
         </p>
 
         <h1
-          class="hero-name font-bold text-[#F0F0F0] mb-5"
+          class="hero-enter hero-name font-bold text-[#F0F0F0] mb-5"
+          style="--delay: 0.4s"
         >
           Marko Stankovic
         </h1>
 
-        <p class="text-2xl sm:text-3xl text-[#888888] font-light mb-8 cursor-blink">
+        <p
+          class="hero-enter text-2xl sm:text-3xl text-[#888888] font-light mb-8 cursor-blink"
+          style="--delay: 0.7s"
+        >
           Game Developer
         </p>
 
-        <p class="text-[#888888] text-lg max-w-xl mb-12 leading-relaxed">
+        <p
+          class="hero-enter text-[#888888] text-lg max-w-xl mb-12 leading-relaxed"
+          style="--delay: 0.85s"
+        >
           I love writing the systems that make games feel alive — AI state
           machines that think, procedural worlds that surprise, editor tools
           that get out of the way. Three years of that in Unity&nbsp;3D, Unreal
           Engine, and Godot. Based in Serbia, open to remote.
         </p>
 
-        <div class="flex flex-wrap gap-4">
+        <div class="hero-enter flex flex-wrap gap-4" style="--delay: 1s">
           <a
             href="#contact"
             class="px-6 py-3 bg-[#00FFC8] hover:bg-[#00FFD0] text-[#0D0D0D] rounded-lg font-medium transition-colors duration-150"
@@ -119,14 +129,15 @@ import "../styles/global.css";
     <!-- ─── SKILLS ────────────────────────────────────────────────────────── -->
     <section id="skills" class="py-24 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-[#F0F0F0] mb-2">Skills</h2>
-        <p class="text-[#888888] mb-12">Not a stack I landed on by accident — these are the tools I reached for and stayed with.</p>
+        <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">Skills</h2>
+        <p class="reveal text-[#888888] mb-12" style="--delay: 100ms">Not a stack I landed on by accident — these are the tools I reached for and stayed with.</p>
 
         <!-- Primary engine cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <!-- Unity 3D -->
           <div
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-violet-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-violet-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(167,139,250); --card-accent-dim: rgba(139,92,246,0.18); --delay: 0ms"
           >
             <div
               class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
@@ -138,111 +149,68 @@ import "../styles/global.css";
             <h3 class="font-semibold text-[#F0F0F0] mb-1">Unity 3D</h3>
             <p class="text-[#888888] text-xs mb-4">3+ years</p>
             <div class="flex flex-wrap gap-1.5">
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >C#</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Strategy</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Event-Driven</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Object Pooling</span
-              >
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">C#</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Strategy</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Event-Driven</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Object Pooling</span>
             </div>
           </div>
 
           <!-- Unreal Engine -->
           <div
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-blue-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-blue-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(96,165,250); --card-accent-dim: rgba(96,165,250,0.18); --delay: 100ms"
           >
             <div
               class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
-              <span class="font-bold text-blue-400 font-mono text-base">UE</span
-              >
+              <span class="font-bold text-blue-400 font-mono text-base">UE</span>
             </div>
             <h3 class="font-semibold text-[#F0F0F0] mb-1">Unreal Engine</h3>
             <p class="text-[#888888] text-xs mb-4">Blueprints + C++</p>
             <div class="flex flex-wrap gap-1.5">
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Blueprints</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >C++</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Gameplay</span
-              >
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Blueprints</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">C++</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Gameplay</span>
             </div>
           </div>
 
           <!-- Godot -->
           <div
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-cyan-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-cyan-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(34,211,238); --card-accent-dim: rgba(34,211,238,0.18); --delay: 200ms"
           >
             <div
               class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
-              <span class="font-bold text-cyan-400 font-mono text-base">G4</span
-              >
+              <span class="font-bold text-cyan-400 font-mono text-base">G4</span>
             </div>
             <h3 class="font-semibold text-[#F0F0F0] mb-1">Godot</h3>
             <p class="text-[#888888] text-xs mb-4">GDScript · 2D & 3D</p>
             <div class="flex flex-wrap gap-1.5">
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >GDScript</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >2D</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >3D</span
-              >
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">GDScript</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">2D</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">3D</span>
             </div>
           </div>
 
           <!-- C# -->
           <div
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-green-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-green-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(74,222,128); --card-accent-dim: rgba(74,222,128,0.18); --delay: 300ms"
           >
             <div
               class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
-              <span class="font-bold text-green-400 font-mono text-base"
-                >C#</span
-              >
+              <span class="font-bold text-green-400 font-mono text-base">C#</span>
             </div>
             <h3 class="font-semibold text-[#F0F0F0] mb-1">C#</h3>
             <p class="text-[#888888] text-xs mb-4">Primary language</p>
             <div class="flex flex-wrap gap-1.5">
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >OOP</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Interfaces</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Events</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Patterns</span
-              >
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">OOP</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Interfaces</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Events</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Patterns</span>
             </div>
           </div>
         </div>
@@ -251,7 +219,8 @@ import "../styles/global.css";
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <!-- Arch Linux -->
           <div
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-sky-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-sky-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(56,189,248); --card-accent-dim: rgba(56,189,248,0.18); --delay: 0ms"
           >
             <div
               class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
@@ -261,65 +230,37 @@ import "../styles/global.css";
             <h3 class="font-semibold text-[#F0F0F0] mb-1">Arch Linux</h3>
             <p class="text-[#888888] text-xs mb-4">Daily driver</p>
             <div class="flex flex-wrap gap-1.5">
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Bash scripting</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Neovim</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Hyprland</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Waybar</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Omarchy setup & configuration</span
-              >
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Bash scripting</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Neovim</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Hyprland</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Waybar</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Omarchy setup & configuration</span>
             </div>
           </div>
 
           <!-- AI Tools -->
           <div
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-purple-800/60 transition-colors duration-150"
+            class="skill-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-6 hover:border-purple-800/60 transition-colors duration-150"
+            style="--card-accent: rgb(192,132,252); --card-accent-dim: rgba(192,132,252,0.18); --delay: 100ms"
           >
             <div
               class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center mb-5"
             >
-              <span class="font-bold text-purple-400 font-mono text-base"
-                >AI</span
-              >
+              <span class="font-bold text-purple-400 font-mono text-base">AI</span>
             </div>
             <h3 class="font-semibold text-[#F0F0F0] mb-1">AI Tools</h3>
             <p class="text-[#888888] text-xs mb-4">Coding & design workflow</p>
             <div class="flex flex-wrap gap-1.5">
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Claude Code</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >OpenCode</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Meshy AI</span
-              >
-              <span
-                class="text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded"
-                >Flowith AI</span
-              >
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Claude Code</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">OpenCode</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Meshy AI</span>
+              <span class="badge text-xs bg-[#1F1F1F] text-[#888888] px-2 py-1 rounded">Flowith AI</span>
             </div>
           </div>
         </div>
 
         <!-- Additional skill pills -->
-        <div class="flex flex-wrap gap-2.5">
+        <div class="reveal flex flex-wrap gap-2.5" style="--delay: 150ms">
           {
             [
               "AI State Machines",
@@ -343,13 +284,14 @@ import "../styles/global.css";
     <!-- ─── PROJECTS ──────────────────────────────────────────────────────── -->
     <section id="projects" class="py-24 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="text-3xl font-bold text-[#F0F0F0] mb-2">Projects</h2>
-        <p class="text-[#888888] mb-12">Things built with intent, not just output.</p>
+        <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">Projects</h2>
+        <p class="reveal text-[#888888] mb-12" style="--delay: 100ms">Things built with intent, not just output.</p>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Hide & Seek -->
           <article
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8 hover:border-violet-800/50 transition-colors duration-150 flex flex-col"
+            class="project-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-8 hover:border-violet-800/50 transition-colors duration-150 flex flex-col"
+            style="--card-glow: rgba(139,92,246,0.1); --delay: 0ms"
           >
             <header class="flex items-start justify-between mb-5">
               <span
@@ -397,11 +339,11 @@ import "../styles/global.css";
               href="https://github.com/Idzuo32/hide_and_seek_3d"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#00FFC8] transition-colors duration-150"
+              class="github-link inline-flex items-center gap-2 text-sm text-[#888888] hover:text-[#00FFC8] transition-colors duration-150"
             >
               View on GitHub
               <svg
-                class="w-4 h-4"
+                class="arrow w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -418,7 +360,8 @@ import "../styles/global.css";
 
           <!-- Endless Runner -->
           <article
-            class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8 hover:border-cyan-800/50 transition-colors duration-150 flex flex-col"
+            class="project-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl p-8 hover:border-cyan-800/50 transition-colors duration-150 flex flex-col"
+            style="--card-glow: rgba(34,211,238,0.1); --delay: 150ms"
           >
             <header class="flex items-start justify-between mb-5">
               <span
@@ -460,11 +403,11 @@ import "../styles/global.css";
               href="https://github.com/Idzuo32/DiplomskiRad"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 text-sm text-[#888888] hover:text-cyan-300 transition-colors duration-150"
+              class="github-link inline-flex items-center gap-2 text-sm text-[#888888] hover:text-cyan-300 transition-colors duration-150"
             >
               View on GitHub
               <svg
-                class="w-4 h-4"
+                class="arrow w-4 h-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -486,8 +429,8 @@ import "../styles/global.css";
     <section id="contact" class="py-24 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
         <div class="max-w-lg">
-          <h2 class="text-3xl font-bold text-[#F0F0F0] mb-2">Let's Work Together</h2>
-          <p class="text-[#888888] mb-10 leading-relaxed">
+          <h2 class="reveal text-3xl font-bold text-[#F0F0F0] mb-2">Let's Work Together</h2>
+          <p class="reveal text-[#888888] mb-10 leading-relaxed" style="--delay: 100ms">
             If you're building something and need a developer who cares about
             how the systems feel — reach out. And if you're hiring for a game
             dev role in Serbia or remote, I'd genuinely love to hear about it.
@@ -497,10 +440,11 @@ import "../styles/global.css";
             <!-- Email -->
             <a
               href="mailto:contact@markostankovic.org"
-              class="flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group"
+              class="contact-link reveal flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group"
+              style="--delay: 0ms"
             >
               <div
-                class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
+                class="contact-icon w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
               >
                 <svg
                   class="w-5 h-5 text-[#00FFC8]"
@@ -520,7 +464,7 @@ import "../styles/global.css";
               <div class="min-w-0">
                 <p class="text-xs text-[#444444] mb-0.5">Email</p>
                 <p
-                  class="text-[#F0F0F0] group-hover:text-[#00FFC8] transition-colors duration-150 text-sm truncate"
+                  class="contact-text text-[#F0F0F0] group-hover:text-[#00FFC8] transition-colors duration-150 text-sm truncate"
                 >
                   contact@markostankovic.org
                 </p>
@@ -532,10 +476,11 @@ import "../styles/global.css";
               href="https://github.com/Idzuo32"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group"
+              class="contact-link reveal flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group"
+              style="--delay: 100ms"
             >
               <div
-                class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
+                class="contact-icon w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
               >
                 <svg
                   class="w-5 h-5 text-[#888888]"
@@ -551,7 +496,7 @@ import "../styles/global.css";
               <div>
                 <p class="text-xs text-[#444444] mb-0.5">GitHub</p>
                 <p
-                  class="text-[#F0F0F0] group-hover:text-[#888888] transition-colors duration-150 text-sm"
+                  class="contact-text text-[#F0F0F0] group-hover:text-[#888888] transition-colors duration-150 text-sm"
                 >
                   github.com/Idzuo32
                 </p>
@@ -563,10 +508,11 @@ import "../styles/global.css";
               href="https://www.linkedin.com/in/markostankovicepicurl/"
               target="_blank"
               rel="noopener noreferrer"
-              class="flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group"
+              class="contact-link reveal flex items-center gap-4 p-4 bg-[#141414] border border-[#1F1F1F] rounded-xl hover:border-[#888888] transition-colors duration-150 group"
+              style="--delay: 200ms"
             >
               <div
-                class="w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
+                class="contact-icon w-11 h-11 bg-[#1F1F1F] rounded-lg flex items-center justify-center shrink-0"
               >
                 <svg
                   class="w-5 h-5 text-blue-400"
@@ -582,7 +528,7 @@ import "../styles/global.css";
               <div>
                 <p class="text-xs text-[#444444] mb-0.5">LinkedIn</p>
                 <p
-                  class="text-[#F0F0F0] group-hover:text-blue-300 transition-colors duration-150 text-sm"
+                  class="contact-text text-[#F0F0F0] group-hover:text-blue-300 transition-colors duration-150 text-sm"
                 >
                   Marko Stankovic
                 </p>
@@ -602,5 +548,55 @@ import "../styles/global.css";
         <p class="text-[#444444] text-xs font-mono">Game Developer · Serbia</p>
       </div>
     </footer>
+
+    <script>
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // ─── Scroll Reveal ──────────────────────────────────────────────────
+      const revealEls = document.querySelectorAll('.reveal');
+
+      if (!prefersReduced) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15 }
+        );
+        revealEls.forEach((el) => revealObserver.observe(el));
+      } else {
+        // No motion preference: show everything immediately
+        revealEls.forEach((el) => el.classList.add('visible'));
+      }
+
+      // ─── Active Nav Section ─────────────────────────────────────────────
+      const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+      const sections = document.querySelectorAll('section[id]');
+      const sectionIds = Array.from(sections).map((s) => s.id);
+      const activeSet = new Set();
+
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) activeSet.add(entry.target.id);
+            else activeSet.delete(entry.target.id);
+          });
+
+          // Pick the first (topmost) visible section in DOM order
+          const topId = sectionIds.find((id) => activeSet.has(id));
+
+          navLinks.forEach((link) => {
+            link.classList.toggle('nav-active', link.getAttribute('href') === `#${topId}`);
+          });
+        },
+        { rootMargin: '-20% 0px -50% 0px' }
+      );
+
+      sections.forEach((s) => sectionObserver.observe(s));
+    </script>
   </body>
 </html>
