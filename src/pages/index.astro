@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
 ---
 
 <!doctype html>
@@ -7,38 +7,78 @@ import '../styles/global.css';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Marko Stankovic — Game Developer. Unity 3D, Unreal Engine, Godot. Building AI systems, procedural generation, and editor tooling. Based in Serbia, open to remote." />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta
+      name="description"
+      content="Marko Stankovic — Game Developer. Unity 3D, Unreal Engine, Godot. Building AI systems, procedural generation, and editor tooling. Based in Serbia, open to remote."
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href={`${import.meta.env.BASE_URL}favicon.svg`}
+    />
     <title>Marko Stankovic — Game Developer</title>
   </head>
 
-  <body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-violet-500/30 selection:text-white">
-
+  <body
+    class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-violet-500/30 selection:text-white"
+  >
     <!-- ─── NAV ──────────────────────────────────────────────────────────── -->
-    <header class="fixed top-0 inset-x-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-md">
-      <nav class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
-        <a href="#hero" class="font-bold tracking-tight text-white text-lg">MS</a>
+    <header
+      class="fixed top-0 inset-x-0 z-50 border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-md"
+    >
+      <nav
+        class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between"
+      >
+        <a href="#hero" class="font-bold tracking-tight text-white text-lg"
+          >MS</a
+        >
         <ul class="flex gap-6 text-sm text-slate-400">
-          <li><a href="#skills"   class="hover:text-white transition-colors duration-150">Skills</a></li>
-          <li><a href="#projects" class="hover:text-white transition-colors duration-150">Projects</a></li>
-          <li><a href="#contact"  class="hover:text-white transition-colors duration-150">Contact</a></li>
+          <li>
+            <a
+              href="#skills"
+              class="hover:text-white transition-colors duration-150">Skills</a>
+          </li>
+          <li>
+            <a
+              href="#projects"
+              class="hover:text-white transition-colors duration-150"
+              >Projects</a>
+          </li>
+          <li>
+            <a
+              href="#contact"
+              class="hover:text-white transition-colors duration-150"
+              >Contact</a>
+          </li>
         </ul>
       </nav>
     </header>
 
     <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
     <section id="hero" class="relative min-h-screen flex items-center pt-14">
-
       <!-- Decorative background glows -->
-      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div class="absolute top-1/4 left-1/3 w-[700px] h-[700px] bg-violet-700/8 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-700/6 rounded-full blur-3xl"></div>
+      <div
+        class="absolute inset-0 overflow-hidden pointer-events-none"
+        aria-hidden="true"
+      >
+        <div
+          class="absolute top-1/4 left-1/3 w-[700px] h-[700px] bg-violet-700/8 rounded-full blur-3xl"
+        >
+        </div>
+        <div
+          class="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-cyan-700/6 rounded-full blur-3xl"
+        >
+        </div>
       </div>
 
       <div class="relative max-w-5xl mx-auto px-6 py-28">
-        <p class="text-violet-400 font-mono text-sm mb-5 tracking-wide">Hello, I'm</p>
+        <p class="text-violet-400 font-mono text-sm mb-5 tracking-wide">
+          Hello, I'm
+        </p>
 
-        <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-none mb-5">
+        <h1
+          class="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-none mb-5"
+        >
           Marko Stankovic
         </h1>
 
@@ -47,9 +87,9 @@ import '../styles/global.css';
         </p>
 
         <p class="text-slate-400 text-lg max-w-xl mb-12 leading-relaxed">
-          Building games with Unity&nbsp;3D, Unreal Engine, and Godot.
-          3+ years shipping systems — AI state machines, procedural generation, and editor tooling.
-          Based in Serbia, open to remote.
+          Building games with Unity&nbsp;3D, Unreal Engine, and Godot. 3+ years
+          shipping systems — AI state machines, procedural generation, and
+          editor tooling. Based in Serbia, open to remote.
         </p>
 
         <div class="flex flex-wrap gap-4">
@@ -72,144 +112,246 @@ import '../styles/global.css';
     <!-- ─── SKILLS ────────────────────────────────────────────────────────── -->
     <section id="skills" class="py-24 border-t border-slate-800/50">
       <div class="max-w-5xl mx-auto px-6">
-
         <h2 class="text-3xl font-bold text-white mb-2">Skills</h2>
         <p class="text-slate-400 mb-12">The tools I think in and build with.</p>
 
         <!-- Primary engine cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-
           <!-- Unity 3D -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-violet-800/60 transition-colors duration-150">
-            <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5">
-              <span class="font-bold text-violet-400 font-mono text-base">U3D</span>
+          <div
+            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-violet-800/60 transition-colors duration-150"
+          >
+            <div
+              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+            >
+              <span class="font-bold text-violet-400 font-mono text-base"
+                >U3D</span
+              >
             </div>
             <h3 class="font-semibold text-white mb-1">Unity 3D</h3>
             <p class="text-slate-500 text-xs mb-4">3+ years</p>
             <div class="flex flex-wrap gap-1.5">
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">C#</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">NavMesh</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Cinemachine</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Physics</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Editor Scripts</span>
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >C#</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >NavMesh</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Cinemachine</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Physics</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Editor Scripts</span
+              >
             </div>
           </div>
 
           <!-- Unreal Engine -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-blue-800/60 transition-colors duration-150">
-            <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5">
-              <span class="font-bold text-blue-400 font-mono text-base">UE</span>
+          <div
+            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-blue-800/60 transition-colors duration-150"
+          >
+            <div
+              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+            >
+              <span class="font-bold text-blue-400 font-mono text-base">UE</span
+              >
             </div>
             <h3 class="font-semibold text-white mb-1">Unreal Engine</h3>
             <p class="text-slate-500 text-xs mb-4">Blueprints + C++</p>
             <div class="flex flex-wrap gap-1.5">
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Blueprints</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">C++</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Gameplay</span>
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Blueprints</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >C++</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Gameplay</span
+              >
             </div>
           </div>
 
           <!-- Godot -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-800/60 transition-colors duration-150">
-            <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5">
-              <span class="font-bold text-cyan-400 font-mono text-base">G4</span>
+          <div
+            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-cyan-800/60 transition-colors duration-150"
+          >
+            <div
+              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+            >
+              <span class="font-bold text-cyan-400 font-mono text-base">G4</span
+              >
             </div>
             <h3 class="font-semibold text-white mb-1">Godot</h3>
             <p class="text-slate-500 text-xs mb-4">GDScript · 2D & 3D</p>
             <div class="flex flex-wrap gap-1.5">
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">GDScript</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">2D</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">3D</span>
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >GDScript</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >2D</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >3D</span
+              >
             </div>
           </div>
 
           <!-- C# -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-green-800/60 transition-colors duration-150">
-            <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5">
-              <span class="font-bold text-green-400 font-mono text-base">C#</span>
+          <div
+            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-green-800/60 transition-colors duration-150"
+          >
+            <div
+              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+            >
+              <span class="font-bold text-green-400 font-mono text-base"
+                >C#</span
+              >
             </div>
             <h3 class="font-semibold text-white mb-1">C#</h3>
             <p class="text-slate-500 text-xs mb-4">Primary language</p>
             <div class="flex flex-wrap gap-1.5">
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">OOP</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Interfaces</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Events</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Patterns</span>
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >OOP</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Interfaces</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Events</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Patterns</span
+              >
             </div>
           </div>
-
         </div>
 
         <!-- Arch Linux + AI Tools -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-
           <!-- Arch Linux -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-sky-800/60 transition-colors duration-150">
-            <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5">
+          <div
+            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-sky-800/60 transition-colors duration-150"
+          >
+            <div
+              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+            >
               <span class="font-bold text-sky-400 font-mono text-base">>_</span>
             </div>
             <h3 class="font-semibold text-white mb-1">Arch Linux</h3>
             <p class="text-slate-500 text-xs mb-4">Daily driver</p>
             <div class="flex flex-wrap gap-1.5">
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Bash scripting</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Neovim</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Hyprland</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Waybar</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Omarchy setup & configuration</span>
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Bash scripting</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Neovim</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Hyprland</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Waybar</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Omarchy setup & configuration</span
+              >
             </div>
           </div>
 
           <!-- AI Tools -->
-          <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-purple-800/60 transition-colors duration-150">
-            <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5">
-              <span class="font-bold text-purple-400 font-mono text-base">AI</span>
+          <div
+            class="bg-slate-900 border border-slate-800 rounded-xl p-6 hover:border-purple-800/60 transition-colors duration-150"
+          >
+            <div
+              class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center mb-5"
+            >
+              <span class="font-bold text-purple-400 font-mono text-base"
+                >AI</span
+              >
             </div>
             <h3 class="font-semibold text-white mb-1">AI Tools</h3>
             <p class="text-slate-500 text-xs mb-4">Coding & design workflow</p>
             <div class="flex flex-wrap gap-1.5">
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Claude & Claude Code</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">OpenCode</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Meshy AI</span>
-              <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">Flowith AI</span>
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Claude & Claude Code</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >OpenCode</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Meshy AI</span
+              >
+              <span
+                class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded"
+                >Flowith AI</span
+              >
             </div>
           </div>
-
         </div>
 
         <!-- Additional skill pills -->
         <div class="flex flex-wrap gap-2.5">
-          {[
-            'AI State Machines',
-            'Procedural Generation',
-            'Object Pooling',
-            'Event-Driven Architecture',
-            'Game Systems Design',
-            'Editor Tooling',
-            'Git / GitHub',
-            'Version Control',
-          ].map((skill) => (
-            <span class="text-sm bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-lg">
-              {skill}
-            </span>
-          ))}
+          {
+            [
+              "AI State Machines",
+              "Procedural Generation",
+              "Object Pooling",
+              "Event-Driven Architecture",
+              "Game Systems Design",
+              "Editor Tooling",
+              "Git / GitHub",
+              "Version Control",
+            ].map((skill) => (
+              <span class="text-sm bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-lg">
+                {skill}
+              </span>
+            ))
+          }
         </div>
-
       </div>
     </section>
 
     <!-- ─── PROJECTS ──────────────────────────────────────────────────────── -->
     <section id="projects" class="py-24 border-t border-slate-800/50">
       <div class="max-w-5xl mx-auto px-6">
-
         <h2 class="text-3xl font-bold text-white mb-2">Projects</h2>
         <p class="text-slate-400 mb-12">What I've been building.</p>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-
           <!-- Hide & Seek -->
-          <article class="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-violet-800/50 transition-colors duration-150 flex flex-col">
+          <article
+            class="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-violet-800/50 transition-colors duration-150 flex flex-col"
+          >
             <header class="flex items-start justify-between mb-5">
-              <span class="text-xs font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full">
+              <span
+                class="text-xs font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full"
+              >
                 In Development
               </span>
               <span class="text-xs text-slate-500 font-mono">Unity 3D</span>
@@ -219,17 +361,33 @@ import '../styles/global.css';
 
             <p class="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
               Top-down 3D stealth game. Built a full enemy AI using the
-              <code class="font-mono text-violet-300 text-xs bg-violet-950/50 px-1 rounded">IEnemyState</code>
+              <code
+                class="font-mono text-violet-300 text-xs bg-violet-950/50 px-1 rounded"
+                >IEnemyState</code
+              >
               interface — five states: Idle, Patrol, Chase, Investigate, Search.
-              <code class="font-mono text-violet-300 text-xs bg-violet-950/50 px-1 rounded">NavMeshAgent</code>
-              drives pathfinding; Cinemachine handles the dynamic camera.
-              Level layout built with custom Editor utilities.
+              <code
+                class="font-mono text-violet-300 text-xs bg-violet-950/50 px-1 rounded"
+                >NavMeshAgent</code
+              >
+              drives pathfinding; Cinemachine handles the dynamic camera. Level layout
+              built with custom Editor utilities.
             </p>
 
             <div class="flex flex-wrap gap-2 mb-6">
-              {['NavMesh AI', 'State Machine', 'IEnemyState', 'Cinemachine', 'Editor Tools', 'C#'].map((tag) => (
-                <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">{tag}</span>
-              ))}
+              {
+                [
+                  "Data-Driven",
+                  "State Machine",
+                  "Strategy Pattern",
+                  "Hiding System",
+                  "Detection System",
+                ].map((tag) => (
+                  <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))
+              }
             </div>
 
             <a
@@ -239,16 +397,30 @@ import '../styles/global.css';
               class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-violet-300 transition-colors duration-150"
             >
               View on GitHub
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
               </svg>
             </a>
           </article>
 
           <!-- Endless Runner -->
-          <article class="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-cyan-800/50 transition-colors duration-150 flex flex-col">
+          <article
+            class="bg-slate-900 border border-slate-800 rounded-xl p-8 hover:border-cyan-800/50 transition-colors duration-150 flex flex-col"
+          >
             <header class="flex items-start justify-between mb-5">
-              <span class="text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full">
+              <span
+                class="text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full"
+              >
                 Completed
               </span>
               <span class="text-xs text-slate-500 font-mono">Unity 3D</span>
@@ -257,17 +429,28 @@ import '../styles/global.css';
             <h3 class="text-xl font-bold text-white mb-3">Endless Runner</h3>
 
             <p class="text-slate-400 text-sm leading-relaxed mb-5 flex-1">
-              Third-person 3D runner with infinite levels. Chunk-based procedural
-              generation spawns terrain, obstacles, and collectibles at runtime.
-              Object pooling handles obstacles, VFX, and SFX with zero allocations
-              during play. Event-driven architecture keeps all systems decoupled.
-              Lane-based movement with Cinemachine camera.
+              Third-person 3D runner with infinite levels. Chunk-based
+              procedural generation spawns terrain, obstacles, and collectibles
+              at runtime. Object pooling handles obstacles, VFX, and SFX with
+              zero allocations during play. Event-driven architecture keeps all
+              systems decoupled. Lane-based movement with Cinemachine camera.
             </p>
 
             <div class="flex flex-wrap gap-2 mb-6">
-              {['Proc Gen', 'Object Pooling', 'Event-Driven', 'Cinemachine', 'Lane Movement', 'C#'].map((tag) => (
-                <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">{tag}</span>
-              ))}
+              {
+                [
+                  "Proc Gen",
+                  "Object Pooling",
+                  "Event-Driven",
+                  "Utility Scripts",
+                  "Lane Movement",
+                  "C#",
+                ].map((tag) => (
+                  <span class="text-xs bg-slate-800 text-slate-300 px-2 py-1 rounded">
+                    {tag}
+                  </span>
+                ))
+              }
             </div>
 
             <a
@@ -277,12 +460,21 @@ import '../styles/global.css';
               class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-cyan-300 transition-colors duration-150"
             >
               View on GitHub
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
               </svg>
             </a>
           </article>
-
         </div>
       </div>
     </section>
@@ -290,29 +482,44 @@ import '../styles/global.css';
     <!-- ─── CONTACT ──────────────────────────────────────────────────────── -->
     <section id="contact" class="py-24 border-t border-slate-800/50">
       <div class="max-w-5xl mx-auto px-6">
-
         <div class="max-w-lg">
           <h2 class="text-3xl font-bold text-white mb-2">Get in Touch</h2>
           <p class="text-slate-400 mb-10 leading-relaxed">
-            Looking for game dev roles in Serbia and remote.
-            If you have a project or a role that fits, let's talk.
+            Looking for game dev roles in Serbia and remote. If you have a
+            project or a role that fits, let's talk.
           </p>
 
           <div class="flex flex-col gap-3">
-
             <!-- Email -->
             <a
               href="mailto:contact@markostankovic.org"
               class="flex items-center gap-4 p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-600 transition-colors duration-150 group"
             >
-              <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              <div
+                class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0"
+              >
+                <svg
+                  class="w-5 h-5 text-violet-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  ></path>
                 </svg>
               </div>
               <div class="min-w-0">
                 <p class="text-xs text-slate-500 mb-0.5">Email</p>
-                <p class="text-white group-hover:text-violet-300 transition-colors duration-150 text-sm truncate">contact@markostankovic.org</p>
+                <p
+                  class="text-white group-hover:text-violet-300 transition-colors duration-150 text-sm truncate"
+                >
+                  contact@markostankovic.org
+                </p>
               </div>
             </a>
 
@@ -323,14 +530,27 @@ import '../styles/global.css';
               rel="noopener noreferrer"
               class="flex items-center gap-4 p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-600 transition-colors duration-150 group"
             >
-              <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-slate-300" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              <div
+                class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0"
+              >
+                <svg
+                  class="w-5 h-5 text-slate-300"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                  ></path>
                 </svg>
               </div>
               <div>
                 <p class="text-xs text-slate-500 mb-0.5">GitHub</p>
-                <p class="text-white group-hover:text-slate-300 transition-colors duration-150 text-sm">github.com/Idzuo32</p>
+                <p
+                  class="text-white group-hover:text-slate-300 transition-colors duration-150 text-sm"
+                >
+                  github.com/Idzuo32
+                </p>
               </div>
             </a>
 
@@ -341,17 +561,29 @@ import '../styles/global.css';
               rel="noopener noreferrer"
               class="flex items-center gap-4 p-4 bg-slate-900 border border-slate-800 rounded-xl hover:border-slate-600 transition-colors duration-150 group"
             >
-              <div class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              <div
+                class="w-11 h-11 bg-slate-800 rounded-lg flex items-center justify-center shrink-0"
+              >
+                <svg
+                  class="w-5 h-5 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                  ></path>
                 </svg>
               </div>
               <div>
                 <p class="text-xs text-slate-500 mb-0.5">LinkedIn</p>
-                <p class="text-white group-hover:text-blue-300 transition-colors duration-150 text-sm">Marko Stankovic</p>
+                <p
+                  class="text-white group-hover:text-blue-300 transition-colors duration-150 text-sm"
+                >
+                  Marko Stankovic
+                </p>
               </div>
             </a>
-
           </div>
         </div>
       </div>
@@ -359,11 +591,12 @@ import '../styles/global.css';
 
     <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
     <footer class="border-t border-slate-800/50 py-8">
-      <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div
+        class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+      >
         <p class="text-slate-500 text-sm">© 2026 Marko Stankovic</p>
         <p class="text-slate-700 text-xs font-mono">Game Developer · Serbia</p>
       </div>
     </footer>
-
   </body>
 </html>
