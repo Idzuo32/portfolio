@@ -20,6 +20,8 @@ TO ADD A NEW POST:
 
 The first version of the Hide & Seek enemy was a single `Update()` method with a chain of `if/else` blocks. Patrol logic, detection checks, chase behaviour, and navigation calls were all in one place. Every time I added a new behaviour — a search phase, an alert scan — the method grew, and changing one behaviour meant carefully reading the whole thing to understand what it might break.
 
+When I added the Search state, the Chase→Patrol transition started firing incorrectly because both branches read from the same _lastKnownPosition variable. Fixing one broke the other. That was the moment I stopped adding to the function and started replacing it.
+
 The problem isn't just readability. A monolithic update loop has hidden coupling: the `chase` branch reads variables set by the `patrol` branch, transition conditions are scattered across the function, and there's no clear moment where one behaviour ends and another begins. Any new state has to understand all the other states to slot in correctly.
 
 ## The IState Interface
