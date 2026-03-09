@@ -526,7 +526,7 @@ const recentPosts = (await getCollection("blog"))
         <!-- Filter Bar — JS populates buttons -->
         <div
           id="filter-bar"
-          class="reveal flex gap-2 overflow-x-auto pb-1 mb-10"
+          class="reveal flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto sm:overflow-x-visible py-2 mb-10"
           role="group"
           aria-label="Filter projects by tag"
           style="--delay: 150ms"
