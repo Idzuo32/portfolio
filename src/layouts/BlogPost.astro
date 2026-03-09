@@ -7,15 +7,39 @@ interface Props {
   excerpt: string;
   tags: string[];
   readingTime: number;
+  ogImage?: string;
 }
 
-const { title, date, excerpt, tags, readingTime } = Astro.props;
+const { title, date, excerpt, tags, readingTime, ogImage } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const formattedDate = date.toLocaleDateString('en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+
+const canonicalURL = Astro.url.href;
+const ogImageURL = ogImage
+  ? new URL(ogImage, Astro.site).href
+  : new URL('/og-default.png', Astro.site).href;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": title,
+  "description": excerpt,
+  "datePublished": date.toISOString(),
+  "author": {
+    "@type": "Person",
+    "name": "Marko Stankovic",
+    "url": "https://markostankovic.org"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Marko Stankovic",
+    "url": "https://markostankovic.org"
+  }
+};
 ---
 
 <!doctype html>
@@ -23,9 +47,20 @@ const formattedDate = date.toLocaleDateString('en-US', {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={excerpt} />
-    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <title>{title} — Marko Stankovic</title>
+    <meta name="description" content={excerpt} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:title" content={`${title} — Marko Stankovic`} />
+    <meta property="og:description" content={excerpt} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} — Marko Stankovic`} />
+    <meta name="twitter:description" content={excerpt} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

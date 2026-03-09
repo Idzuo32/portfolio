@@ -11,6 +11,23 @@ const recentPosts = (await getCollection("blog"))
     const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
     return { ...post, readingTime: Math.max(1, Math.ceil(words / 200)) };
   });
+
+const pageTitle = "Marko Stankovic — Game Developer";
+const pageDescription = "Game developer building systems in Unity 3D, Unreal Engine, and Godot. AI state machines, procedural generation, editor tooling. Based in Serbia, open to remote.";
+const canonicalURL = Astro.url.href;
+const ogImageURL = new URL('/og-default.png', Astro.site).href;
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Marko Stankovic",
+  "url": "https://markostankovic.org",
+  "jobTitle": "Game Developer",
+  "sameAs": [
+    "https://github.com/Idzuo32",
+    "https://www.linkedin.com/in/markostankovicepicurl/"
+  ]
+};
 ---
 
 <!doctype html>
@@ -18,16 +35,24 @@ const recentPosts = (await getCollection("blog"))
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Marko Stankovic — Game Developer. Unity 3D, Unreal Engine, Godot. Building AI systems, procedural generation, and editor tooling. Based in Serbia, open to remote."
-    />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
     <link
       rel="icon"
       type="image/svg+xml"
       href={`${import.meta.env.BASE_URL}favicon.svg`}
     />
-    <title>Marko Stankovic — Game Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
