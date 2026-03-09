@@ -1,0 +1,721 @@
+---
+import "../../styles/global.css";
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Endless Runner — Unity 3D infinite runner with chunk-based procedural generation, zero-allocation object pooling, and a fully event-driven architecture."
+    />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <title>Endless Runner — Marko Stankovic</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- highlight.js -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+
+    <style>
+      /* ── Code block overrides ── */
+      pre code.hljs {
+        background: #141414;
+        border: 1px solid #1F1F1F;
+        border-radius: 0.5rem;
+        font-size: 0.8125rem;
+        line-height: 1.6;
+        padding: 1.25rem 1.5rem;
+      }
+
+      /* ── Lightbox ── */
+      #lightbox {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+      }
+      #lightbox.lb-open {
+        display: flex;
+        opacity: 1;
+      }
+      #lightbox-content {
+        transform: scale(0.95);
+        transition: transform 0.2s ease;
+      }
+      #lightbox.lb-open #lightbox-content {
+        transform: scale(1);
+      }
+      #lightbox-img {
+        max-width: 90vw;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: 0.5rem;
+        display: block;
+      }
+      .lb-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 9999px;
+        background: rgba(31, 31, 31, 0.8);
+        border: 1px solid #2a2a2a;
+        color: #f0f0f0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: background 0.15s ease, border-color 0.15s ease;
+      }
+      .lb-btn:hover {
+        background: rgba(50, 50, 50, 0.9);
+        border-color: #888;
+      }
+      .lb-btn:disabled {
+        opacity: 0.3;
+        cursor: default;
+      }
+      #lightbox-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+
+      /* ── Screenshot grid images ── */
+      .screenshot-wrap {
+        overflow: hidden;
+        border-radius: 0.5rem;
+        border: 1px solid #1F1F1F;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
+      }
+      .screenshot-wrap:hover {
+        border-color: #888888;
+      }
+      .screenshot-wrap img {
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+      .screenshot-wrap:hover img {
+        transform: scale(1.03);
+      }
+    </style>
+  </head>
+
+  <body class="font-sans antialiased">
+
+    <!-- ─── NAV ─────────────────────────────────────────────────────────── -->
+    <header class="fixed top-0 inset-x-0 z-50 border-b border-[#1F1F1F]/60 bg-[#0D0D0D]/80 backdrop-blur-md">
+      <nav class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-5">
+          <a
+            href="/"
+            class="nav-link text-sm text-[#888888] hover:text-[#00FFC8] transition-colors duration-150 flex items-center gap-1.5"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Portfolio
+          </a>
+          <span class="text-[#1F1F1F]">|</span>
+          <a href="/" class="font-bold font-mono tracking-tight text-[#F0F0F0] text-lg">MS</a>
+        </div>
+
+        <!-- Desktop nav -->
+        <ul class="hidden sm:flex gap-6 text-sm text-[#888888]">
+          <li>
+            <a href="/#skills" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Skills</a>
+          </li>
+          <li>
+            <a href="/#projects" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Projects</a>
+          </li>
+          <li>
+            <a href="/#contact" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Contact</a>
+          </li>
+        </ul>
+
+        <!-- Hamburger (mobile) -->
+        <button
+          id="menu-btn"
+          class="sm:hidden w-11 h-11 flex items-center justify-center text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <svg id="icon-menu" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Mobile dropdown -->
+      <div id="mobile-nav" aria-hidden="true">
+        <div class="max-w-5xl mx-auto px-6 py-2 flex flex-col">
+          <a href="/" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#00FFC8] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">← Back to Portfolio</a>
+          <a href="/#skills" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Skills</a>
+          <a href="/#projects" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Projects</a>
+          <a href="/#contact" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px] flex items-center">Contact</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
+    <div class="relative pt-14">
+      <!-- Decorative glow -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        <div class="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute top-1/2 left-1/3 w-[300px] h-[300px] bg-[#00FFC8]/3 rounded-full blur-3xl"></div>
+      </div>
+
+      <div class="relative max-w-5xl mx-auto px-6 py-20">
+        <!-- Breadcrumb -->
+        <p class="hero-enter text-[#444444] font-mono text-xs mb-6 tracking-wide" style="--delay: 0.05s">
+          Projects / Endless Runner
+        </p>
+
+        <!-- Badges -->
+        <div class="hero-enter flex flex-wrap gap-2 mb-6" style="--delay: 0.15s">
+          <span class="text-xs font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-3 py-1 rounded-full">
+            Completed
+          </span>
+          <span class="text-xs font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full">
+            Unity 3D
+          </span>
+        </div>
+
+        <!-- Project name -->
+        <h1 class="hero-enter font-mono font-bold text-[#F0F0F0] mb-5" style="font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; --delay: 0.3s">
+          Endless Runner
+        </h1>
+
+        <!-- Hook -->
+        <p class="hero-enter text-[#888888] text-lg max-w-2xl leading-relaxed mb-8" style="--delay: 0.5s">
+          Infinite terrain that never runs out of memory — chunk-based generation with an object pool that pre-warms at startup and makes zero allocations during play.
+        </p>
+
+        <!-- GitHub link -->
+        <div class="hero-enter" style="--delay: 0.65s">
+          <a
+            href="https://github.com/Idzuo32/DiplomskiRad"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="github-link inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#1F1F1F] hover:border-[#888888] text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+          >
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            View on GitHub
+            <svg class="arrow w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── OVERVIEW MEDIA ────────────────────────────────────────────────── -->
+    <div class="border-t border-[#1F1F1F]/50 py-12">
+      <div class="max-w-4xl mx-auto px-6">
+        <div class="reveal rounded-xl overflow-hidden border border-[#1F1F1F] bg-[#141414]">
+          <video
+            class="w-full aspect-video object-cover"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            poster={`${base}assets/screenshots/endless-runner-1.png`}
+          >
+            <source src={`${base}assets/thumbnails/endless-runner-thumb.mp4`} type="video/mp4" />
+          </video>
+        </div>
+        <p class="reveal text-[#444444] text-xs font-mono mt-3 text-center" style="--delay: 100ms">
+          Gameplay preview — chunk generation, lane switching, obstacle pool in action
+        </p>
+      </div>
+    </div>
+
+    <!-- ─── THE PROBLEM ───────────────────────────────────────────────────── -->
+    <section id="problem" class="py-20 border-t border-[#1F1F1F]/50">
+      <div class="max-w-5xl mx-auto px-6">
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">The Problem</h2>
+
+        <div class="reveal max-w-3xl space-y-5 text-[#888888] leading-relaxed" style="--delay: 100ms">
+          <p>
+            An endless runner has one invariant that can't break: the world must always feel infinite without the game ever running out of memory or stuttering. Naive instantiation destroys that — spawning a new obstacle prefab every few seconds generates garbage, and the GC eventually pauses to clean it up, which players feel as a hitch. The solution was an object pool that pre-warms every obstacle type at startup, then recycles rather than destroys.
+          </p>
+          <p>
+            Generation itself needed to be predictable enough to be fair but varied enough to feel different on every run. A chunk-based system solved this: each chunk is a self-contained segment of track with a predefined obstacle layout, and the manager selects and places them randomly as the player moves forward. Old chunks are returned to the pool when the player passes them, keeping the active scene count constant regardless of how long the run is.
+          </p>
+          <p>
+            With five distinct systems — generation, pooling, scoring, UI, and lane movement — tight coupling would have made testing and changes painful. An event bus kept every system completely independent: the <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Player</code> fires events, everything else subscribes. Adding a new system like a combo multiplier meant one new subscriber, zero changes to existing code.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── ARCHITECTURE ──────────────────────────────────────────────────── -->
+    <section id="architecture" class="py-20 border-t border-[#1F1F1F]/50">
+      <div class="max-w-5xl mx-auto px-6">
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">Architecture</h2>
+
+        <div class="space-y-14">
+
+          <!-- Decision 1: Chunk-based proc gen -->
+          <div class="reveal" style="--delay: 0ms">
+            <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
+              <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
+                Chunk-Based Procedural Generation
+              </h3>
+              <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
+                The world is divided into fixed-length chunks, each containing a spawned obstacle layout. The <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ChunkManager</code> maintains a queue of active chunks, spawns new ones ahead of the player as needed, and recycles old ones back into the pool as the player moves past them. Active chunk count stays constant at runtime — no unbounded growth.
+              </p>
+              <pre><code class="language-csharp" set:text={`public class ChunkManager : MonoBehaviour
+{
+    [SerializeField] private ChunkData[] chunkTemplates;
+    [SerializeField] private int chunksAhead = 4;
+    [SerializeField] private float chunkLength = 20f;
+
+    private readonly Queue<GameObject> _activeChunks = new();
+    private float _spawnZ;
+
+    void Start()
+    {
+        // Pre-spawn initial chunks
+        for (int i = 0; i < chunksAhead; i++) SpawnChunk();
+    }
+
+    void Update()
+    {
+        while (_activeChunks.Count < chunksAhead + 1) SpawnChunk();
+
+        if (PlayerPassedTail()) RecycleChunk();
+    }
+
+    void SpawnChunk()
+    {
+        var template = chunkTemplates[Random.Range(0, chunkTemplates.Length)];
+        var chunk    = _pool.Get(template.Prefab, new Vector3(0, 0, _spawnZ));
+        _spawnZ += chunkLength;
+        _activeChunks.Enqueue(chunk);
+    }
+
+    void RecycleChunk()
+    {
+        var old = _activeChunks.Dequeue();
+        _pool.Return(old);
+    }
+}`}></code></pre>
+            </div>
+          </div>
+
+          <!-- Decision 2: Object pooling -->
+          <div class="reveal" style="--delay: 50ms">
+            <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
+              <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
+                Generic Object Pool with Pre-Warming
+              </h3>
+              <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
+                A generic <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ObjectPool&lt;T&gt;</code> handles obstacles, VFX, and SFX sources. Pre-warming happens in <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Start()</code>, so the first frame of gameplay never triggers an allocation. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Get()</code> pops from the inactive stack; <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Return()</code> deactivates and pushes back. If the pool runs dry it instantiates a new instance as a safety valve without crashing.
+              </p>
+              <pre><code class="language-csharp" set:text={`public class ObjectPool<T> where T : Component
+{
+    private readonly Stack<T> _inactive = new();
+    private readonly T _prefab;
+
+    public ObjectPool(T prefab, int preWarm)
+    {
+        _prefab = prefab;
+        for (int i = 0; i < preWarm; i++)
+        {
+            var instance = Object.Instantiate(prefab);
+            instance.gameObject.SetActive(false);
+            _inactive.Push(instance);
+        }
+    }
+
+    public T Get(Vector3 position, Quaternion rotation = default)
+    {
+        var obj = _inactive.Count > 0
+            ? _inactive.Pop()
+            : Object.Instantiate(_prefab);  // safety valve
+
+        obj.transform.SetPositionAndRotation(position, rotation);
+        obj.gameObject.SetActive(true);
+        return obj;
+    }
+
+    public void Return(T obj)
+    {
+        obj.gameObject.SetActive(false);
+        _inactive.Push(obj);
+    }
+}`}></code></pre>
+            </div>
+          </div>
+
+          <!-- Decision 3: Event-driven architecture -->
+          <div class="reveal" style="--delay: 100ms">
+            <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
+              <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
+                Event Bus for Zero-Coupling Systems
+              </h3>
+              <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
+                A static <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">GameEvents</code> class acts as the message bus. The <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Player</code> fires events; UI, audio, and analytics all subscribe independently. No system holds a reference to any other — adding a leaderboard or combo system later required zero changes to existing code.
+              </p>
+              <pre><code class="language-csharp" set:text={`public static class GameEvents
+{
+    public static event Action<int>  OnScoreChanged;
+    public static event Action       OnPlayerDied;
+    public static event Action       OnGameStarted;
+    public static event Action<int>  OnCoinCollected;
+
+    // Convenience invokers — null-safe
+    public static void ScoreChanged(int score)   => OnScoreChanged?.Invoke(score);
+    public static void PlayerDied()              => OnPlayerDied?.Invoke();
+    public static void GameStarted()             => OnGameStarted?.Invoke();
+    public static void CoinCollected(int value)  => OnCoinCollected?.Invoke(value);
+}
+
+// UIManager never references Player — it only listens
+public class UIManager : MonoBehaviour
+{
+    [SerializeField] private TMP_Text _scoreText;
+
+    void OnEnable()  => GameEvents.OnScoreChanged += UpdateScoreUI;
+    void OnDisable() => GameEvents.OnScoreChanged -= UpdateScoreUI;
+
+    void UpdateScoreUI(int score) => _scoreText.text = score.ToString("N0");
+}`}></code></pre>
+            </div>
+          </div>
+
+          <!-- Decision 4: Lane movement -->
+          <div class="reveal" style="--delay: 150ms">
+            <div class="bg-[#141414] border border-[#1F1F1F] rounded-xl p-8">
+              <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
+                Lane-Based Movement with Smooth Lerp
+              </h3>
+              <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
+                Three discrete lanes defined by world-space X positions give the player a predictable movement space while keeping controls simple. Input moves the current lane index, and the transform lerps toward the target X each frame. This means the player always lands exactly on a lane center — no floating-point drift — while still feeling smooth.
+              </p>
+              <pre><code class="language-csharp" set:text={`public class PlayerMovement : MonoBehaviour
+{
+    private static readonly float[] LanePositions = { -2f, 0f, 2f };
+
+    [SerializeField] private float laneSpeed = 12f;
+    [SerializeField] private float forwardSpeed = 8f;
+
+    private int   _currentLane = 1;
+    private float _targetX;
+
+    void Start() => _targetX = LanePositions[_currentLane];
+
+    void Update()
+    {
+        HandleLaneInput();
+        MoveForward();
+        SmoothToLane();
+    }
+
+    void HandleLaneInput()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow)  || SwipeLeft())  MoveLane(-1);
+        if (Input.GetKeyDown(KeyCode.RightArrow) || SwipeRight()) MoveLane(1);
+    }
+
+    void MoveLane(int direction)
+    {
+        _currentLane = Mathf.Clamp(_currentLane + direction, 0, LanePositions.Length - 1);
+        _targetX     = LanePositions[_currentLane];
+    }
+
+    void MoveForward()
+    {
+        transform.position += Vector3.forward * forwardSpeed * Time.deltaTime;
+    }
+
+    void SmoothToLane()
+    {
+        float x = Mathf.Lerp(transform.position.x, _targetX, laneSpeed * Time.deltaTime);
+        transform.position = new Vector3(x, transform.position.y, transform.position.z);
+    }
+}`}></code></pre>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SCREENSHOTS ───────────────────────────────────────────────────── -->
+    <section
+      id="screenshots"
+      class="py-20 border-t border-[#1F1F1F]/50"
+      data-screenshots={`${base}assets/screenshots/endless-runner-1.png,${base}assets/screenshots/endless-runner-2.png`}
+    >
+      <div class="max-w-5xl mx-auto px-6">
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">Screenshots</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Screenshot 1 -->
+          <div class="reveal" style="--delay: 0ms">
+            <div
+              class="screenshot-wrap"
+              role="button"
+              tabindex="0"
+              aria-label="Open screenshot 1"
+              data-index="0"
+            >
+              <img
+                src={`${base}assets/screenshots/endless-runner-1.png`}
+                alt="Endless Runner — third-person view during a run"
+                loading="lazy"
+              />
+            </div>
+            <p class="text-[#444444] text-xs font-mono mt-2">Third-person gameplay — chunk seam invisible at full speed</p>
+          </div>
+
+          <!-- Screenshot 2 -->
+          <div class="reveal" style="--delay: 100ms">
+            <div
+              class="screenshot-wrap"
+              role="button"
+              tabindex="0"
+              aria-label="Open screenshot 2"
+              data-index="1"
+            >
+              <img
+                src={`${base}assets/screenshots/endless-runner-2.png`}
+                alt="Endless Runner — obstacle density increases over time"
+                loading="lazy"
+              />
+            </div>
+            <p class="text-[#444444] text-xs font-mono mt-2">Obstacle density scales with distance — difficulty curve baked into chunk selection weights</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── RETROSPECTIVE ─────────────────────────────────────────────────── -->
+    <section id="retrospective" class="py-20 border-t border-[#1F1F1F]/50">
+      <div class="max-w-5xl mx-auto px-6">
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">Retrospective</h2>
+
+        <ul class="reveal space-y-4 max-w-3xl" style="--delay: 100ms">
+          <li class="flex gap-3 text-[#888888] leading-relaxed">
+            <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
+            <span>
+              <!-- [YOUR NOTES HERE] -->
+              <strong class="text-[#F0F0F0] font-medium">The difficulty curve needs data, not intuition.</strong>
+              I tuned obstacle density by feel during development. A better approach would be logging player survival times per chunk type and using that data to build a weighted selection curve that adapts based on run duration rather than guessing at it.
+            </span>
+          </li>
+          <li class="flex gap-3 text-[#888888] leading-relaxed">
+            <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
+            <span>
+              <!-- [YOUR NOTES HERE] -->
+              <strong class="text-[#F0F0F0] font-medium">The event bus should be interface-typed, not static.</strong>
+              A static class makes testing hard — you can't inject a mock event bus in unit tests. A <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">IGameEvents</code> interface injected via a service locator or DI container would have made the score and death logic much easier to test in isolation.
+            </span>
+          </li>
+          <li class="flex gap-3 text-[#888888] leading-relaxed">
+            <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
+            <span>
+              <!-- [YOUR NOTES HERE] -->
+              <strong class="text-[#F0F0F0] font-medium">Chunk seams are invisible at runtime but brittle at edit time.</strong>
+              All chunks assume the same Z-length. I enforce this with a constant, but a mismatch isn't caught until runtime. A custom Editor validator that checks each chunk prefab's bounds against the expected length would catch that class of bug at asset-save time instead of during play-testing.
+            </span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
+    <footer class="border-t border-[#1F1F1F]/50 py-8">
+      <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <p class="text-[#888888] text-sm">© 2026 Marko Stankovic</p>
+
+        <!-- Prev / Next project navigation -->
+        <div class="flex items-center gap-6 text-sm">
+          <a
+            href="/projects/hide-and-seek"
+            class="nav-link text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+          >
+            ← Hide &amp; Seek
+          </a>
+          <span class="text-[#1F1F1F]">·</span>
+          <span class="text-[#1F1F1F] font-mono">next →</span>
+        </div>
+
+        <p class="text-[#444444] text-xs font-mono">Game Developer · Serbia</p>
+      </div>
+    </footer>
+
+    <!-- ─── LIGHTBOX ──────────────────────────────────────────────────────── -->
+    <div
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Screenshot viewer"
+      class="fixed inset-0 z-[200] items-center justify-center"
+    >
+      <div id="lightbox-backdrop" class="absolute inset-0 bg-[#0D0D0D]/95"></div>
+
+      <div id="lightbox-content" class="relative z-10 flex items-center gap-3 px-4">
+        <button id="lightbox-prev" class="lb-btn" aria-label="Previous screenshot">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        <img id="lightbox-img" src="" alt="Project screenshot" />
+
+        <button id="lightbox-next" class="lb-btn" aria-label="Next screenshot">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+
+      <button id="lightbox-close" class="lb-btn z-10" aria-label="Close lightbox">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <script>
+      // ── Highlight.js init ────────────────────────────────────────────────
+      // @ts-ignore
+      if (typeof hljs !== 'undefined') hljs.highlightAll();
+      document.addEventListener('DOMContentLoaded', () => {
+        // @ts-ignore
+        if (typeof hljs !== 'undefined') hljs.highlightAll();
+      });
+
+      // ── Scroll Reveal ─────────────────────────────────────────────────────
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealEls = document.querySelectorAll('.reveal');
+
+      if (!prefersReduced) {
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        revealEls.forEach((el) => obs.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('visible'));
+      }
+
+      // ── Hamburger Nav ─────────────────────────────────────────────────────
+      const menuBtn   = document.getElementById('menu-btn');
+      const mobileNav = document.getElementById('mobile-nav');
+      const iconMenu  = document.getElementById('icon-menu');
+      const iconClose = document.getElementById('icon-close');
+
+      menuBtn?.addEventListener('click', () => {
+        const isOpen = mobileNav?.classList.toggle('open');
+        menuBtn.setAttribute('aria-expanded', String(isOpen));
+        iconMenu?.classList.toggle('hidden', !!isOpen);
+        iconClose?.classList.toggle('hidden', !isOpen);
+      });
+
+      document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+        link.addEventListener('click', () => {
+          mobileNav?.classList.remove('open');
+          menuBtn?.setAttribute('aria-expanded', 'false');
+          iconMenu?.classList.remove('hidden');
+          iconClose?.classList.add('hidden');
+        });
+      });
+
+      // ── Lightbox ──────────────────────────────────────────────────────────
+      const lightbox   = document.getElementById('lightbox')!;
+      const lbImg      = document.getElementById('lightbox-img') as HTMLImageElement;
+      const lbPrev     = document.getElementById('lightbox-prev') as HTMLButtonElement;
+      const lbNext     = document.getElementById('lightbox-next') as HTMLButtonElement;
+      const lbClose    = document.getElementById('lightbox-close')!;
+      const lbBackdrop = document.getElementById('lightbox-backdrop')!;
+
+      const section = document.getElementById('screenshots')!;
+      const lbScreenshots = (section?.dataset.screenshots ?? '')
+        .split(',').map((s) => s.trim()).filter(Boolean);
+
+      let lbIndex = 0;
+      let lbPrevFocus: HTMLElement | null = null;
+
+      function lbShow(index: number) {
+        lbIndex = index;
+        lbPrevFocus = document.activeElement as HTMLElement;
+        lbUpdate();
+        lightbox.style.display = 'flex';
+        lightbox.getBoundingClientRect();
+        lightbox.classList.add('lb-open');
+        document.body.style.overflow = 'hidden';
+        lbClose.focus();
+      }
+
+      function lbHide() {
+        lightbox.classList.remove('lb-open');
+        lightbox.addEventListener('transitionend', () => {
+          lightbox.style.display = 'none';
+          document.body.style.overflow = '';
+          lbPrevFocus?.focus();
+        }, { once: true });
+      }
+
+      function lbUpdate() {
+        lbImg.src = lbScreenshots[lbIndex];
+        lbImg.alt = `Screenshot ${lbIndex + 1} of ${lbScreenshots.length}`;
+        lbPrev.disabled = lbIndex === 0;
+        lbNext.disabled = lbIndex === lbScreenshots.length - 1;
+      }
+
+      document.querySelectorAll<HTMLElement>('.screenshot-wrap').forEach((wrap) => {
+        const open = () => {
+          const idx = parseInt(wrap.dataset.index ?? '0', 10);
+          lbShow(idx);
+        };
+        wrap.addEventListener('click', open);
+        wrap.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+        });
+      });
+
+      lbClose.addEventListener('click', lbHide);
+      lbBackdrop.addEventListener('click', lbHide);
+      lbPrev.addEventListener('click', () => { if (lbIndex > 0) { lbIndex--; lbUpdate(); } });
+      lbNext.addEventListener('click', () => { if (lbIndex < lbScreenshots.length - 1) { lbIndex++; lbUpdate(); } });
+
+      lightbox.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') lbHide();
+        else if (e.key === 'ArrowLeft'  && lbIndex > 0)                         { lbIndex--; lbUpdate(); }
+        else if (e.key === 'ArrowRight' && lbIndex < lbScreenshots.length - 1)  { lbIndex++; lbUpdate(); }
+      });
+    </script>
+  </body>
+</html>
