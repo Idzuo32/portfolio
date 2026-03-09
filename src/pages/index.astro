@@ -1425,31 +1425,35 @@ const personSchema = {
       ) as HTMLFormElement | null;
       const formSuccess = document.getElementById("form-success");
 
-      contactForm?.addEventListener("submit", (e) => {
+      contactForm?.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const name = (
-          contactForm.querySelector('[name="name"]') as HTMLInputElement
-        ).value;
-        const email = (
-          contactForm.querySelector('[name="email"]') as HTMLInputElement
-        ).value;
-        const message = (
-          contactForm.querySelector('[name="message"]') as HTMLTextAreaElement
-        ).value;
+        const submitBtn = contactForm.querySelector(
+          '[type="submit"]',
+        ) as HTMLButtonElement;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending…";
 
-        // mailto fallback — opens native email client
-        const subject = encodeURIComponent(`Portfolio contact — ${name}`);
-        const body = encodeURIComponent(
-          `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
-        );
-        window.open(
-          `mailto:contact@markostankovic.org?subject=${subject}&body=${body}`,
-        );
+        try {
+          const res = await fetch(contactForm.action, {
+            method: "POST",
+            body: new FormData(contactForm),
+            headers: { Accept: "application/json" },
+          });
 
-        // Show success, hide form
-        contactForm.classList.add("hidden");
-        formSuccess?.classList.remove("hidden");
+          if (res.ok) {
+            contactForm.classList.add("hidden");
+            formSuccess?.classList.remove("hidden");
+          } else {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Send Message";
+            alert("Something went wrong. Please try again.");
+          }
+        } catch {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send Message";
+          alert("Network error. Please try again.");
+        }
       });
     </script>
   </body>
