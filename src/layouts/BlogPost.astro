@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css";
+import BaseLayout from "./BaseLayout.astro";
 
 interface Props {
   title: string;
@@ -17,11 +17,6 @@ const formattedDate = date.toLocaleDateString('en-US', {
   month: 'long',
   day: 'numeric',
 });
-
-const canonicalURL = Astro.url.href;
-const ogImageURL = ogImage
-  ? new URL(ogImage, Astro.site).href
-  : new URL('/og-default.png', Astro.site).href;
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -42,44 +37,16 @@ const articleSchema = {
 };
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="google-site-verification" content="E7tgw1T5tN33WpBtQKaMPTkM6sIjSQEnNr33vyw-0ys" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>{title} — Marko Stankovic</title>
-    <meta name="description" content={excerpt} />
-    <link rel="canonical" href={canonicalURL} />
-    <meta property="og:title" content={`${title} — Marko Stankovic`} />
-    <meta property="og:description" content={excerpt} />
-    <meta property="og:image" content={ogImageURL} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={`${title} — Marko Stankovic`} />
-    <meta name="twitter:description" content={excerpt} />
-    <meta name="twitter:image" content={ogImageURL} />
+<BaseLayout
+  title={`${title} — Marko Stankovic`}
+  description={excerpt}
+  ogImage={ogImage}
+  ogType="article"
+  codeHighlighting={true}
+>
+  <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- highlight.js -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github-dark.min.css"
-    />
-    <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+  </Fragment>
 
     <style is:global>
       /* ── Code blocks ── */
@@ -245,17 +212,6 @@ const articleSchema = {
       }
     </style>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-70DNV713QD"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-70DNV713QD');
-    </script>
-  </head>
-
-  <body class="font-sans antialiased">
 
     <!-- ─── NAV ─────────────────────────────────────────────────────────── -->
     <header class="fixed top-0 inset-x-0 z-50 border-b border-[#1F1F1F]/60 bg-[#0D0D0D]/80 backdrop-blur-md">
@@ -442,5 +398,4 @@ const articleSchema = {
         });
       });
     </script>
-  </body>
-</html>
+</BaseLayout>
