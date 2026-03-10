@@ -58,7 +58,7 @@ A 3rd-person 3D runner with systems designed for performance and extensibility.
 - **Lane-based movement** — smooth input-driven lane switching with Cinemachine follow camera
 - **Event-driven architecture** — decoupled systems communicating via C# events
 
-[View Repository →](#) · [Play Demo →](#)
+[View Repository →](#)
 
 ---
 
