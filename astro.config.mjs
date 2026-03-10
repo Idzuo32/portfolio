@@ -11,6 +11,7 @@ export default defineConfig({
     '/blog': '/devlog',
     '/blog/[slug]': '/devlog/[slug]',
   },
+  markdown: { syntaxHighlight: false },
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
