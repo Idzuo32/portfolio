@@ -2,6 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import BlogCard from "../components/BlogCard.astro";
+import hideSeek1 from "../assets/screenshots/hide-and-seek-1.png";
+import hideSeek2 from "../assets/screenshots/hide-and-seek-2.png";
+import endlessRunner1 from "../assets/screenshots/endless-runner-1.png";
+import endlessRunner2 from "../assets/screenshots/endless-runner-2.png";
 
 const recentPosts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
@@ -535,7 +539,7 @@ const personSchema = {
             class="project-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl overflow-hidden hover:border-violet-800/50 transition-colors duration-150 flex flex-col"
             style="--card-glow: rgba(139,92,246,0.1); --delay: 0ms"
             data-tags="Data-Driven,State Machine,Strategy Pattern,Hiding System,Detection System"
-            data-screenshots="/assets/screenshots/hide-and-seek-1.png,/assets/screenshots/hide-and-seek-2.png"
+            data-screenshots={`${hideSeek1.src},${hideSeek2.src}`}
           >
             <!-- 16:9 thumbnail -->
             <div
@@ -551,7 +555,7 @@ const personSchema = {
                 muted
                 playsinline
                 preload="none"
-                poster="/assets/screenshots/hide-and-seek-1.png"
+                poster={hideSeek1.src}
               >
                 <source
                   src="/assets/thumbnails/hide-and-seek-thumb.mp4"
@@ -642,7 +646,7 @@ const personSchema = {
             class="project-card reveal bg-[#141414] border border-[#1F1F1F] rounded-xl overflow-hidden hover:border-cyan-800/50 transition-colors duration-150 flex flex-col"
             style="--card-glow: rgba(34,211,238,0.1); --delay: 150ms"
             data-tags="Proc Gen,Object Pooling,Event-Driven,Utility Scripts,Lane Movement,C#"
-            data-screenshots="/assets/screenshots/endless-runner-1.png,/assets/screenshots/endless-runner-2.png"
+            data-screenshots={`${endlessRunner1.src},${endlessRunner2.src}`}
           >
             <!-- 16:9 thumbnail -->
             <div
@@ -658,7 +662,7 @@ const personSchema = {
                 muted
                 playsinline
                 preload="none"
-                poster="/assets/screenshots/endless-runner-1.png"
+                poster={endlessRunner1.src}
               >
                 <source
                   src="/assets/thumbnails/endless-runner-thumb.mp4"
