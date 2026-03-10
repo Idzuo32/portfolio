@@ -3,16 +3,20 @@ import "../../styles/global.css";
 const base = import.meta.env.BASE_URL;
 
 const pageTitle = "Hide & Seek — Marko Stankovic";
-const pageDescription = "Unity 6 stealth game with a continuous suspicion float, six enemy AI states driven by a generic StateMachine, and a nine-tool LevelBuilder editor suite.";
+const pageDescription =
+  "Unity 6 stealth game with a continuous suspicion float, six enemy AI states driven by a generic StateMachine, and a nine-tool LevelBuilder editor suite.";
 const canonicalURL = Astro.url.href;
-const ogImageURL = new URL('/og-default.png', Astro.site).href;
+const ogImageURL = new URL("/og-default.png", Astro.site).href;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
     <link rel="canonical" href={canonicalURL} />
@@ -43,7 +47,9 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/github-dark.min.css"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"
+    ></script>
 
     <style is:global>
       /* ── Mobile overflow fix ── */
@@ -56,6 +62,15 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
         overflow-x: auto;
         max-width: 100%;
         white-space: pre;
+      }
+
+      pre code.hljs {
+        background: #141414;
+        border: 1px solid #1f1f1f;
+        border-radius: 0.5rem;
+        font-size: 0.8125rem;
+        line-height: 1.6;
+        padding: 1.25rem 1.5rem;
       }
 
       .prose pre code.hljs,
@@ -75,24 +90,27 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
         top: 0.6rem;
         right: 0.6rem;
         padding: 0.25rem 0.6rem;
-        font-family: 'JetBrains Mono', monospace;
+        font-family: "JetBrains Mono", monospace;
         font-size: 0.6875rem;
-        background: #1F1F1F;
+        background: #1f1f1f;
         color: #888888;
         border: 1px solid #2a2a2a;
         border-radius: 0.375rem;
         cursor: pointer;
-        transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease,
+          border-color 0.15s ease;
         z-index: 10;
       }
       .copy-btn:hover {
         background: #2a2a2a;
-        color: #F0F0F0;
+        color: #f0f0f0;
         border-color: #888;
       }
       .copy-btn.copied {
-        color: #00FFC8;
-        border-color: #00FFC820;
+        color: #00ffc8;
+        border-color: #00ffc820;
       }
 
       /* ── Lightbox ── */
@@ -131,7 +149,9 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
         justify-content: center;
         cursor: pointer;
         flex-shrink: 0;
-        transition: background 0.15s ease, border-color 0.15s ease;
+        transition:
+          background 0.15s ease,
+          border-color 0.15s ease;
       }
       .lb-btn:hover {
         background: rgba(50, 50, 50, 0.9);
@@ -150,7 +170,7 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
       .screenshot-wrap {
         overflow: hidden;
         border-radius: 0.5rem;
-        border: 1px solid #1F1F1F;
+        border: 1px solid #1f1f1f;
         cursor: pointer;
         transition: border-color 0.2s ease;
       }
@@ -171,79 +191,197 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
   </head>
 
   <body class="font-sans antialiased">
-
     <!-- ─── NAV ─────────────────────────────────────────────────────────── -->
-    <header class="fixed top-0 inset-x-0 z-50 border-b border-[#1F1F1F]/60 bg-[#0D0D0D]/80 backdrop-blur-md">
-      <nav class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+    <header
+      class="fixed top-0 inset-x-0 z-50 border-b border-[#1F1F1F]/60 bg-[#0D0D0D]/80 backdrop-blur-md"
+    >
+      <nav
+        class="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between"
+      >
         <div class="flex items-center gap-5">
           <a
             href="/"
             class="nav-link text-sm text-[#888888] hover:text-[#00FFC8] transition-colors duration-150 flex items-center gap-1.5"
           >
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            <svg
+              class="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"></path>
             </svg>
             Back to Portfolio
           </a>
           <span class="text-[#1F1F1F]">|</span>
-          <a href="/" class="font-bold font-mono tracking-tight text-[#F0F0F0] text-lg">MS</a>
+          <a
+            href="/"
+            class="font-bold font-mono tracking-tight text-[#F0F0F0] text-lg"
+            >MS</a
+          >
         </div>
 
         <ul class="hidden sm:flex gap-6 text-sm text-[#888888]">
-          <li><a href="/#skills"   class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Skills</a></li>
-          <li><a href="/#projects" class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Projects</a></li>
-          <li><a href="/devlog"    class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Devlog</a></li>
-          <li><a href="/#contact"  class="nav-link hover:text-[#F0F0F0] transition-colors duration-150">Contact</a></li>
+          <li>
+            <a
+              href="/#skills"
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
+              >Skills</a
+            >
+          </li>
+          <li>
+            <a
+              href="/#projects"
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
+              >Projects</a
+            >
+          </li>
+          <li>
+            <a
+              href="/devlog"
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
+              >Devlog</a
+            >
+          </li>
+          <li>
+            <a
+              href="/#contact"
+              class="nav-link hover:text-[#F0F0F0] transition-colors duration-150"
+              >Contact</a
+            >
+          </li>
         </ul>
 
-        <button id="menu-btn" class="sm:hidden w-11 h-11 flex items-center justify-center text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150" aria-label="Toggle menu" aria-expanded="false">
-          <svg id="icon-menu" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        <button
+          id="menu-btn"
+          class="sm:hidden w-11 h-11 flex items-center justify-center text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+          aria-label="Toggle menu"
+          aria-expanded="false"
+        >
+          <svg
+            id="icon-menu"
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
-          <svg id="icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          <svg
+            id="icon-close"
+            class="w-5 h-5 hidden"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </nav>
 
       <div id="mobile-nav" aria-hidden="true">
         <div class="max-w-5xl mx-auto px-6 py-2 flex flex-col">
-          <a href="/"          class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#00FFC8] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">← Back to Portfolio</a>
-          <a href="/#skills"   class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Skills</a>
-          <a href="/#projects" class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Projects</a>
-          <a href="/devlog"    class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center">Devlog</a>
-          <a href="/#contact"  class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px] flex items-center">Contact</a>
+          <a
+            href="/"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#00FFC8] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
+            >← Back to Portfolio</a
+          >
+          <a
+            href="/#skills"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Skills</a
+          >
+          <a
+            href="/#projects"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Projects</a
+          >
+          <a
+            href="/devlog"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] border-b border-[#1F1F1F] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Devlog</a
+          >
+          <a
+            href="/#contact"
+            class="mobile-nav-link py-3 text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150 min-h-[44px] flex items-center"
+            >Contact</a
+          >
         </div>
       </div>
     </header>
 
     <!-- ─── HERO ──────────────────────────────────────────────────────────── -->
     <div class="relative pt-14">
-      <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        <div class="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-violet-600/5 rounded-full blur-3xl"></div>
-        <div class="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-[#00FFC8]/3 rounded-full blur-3xl"></div>
+      <div
+        class="absolute inset-0 overflow-hidden pointer-events-none"
+        aria-hidden="true"
+      >
+        <div
+          class="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-violet-600/5 rounded-full blur-3xl"
+        >
+        </div>
+        <div
+          class="absolute top-1/2 right-1/3 w-[300px] h-[300px] bg-[#00FFC8]/3 rounded-full blur-3xl"
+        >
+        </div>
       </div>
 
       <div class="relative max-w-5xl mx-auto px-6 py-20">
-        <p class="hero-enter text-[#444444] font-mono text-xs mb-6 tracking-wide" style="--delay: 0.05s">
+        <p
+          class="hero-enter text-[#444444] font-mono text-xs mb-6 tracking-wide"
+          style="--delay: 0.05s"
+        >
           Projects / Hide &amp; Seek
         </p>
 
-        <div class="hero-enter flex flex-wrap gap-2 mb-6" style="--delay: 0.15s">
-          <span class="text-xs font-mono bg-[#00FFC8]/10 text-[#00FFC8] border border-[#00FFC8]/20 px-3 py-1 rounded-full">
+        <div
+          class="hero-enter flex flex-wrap gap-2 mb-6"
+          style="--delay: 0.15s"
+        >
+          <span
+            class="text-xs font-mono bg-[#00FFC8]/10 text-[#00FFC8] border border-[#00FFC8]/20 px-3 py-1 rounded-full"
+          >
             In Development
           </span>
-          <span class="text-xs font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full">
+          <span
+            class="text-xs font-mono bg-violet-500/10 text-violet-400 border border-violet-500/20 px-3 py-1 rounded-full"
+          >
             Unity 6 · URP
           </span>
         </div>
 
-        <h1 class="hero-enter font-mono font-bold text-[#F0F0F0] mb-5" style="font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; --delay: 0.3s">
+        <h1
+          class="hero-enter font-mono font-bold text-[#F0F0F0] mb-5"
+          style="font-size: clamp(2.5rem, 6vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; --delay: 0.3s"
+        >
           Hide &amp; Seek
         </h1>
 
-        <p class="hero-enter text-[#888888] text-lg max-w-2xl leading-relaxed mb-8" style="--delay: 0.5s">
-          Detection isn't a flag — it's a continuous suspicion float with per-state hysteresis, six enemy behaviours driven by a generic <code class="font-mono text-[#00FFC8] text-base bg-[#00FFC8]/10 px-1.5 rounded">StateMachine</code>, and a static noise event bus that decouples every sound source from every listener.
+        <p
+          class="hero-enter text-[#888888] text-lg max-w-2xl leading-relaxed mb-8"
+          style="--delay: 0.5s"
+        >
+          Detection isn't a flag — it's a continuous suspicion float with
+          per-state hysteresis, six enemy behaviours driven by a generic <code
+            class="font-mono text-[#00FFC8] text-base bg-[#00FFC8]/10 px-1.5 rounded"
+            >StateMachine</code
+          >, and a static noise event bus that decouples every sound source from
+          every listener.
         </p>
 
         <div class="hero-enter" style="--delay: 0.65s">
@@ -253,12 +391,29 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
             rel="noopener noreferrer"
             class="github-link inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#1F1F1F] hover:border-[#888888] text-sm text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
           >
-            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            <svg
+              class="w-4 h-4"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+              ></path>
             </svg>
             View on GitHub
-            <svg class="arrow w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            <svg
+              class="arrow w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
             </svg>
           </a>
         </div>
@@ -268,7 +423,9 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
     <!-- ─── OVERVIEW MEDIA ────────────────────────────────────────────────── -->
     <div class="border-t border-[#1F1F1F]/50 py-12">
       <div class="max-w-4xl mx-auto px-6">
-        <div class="reveal rounded-xl overflow-hidden border border-[#1F1F1F] bg-[#141414]">
+        <div
+          class="reveal rounded-xl overflow-hidden border border-[#1F1F1F] bg-[#141414]"
+        >
           <video
             class="w-full aspect-video object-cover"
             autoplay
@@ -278,11 +435,18 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
             preload="metadata"
             poster={`${base}assets/screenshots/hide-and-seek-1.png`}
           >
-            <source src={`${base}assets/thumbnails/hide-and-seek-thumb.mp4`} type="video/mp4" />
+            <source
+              src={`${base}assets/thumbnails/hide-and-seek-thumb.mp4`}
+              type="video/mp4"
+            />
           </video>
         </div>
-        <p class="reveal text-[#444444] text-xs font-mono mt-3 text-center" style="--delay: 100ms">
-          Gameplay preview — suspicion build-up, patrol → investigate → chase sequence
+        <p
+          class="reveal text-[#444444] text-xs font-mono mt-3 text-center"
+          style="--delay: 100ms"
+        >
+          Gameplay preview — suspicion build-up, patrol → investigate → chase
+          sequence
         </p>
       </div>
     </div>
@@ -290,17 +454,53 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
     <!-- ─── THE PROBLEM ───────────────────────────────────────────────────── -->
     <section id="problem" class="py-20 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">The Problem</h2>
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">
+          The Problem
+        </h2>
 
-        <div class="reveal max-w-3xl space-y-5 text-[#888888] leading-relaxed" style="--delay: 100ms">
+        <div
+          class="reveal max-w-3xl space-y-5 text-[#888888] leading-relaxed"
+          style="--delay: 100ms"
+        >
           <p>
-            Binary detection — seen or not seen — kills the stealth loop. A player who's caught the moment they step into a cone has no room to react. The suspicion system here is a continuous <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">float</code> (0–100) with per-state hysteresis: separate rising and falling thresholds per <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">SeekState</code> prevent flickering and give the player a window to duck behind cover and let the meter bleed back down before the enemy locks on.
+            Binary detection — seen or not seen — kills the stealth loop. A
+            player who's caught the moment they step into a cone has no room to
+            react. The suspicion system here is a continuous <code
+              class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+              >float</code
+            > (0–100) with per-state hysteresis: separate rising and falling thresholds
+            per <code
+              class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+              >SeekState</code
+            > prevent flickering and give the player a window to duck behind cover
+            and let the meter bleed back down before the enemy locks on.
           </p>
           <p>
-            Six behavioural states — Idle, Patrol, Investigate, Alert, Chase, Search — each need to read from the suspicion meter and NavMesh, play animations, and trigger camera responses, all without knowing about each other. Putting that logic in a monolithic update loop would have collapsed under its own weight. The answer was a generic <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">StateMachine</code> (a plain C# class, not a MonoBehaviour) paired with an <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">IState</code> interface — each state is a self-contained class that owns its own enter, tick, and exit logic.
+            Six behavioural states — Idle, Patrol, Investigate, Alert, Chase,
+            Search — each need to read from the suspicion meter and NavMesh,
+            play animations, and trigger camera responses, all without knowing
+            about each other. Putting that logic in a monolithic update loop
+            would have collapsed under its own weight. The answer was a generic <code
+              class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+              >StateMachine</code
+            > (a plain C# class, not a MonoBehaviour) paired with an <code
+              class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+              >IState</code
+            > interface — each state is a self-contained class that owns its own enter,
+            tick, and exit logic.
           </p>
           <p>
-            Audio detection added a third coupling problem: anything that makes noise (player sprinting, a knocked-over prop) needs to alert any enemy within range, but neither the emitter nor the enemy should hold a reference to the other. A static <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">NoiseEmitter</code> event bus with a lightweight <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">NoiseEvent</code> struct solves this: emitters fire-and-forget, listeners filter by distance, and neither side is aware of the other.
+            Audio detection added a third coupling problem: anything that makes
+            noise (player sprinting, a knocked-over prop) needs to alert any
+            enemy within range, but neither the emitter nor the enemy should
+            hold a reference to the other. A static <code
+              class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+              >NoiseEmitter</code
+            > event bus with a lightweight <code
+              class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+              >NoiseEvent</code
+            > struct solves this: emitters fire-and-forget, listeners filter by distance,
+            and neither side is aware of the other.
           </p>
         </div>
       </div>
@@ -309,10 +509,11 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
     <!-- ─── ARCHITECTURE ──────────────────────────────────────────────────── -->
     <section id="architecture" class="py-20 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">Architecture</h2>
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">
+          Architecture
+        </h2>
 
         <div class="space-y-14">
-
           <!-- Decision 1: IState + StateMachine -->
           <div class="reveal" style="--delay: 0ms">
             <div class="border border-[#1F1F1F] rounded-xl p-8">
@@ -320,7 +521,34 @@ const ogImageURL = new URL('/og-default.png', Astro.site).href;
                 IState + StateMachine — Plain Classes, Not MonoBehaviours
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                The state machine lives in <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Infrastructure/StateMachine/</code> as two plain C# classes with no Unity dependency. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">StateMachine</code> holds the current state and calls <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Exit()</code> then <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Enter()</code> on transition. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">EnemyController</code> owns one and calls <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Tick()</code> from <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Update()</code>. All six concrete states extend <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">BaseState</code> and are constructed with a reference to their owner <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">EnemyController</code>.
+                The state machine lives in <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >Infrastructure/StateMachine/</code
+                > as two plain C# classes with no Unity dependency. <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >StateMachine</code
+                > holds the current state and calls <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >Exit()</code
+                > then <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >Enter()</code
+                > on transition. <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >EnemyController</code
+                > owns one and calls <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >Tick()</code
+                > from <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >Update()</code
+                >. All six concrete states extend <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >BaseState</code
+                > and are constructed with a reference to their owner <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >EnemyController</code
+                >.
               </p>
               <pre><code class="language-csharp" set:text={`// Infrastructure/Interfaces/IState.cs
 public interface IState
@@ -363,24 +591,47 @@ public class EnemyController : MonoBehaviour
     void Update() => _stateMachine.Tick();
 
     public void ChangeState(IState newState) => _stateMachine.ChangeState(newState);
-}`}></code></pre>
+}`} /></pre>
               <!-- Concrete states -->
-              <div class="mt-6 p-4 bg-[#0D0D0D] rounded-lg border border-[#1F1F1F]">
-                <p class="text-[#444444] text-xs font-mono mb-3">Six concrete states in AI/Enemy/States/</p>
+              <div
+                class="mt-6 p-4 bg-[#0D0D0D] rounded-lg border border-[#1F1F1F]"
+              >
+                <p class="text-[#444444] text-xs font-mono mb-3">
+                  Six concrete states in AI/Enemy/States/
+                </p>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {[
-                    ["EnemyIdleState",        "Stops nav · waits timer · → Patrol"],
-                    ["EnemyPatrolState",      "Walks waypoints · → Alert/Chase on suspicion"],
-                    ["EnemyInvestigateState", "Moves to position · → Patrol after look"],
-                    ["EnemyAlertState",       "Stops · scans toward LKP · → Chase/Search"],
-                    ["EnemyChaseState",       "Throttled nav update · → Search on lost"],
-                    ["EnemySearchState",      "3-phase: LKP → sweep N dirs → nearest waypoints"],
-                  ].map(([name, desc]) => (
-                    <div class="flex gap-3 text-xs">
-                      <code class="font-mono text-violet-400 shrink-0">{name}</code>
-                      <span class="text-[#444444]">{desc}</span>
-                    </div>
-                  ))}
+                  {
+                    [
+                      ["EnemyIdleState", "Stops nav · waits timer · → Patrol"],
+                      [
+                        "EnemyPatrolState",
+                        "Walks waypoints · → Alert/Chase on suspicion",
+                      ],
+                      [
+                        "EnemyInvestigateState",
+                        "Moves to position · → Patrol after look",
+                      ],
+                      [
+                        "EnemyAlertState",
+                        "Stops · scans toward LKP · → Chase/Search",
+                      ],
+                      [
+                        "EnemyChaseState",
+                        "Throttled nav update · → Search on lost",
+                      ],
+                      [
+                        "EnemySearchState",
+                        "3-phase: LKP → sweep N dirs → nearest waypoints",
+                      ],
+                    ].map(([name, desc]) => (
+                      <div class="flex gap-3 text-xs">
+                        <code class="font-mono text-violet-400 shrink-0">
+                          {name}
+                        </code>
+                        <span class="text-[#444444]">{desc}</span>
+                      </div>
+                    ))
+                  }
                 </div>
               </div>
             </div>
@@ -393,7 +644,27 @@ public class EnemyController : MonoBehaviour
                 SuspicionMeter — Continuous Float with Hysteresis
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">SuspicionMeter</code> is a MonoBehaviour on the enemy that accumulates suspicion each <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">FixedUpdate</code>. Visual delta (from <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">EnemyDetection.ComputeVisualDelta()</code>) accounts for distance falloff, angle falloff, and crouch stealth modifier. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ComputeTargetState()</code> uses separate rising/falling thresholds per state — e.g. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">alertThreshold=25f</code> to enter Alert but <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">alertRevertThreshold=15f</code> to leave it — preventing rapid state flickering at threshold boundaries.
+                <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >SuspicionMeter</code
+                > is a MonoBehaviour on the enemy that accumulates suspicion each
+                <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >FixedUpdate</code
+                >. Visual delta (from <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >EnemyDetection.ComputeVisualDelta()</code
+                >) accounts for distance falloff, angle falloff, and crouch
+                stealth modifier. <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >ComputeTargetState()</code
+                > uses separate rising/falling thresholds per state — e.g. <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >alertThreshold=25f</code
+                > to enter Alert but <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >alertRevertThreshold=15f</code
+                > to leave it — preventing rapid state flickering at threshold boundaries.
               </p>
               <pre><code class="language-csharp" set:text={`// Detection/SuspicionMeter.cs
 public class SuspicionMeter : MonoBehaviour
@@ -437,7 +708,7 @@ float ComputeVisualDelta(float distance, float angleToPlayer)
     // [VERIFY exact formula in EnemyDetection.cs]
     return data.baseDetectionRate * distanceFactor * angleFactor
                * crouchModifier * stateMultiplier;
-}`}></code></pre>
+}`} /></pre>
             </div>
           </div>
 
@@ -445,10 +716,41 @@ float ComputeVisualDelta(float distance, float angleToPlayer)
           <div class="reveal" style="--delay: 100ms">
             <div class="border border-[#1F1F1F] rounded-xl p-8">
               <h3 class="font-mono font-semibold text-[#F0F0F0] text-lg mb-3">
-                Decoupled Subsystems — EnemyNavigation Wrapper &amp; NoiseEmitter Bus
+                Decoupled Subsystems — EnemyNavigation Wrapper &amp;
+                NoiseEmitter Bus
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                States never touch <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">NavMeshAgent</code> directly. <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">EnemyNavigation</code> wraps it and adds <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">RotateToward()</code> (returns true when within 1°, used by Alert scan) and <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">IsNear()</code>. Audio detection works the same way: <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">NoiseEmitter</code> is a static class that fires a <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">readonly struct</code> event — <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">NoiseEvent</code> — and each enemy's <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">NoiseListener</code> filters by <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">_hearingRadius</code> before raising its own local event. The <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">NoiseEvent</code> struct allocates nothing on the heap.
+                States never touch <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >NavMeshAgent</code
+                > directly. <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >EnemyNavigation</code
+                > wraps it and adds <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >RotateToward()</code
+                > (returns true when within 1°, used by Alert scan) and <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >IsNear()</code
+                >. Audio detection works the same way: <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >NoiseEmitter</code
+                > is a static class that fires a <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >readonly struct</code
+                > event — <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >NoiseEvent</code
+                > — and each enemy's <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >NoiseListener</code
+                > filters by <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >_hearingRadius</code
+                > before raising its own local event. The <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >NoiseEvent</code
+                > struct allocates nothing on the heap.
               </p>
               <pre><code class="language-csharp" set:text={`// AI/Enemy/EnemyNavigation.cs
 [RequireComponent(typeof(NavMeshAgent))]
@@ -498,7 +800,7 @@ public class NoiseListener : MonoBehaviour
         if (Vector3.Distance(transform.position, e.WorldPosition) <= _hearingRadius)
             OnNoiseHeard?.Invoke(e);
     }
-}`}></code></pre>
+}`} /></pre>
             </div>
           </div>
 
@@ -509,26 +811,65 @@ public class NoiseListener : MonoBehaviour
                 LevelBuilder — Nine Custom Editor Tools
               </h3>
               <p class="text-[#888888] leading-relaxed mb-6 max-w-3xl">
-                Manual level layout in a 3D dungeon is tedious and inconsistent. The <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Editor/LevelBuilder/</code> directory contains nine tools that cover the full layout workflow — from placing individual prefabs to distributing groups of objects and auditing components across the scene.
+                Manual level layout in a 3D dungeon is tedious and inconsistent.
+                The <code
+                  class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                  >Editor/LevelBuilder/</code
+                > directory contains nine tools that cover the full layout workflow
+                — from placing individual prefabs to distributing groups of objects
+                and auditing components across the scene.
               </p>
               <!-- Tool grid -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                {[
-                  ["SurfaceDropTool",       "Raycasts selection onto underlying geometry — snaps props to floor/ceiling in one click"],
-                  ["BoundsSnapTool",        "Snaps object bounds edges to target surfaces, avoiding gap-between-mesh artefacts"],
-                  ["BoundsAlignTool",       "Aligns selection to a reference object's bounds (left/right/top/bottom/front/back)"],
-                  ["DistributeTool",        "Distributes selected objects evenly along X, Y, or Z with configurable spacing"],
-                  ["ScatterTool",           "Random-placement with overlap avoidance — configurable radius, count, and normal alignment"],
-                  ["OverlapChecker",        "Highlights objects whose collider bounds intersect — catches layout errors before play"],
-                  ["PrefabPaletteWindow",   "Click-to-place prefab palette with preview — eliminates drag from Project window"],
-                  ["ComponentAuditTool",    "Scans scene for missing scripts, empty serialized fields, or incorrect layer assignments"],
-                  ["LevelBuilderUtility",   "Shared helpers used by all tools — selection queries, undo helpers, gizmo drawing"],
-                ].map(([name, desc]) => (
-                  <div class="flex flex-col gap-1 p-3 bg-[#0D0D0D] rounded-lg border border-[#1F1F1F]">
-                    <code class="font-mono text-violet-400 text-xs">{name}</code>
-                    <span class="text-[#444444] text-xs leading-relaxed">{desc}</span>
-                  </div>
-                ))}
+                {
+                  [
+                    [
+                      "SurfaceDropTool",
+                      "Raycasts selection onto underlying geometry — snaps props to floor/ceiling in one click",
+                    ],
+                    [
+                      "BoundsSnapTool",
+                      "Snaps object bounds edges to target surfaces, avoiding gap-between-mesh artefacts",
+                    ],
+                    [
+                      "BoundsAlignTool",
+                      "Aligns selection to a reference object's bounds (left/right/top/bottom/front/back)",
+                    ],
+                    [
+                      "DistributeTool",
+                      "Distributes selected objects evenly along X, Y, or Z with configurable spacing",
+                    ],
+                    [
+                      "ScatterTool",
+                      "Random-placement with overlap avoidance — configurable radius, count, and normal alignment",
+                    ],
+                    [
+                      "OverlapChecker",
+                      "Highlights objects whose collider bounds intersect — catches layout errors before play",
+                    ],
+                    [
+                      "PrefabPaletteWindow",
+                      "Click-to-place prefab palette with preview — eliminates drag from Project window",
+                    ],
+                    [
+                      "ComponentAuditTool",
+                      "Scans scene for missing scripts, empty serialized fields, or incorrect layer assignments",
+                    ],
+                    [
+                      "LevelBuilderUtility",
+                      "Shared helpers used by all tools — selection queries, undo helpers, gizmo drawing",
+                    ],
+                  ].map(([name, desc]) => (
+                    <div class="flex flex-col gap-1 p-3 bg-[#0D0D0D] rounded-lg border border-[#1F1F1F]">
+                      <code class="font-mono text-violet-400 text-xs">
+                        {name}
+                      </code>
+                      <span class="text-[#444444] text-xs leading-relaxed">
+                        {desc}
+                      </span>
+                    </div>
+                  ))
+                }
               </div>
               <pre><code class="language-csharp" set:text={`// Editor/LevelBuilder/ — all tools live here as EditorWindow or static utility classes
 // Example: SurfaceDropTool drops selected transforms onto the nearest surface below
@@ -548,10 +889,9 @@ public class SurfaceDropTool : EditorWindow
                 LevelBuilderUtility.DropToSurface(t);
         }
     }
-}`}></code></pre>
+}`} /></pre>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -563,21 +903,47 @@ public class SurfaceDropTool : EditorWindow
       data-screenshots={`${base}assets/screenshots/hide-and-seek-1.png,${base}assets/screenshots/hide-and-seek-2.png`}
     >
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">Screenshots</h2>
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">
+          Screenshots
+        </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div class="reveal" style="--delay: 0ms">
-            <div class="screenshot-wrap" role="button" tabindex="0" aria-label="Open screenshot 1" data-index="0">
-              <img src={`${base}assets/screenshots/hide-and-seek-1.png`} alt="Hide and Seek — top-down gameplay view" loading="lazy" />
+            <div
+              class="screenshot-wrap"
+              role="button"
+              tabindex="0"
+              aria-label="Open screenshot 1"
+              data-index="0"
+            >
+              <img
+                src={`${base}assets/screenshots/hide-and-seek-1.png`}
+                alt="Hide and Seek — top-down gameplay view"
+                loading="lazy"
+              />
             </div>
-            <p class="text-[#444444] text-xs font-mono mt-2">Top-down view — patrol route and suspicion meter visible</p>
+            <p class="text-[#444444] text-xs font-mono mt-2">
+              Top-down view — patrol route and suspicion meter visible
+            </p>
           </div>
 
           <div class="reveal" style="--delay: 100ms">
-            <div class="screenshot-wrap" role="button" tabindex="0" aria-label="Open screenshot 2" data-index="1">
-              <img src={`${base}assets/screenshots/hide-and-seek-2.png`} alt="Hide and Seek — enemy chase state" loading="lazy" />
+            <div
+              class="screenshot-wrap"
+              role="button"
+              tabindex="0"
+              aria-label="Open screenshot 2"
+              data-index="1"
+            >
+              <img
+                src={`${base}assets/screenshots/hide-and-seek-2.png`}
+                alt="Hide and Seek — enemy chase state"
+                loading="lazy"
+              />
             </div>
-            <p class="text-[#444444] text-xs font-mono mt-2">Chase state — EnemyChaseState active, suspicion at max</p>
+            <p class="text-[#444444] text-xs font-mono mt-2">
+              Chase state — EnemyChaseState active, suspicion at max
+            </p>
           </div>
         </div>
       </div>
@@ -586,28 +952,81 @@ public class SurfaceDropTool : EditorWindow
     <!-- ─── RETROSPECTIVE ─────────────────────────────────────────────────── -->
     <section id="retrospective" class="py-20 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">Retrospective</h2>
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">
+          Retrospective
+        </h2>
 
         <ul class="reveal space-y-4 max-w-3xl" style="--delay: 100ms">
           <li class="flex gap-3 text-[#888888] leading-relaxed">
             <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
             <span>
-              <strong class="text-[#F0F0F0] font-medium">State transitions allocate.</strong>
-              Each <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">ChangeState(new EnemyChaseState(this))</code> creates a new heap object. With six states and frequent transitions, this generates measurable GC. Pre-allocating all states at <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Awake()</code> and passing them by reference would eliminate that allocation entirely.
+              <strong class="text-[#F0F0F0] font-medium"
+                >State transitions allocate.</strong
+              >
+              Each <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >ChangeState(new EnemyChaseState(this))</code
+              > creates a new heap object. With six states and frequent transitions,
+              this generates measurable GC. Pre-allocating all states at <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >Awake()</code
+              > and passing them by reference would eliminate that allocation entirely.
             </span>
           </li>
           <li class="flex gap-3 text-[#888888] leading-relaxed">
             <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
             <span>
-              <strong class="text-[#F0F0F0] font-medium">Phase 2 escalation is three loose properties, not a profile.</strong>
-              <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">LevelPhaseManager</code> escalates the enemy by setting <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Phase2SpeedMultiplier</code>, <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Phase2SuspicionFloor</code>, and <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Phase2SkipAlertScan</code> directly on <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">EnemyController</code>. There's already an <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">EscalationProfile</code> ScriptableObject in the <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">Data/</code> folder — it should drive all phase transitions instead of the three ad-hoc setters.
+              <strong class="text-[#F0F0F0] font-medium"
+                >Phase 2 escalation is three loose properties, not a profile.</strong
+              >
+              <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >LevelPhaseManager</code
+              > escalates the enemy by setting <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >Phase2SpeedMultiplier</code
+              >, <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >Phase2SuspicionFloor</code
+              >, and <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >Phase2SkipAlertScan</code
+              > directly on <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >EnemyController</code
+              >. There's already an <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >EscalationProfile</code
+              > ScriptableObject in the <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >Data/</code
+              > folder — it should drive all phase transitions instead of the three
+              ad-hoc setters.
             </span>
           </li>
           <li class="flex gap-3 text-[#888888] leading-relaxed">
             <span class="text-[#00FFC8] font-mono mt-0.5 shrink-0">—</span>
             <span>
-              <strong class="text-[#F0F0F0] font-medium">SuspicionMeter has four separate timer floats.</strong>
-              <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">_detectionCooldownTimer</code>, <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">_chaseNoInputTimer</code>, <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">_catchDwellTimer</code>, and <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">_caughtFired</code> are all managed inline. A small reusable <code class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded">CountdownTimer</code> struct that ticks and fires a callback would cut this down significantly and make the intent explicit.
+              <strong class="text-[#F0F0F0] font-medium"
+                >SuspicionMeter has four separate timer floats.</strong
+              >
+              <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >_detectionCooldownTimer</code
+              >, <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >_chaseNoInputTimer</code
+              >, <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >_catchDwellTimer</code
+              >, and <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >_caughtFired</code
+              > are all managed inline. A small reusable <code
+                class="font-mono text-[#00FFC8] text-sm bg-[#00FFC8]/10 px-1 rounded"
+                >CountdownTimer</code
+              > struct that ticks and fires a callback would cut this down significantly
+              and make the intent explicit.
             </span>
           </li>
         </ul>
@@ -617,33 +1036,42 @@ public class SurfaceDropTool : EditorWindow
     <!-- ─── WHAT'S NEXT ───────────────────────────────────────────────────── -->
     <section id="next" class="py-20 border-t border-[#1F1F1F]/50">
       <div class="max-w-5xl mx-auto px-6">
-        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">What's Next</h2>
+        <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">
+          What's Next
+        </h2>
 
         <ul class="reveal space-y-3 max-w-3xl" style="--delay: 100ms">
-          {[
-            "SFX content for the noise system — footstep intensity tied to PlayerNoiseEmitter stance (walk / sprint / crouch), alert sting on SeekState change",
-            "Hiding spot polish — Wardrobe is wired up in HidingSpots/Props/; needs creeping-dread suspicion rate (EnemyData.creepingDreadRate = 3f) and VFX",
-            "Win condition — RoundTimer expiry already calls WinConditionEvaluator; needs win screen and score display",
-            "Phase 2 escalation — LevelPhaseManager and EscalationProfile ScriptableObject exist; needs connecting to game loop via LevelPhase enum",
-            "More level layouts using the LevelBuilder scatter and surface-drop tools",
-          ].map((item) => (
-            <li class="flex gap-3 text-[#888888]">
-              <span class="text-violet-400 font-mono shrink-0">›</span>
-              <span>{item}</span>
-            </li>
-          ))}
+          {
+            [
+              "SFX content for the noise system — footstep intensity tied to PlayerNoiseEmitter stance (walk / sprint / crouch), alert sting on SeekState change",
+              "Hiding spot polish — Wardrobe is wired up in HidingSpots/Props/; needs creeping-dread suspicion rate (EnemyData.creepingDreadRate = 3f) and VFX",
+              "Win condition — RoundTimer expiry already calls WinConditionEvaluator; needs win screen and score display",
+              "Phase 2 escalation — LevelPhaseManager and EscalationProfile ScriptableObject exist; needs connecting to game loop via LevelPhase enum",
+              "More level layouts using the LevelBuilder scatter and surface-drop tools",
+            ].map((item) => (
+              <li class="flex gap-3 text-[#888888]">
+                <span class="text-violet-400 font-mono shrink-0">›</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </section>
 
     <!-- ─── FOOTER ────────────────────────────────────────────────────────── -->
     <footer class="border-t border-[#1F1F1F]/50 py-8">
-      <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div
+        class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+      >
         <p class="text-[#888888] text-sm">© 2026 Marko Stankovic</p>
         <div class="flex items-center gap-6 text-sm">
           <span class="text-[#1F1F1F] font-mono">← prev</span>
           <span class="text-[#1F1F1F]">·</span>
-          <a href="/projects/endless-runner" class="nav-link text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150">
+          <a
+            href="/projects/endless-runner"
+            class="nav-link text-[#888888] hover:text-[#F0F0F0] transition-colors duration-150"
+          >
             Endless Runner →
           </a>
         </div>
@@ -652,105 +1080,183 @@ public class SurfaceDropTool : EditorWindow
     </footer>
 
     <!-- ─── LIGHTBOX ──────────────────────────────────────────────────────── -->
-    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot viewer" class="fixed inset-0 z-[200] items-center justify-center">
-      <div id="lightbox-backdrop" class="absolute inset-0 bg-[#0D0D0D]/95"></div>
-      <div id="lightbox-content" class="relative z-10 flex items-center gap-3 px-4">
-        <button id="lightbox-prev" class="lb-btn" aria-label="Previous screenshot">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    <div
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Screenshot viewer"
+      class="fixed inset-0 z-[200] items-center justify-center"
+    >
+      <div id="lightbox-backdrop" class="absolute inset-0 bg-[#0D0D0D]/95">
+      </div>
+      <div
+        id="lightbox-content"
+        class="relative z-10 flex items-center gap-3 px-4"
+      >
+        <button
+          id="lightbox-prev"
+          class="lb-btn"
+          aria-label="Previous screenshot"
+        >
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            ><path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15 19l-7-7 7-7"></path></svg
+          >
         </button>
         <img id="lightbox-img" src="" alt="Project screenshot" />
         <button id="lightbox-next" class="lb-btn" aria-label="Next screenshot">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            ><path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 5l7 7-7 7"></path></svg
+          >
         </button>
       </div>
-      <button id="lightbox-close" class="lb-btn z-10" aria-label="Close lightbox">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      <button
+        id="lightbox-close"
+        class="lb-btn z-10"
+        aria-label="Close lightbox"
+      >
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          ><path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"></path></svg
+        >
       </button>
     </div>
 
     <script>
       // Syntax highlighting — called directly since module scripts run after DOM is parsed
       // @ts-ignore
-      if (typeof hljs !== 'undefined') hljs.highlightAll();
+      if (typeof hljs !== "undefined") hljs.highlightAll();
 
       // Wrap pre blocks in .pre-wrap and add copy button
-      document.querySelectorAll('pre').forEach((pre) => {
-          const wrap = document.createElement('div');
-          wrap.className = 'pre-wrap';
-          pre.parentNode?.insertBefore(wrap, pre);
-          wrap.appendChild(pre);
+      document.querySelectorAll("pre").forEach((pre) => {
+        const wrap = document.createElement("div");
+        wrap.className = "pre-wrap";
+        pre.parentNode?.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
 
-          const btn = document.createElement('button');
-          btn.className = 'copy-btn';
-          btn.textContent = 'copy';
-          btn.setAttribute('aria-label', 'Copy code');
-          wrap.appendChild(btn);
+        const btn = document.createElement("button");
+        btn.className = "copy-btn";
+        btn.textContent = "copy";
+        btn.setAttribute("aria-label", "Copy code");
+        wrap.appendChild(btn);
 
-          btn.addEventListener('click', () => {
-            const code = pre.querySelector('code');
-            const text = code?.textContent ?? '';
-            navigator.clipboard.writeText(text).then(() => {
-              btn.textContent = 'copied!';
-              btn.classList.add('copied');
-              setTimeout(() => {
-                btn.textContent = 'copy';
-                btn.classList.remove('copied');
-              }, 2000);
-            });
+        btn.addEventListener("click", () => {
+          const code = pre.querySelector("code");
+          const text = code?.textContent ?? "";
+          navigator.clipboard.writeText(text).then(() => {
+            btn.textContent = "copied!";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.textContent = "copy";
+              btn.classList.remove("copied");
+            }, 2000);
           });
         });
+      });
 
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const revealEls = document.querySelectorAll('.reveal');
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      const revealEls = document.querySelectorAll(".reveal");
       if (!prefersReduced) {
-        const obs = new IntersectionObserver((entries) => {
-          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-        }, { threshold: 0.1 });
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("visible");
+                obs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
         revealEls.forEach((el) => obs.observe(el));
       } else {
-        revealEls.forEach((el) => el.classList.add('visible'));
+        revealEls.forEach((el) => el.classList.add("visible"));
       }
 
-      const menuBtn = document.getElementById('menu-btn');
-      const mobileNav = document.getElementById('mobile-nav');
-      const iconMenu = document.getElementById('icon-menu');
-      const iconClose = document.getElementById('icon-close');
-      menuBtn?.addEventListener('click', () => {
-        const isOpen = mobileNav?.classList.toggle('open');
-        menuBtn.setAttribute('aria-expanded', String(isOpen));
-        iconMenu?.classList.toggle('hidden', !!isOpen);
-        iconClose?.classList.toggle('hidden', !isOpen);
+      const menuBtn = document.getElementById("menu-btn");
+      const mobileNav = document.getElementById("mobile-nav");
+      const iconMenu = document.getElementById("icon-menu");
+      const iconClose = document.getElementById("icon-close");
+      menuBtn?.addEventListener("click", () => {
+        const isOpen = mobileNav?.classList.toggle("open");
+        menuBtn.setAttribute("aria-expanded", String(isOpen));
+        iconMenu?.classList.toggle("hidden", !!isOpen);
+        iconClose?.classList.toggle("hidden", !isOpen);
       });
-      document.querySelectorAll('.mobile-nav-link').forEach((link) => {
-        link.addEventListener('click', () => {
-          mobileNav?.classList.remove('open');
-          menuBtn?.setAttribute('aria-expanded', 'false');
-          iconMenu?.classList.remove('hidden');
-          iconClose?.classList.add('hidden');
+      document.querySelectorAll(".mobile-nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileNav?.classList.remove("open");
+          menuBtn?.setAttribute("aria-expanded", "false");
+          iconMenu?.classList.remove("hidden");
+          iconClose?.classList.add("hidden");
         });
       });
 
-      const lightbox   = document.getElementById('lightbox');
-      const lbImg      = document.getElementById('lightbox-img');
-      const lbPrev     = document.getElementById('lightbox-prev');
-      const lbNext     = document.getElementById('lightbox-next');
-      const lbClose    = document.getElementById('lightbox-close');
-      const lbBackdrop = document.getElementById('lightbox-backdrop');
-      const section    = document.getElementById('screenshots');
-      const lbScreenshots = (section?.dataset.screenshots ?? '').split(',').map((s) => s.trim()).filter(Boolean);
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lightbox-img");
+      const lbPrev = document.getElementById("lightbox-prev");
+      const lbNext = document.getElementById("lightbox-next");
+      const lbClose = document.getElementById("lightbox-close");
+      const lbBackdrop = document.getElementById("lightbox-backdrop");
+      const section = document.getElementById("screenshots");
+      const lbScreenshots = (section?.dataset.screenshots ?? "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
       let lbIndex = 0;
       let lbPrevFocus = null;
 
       function lbShow(index) {
-        lbIndex = index; lbPrevFocus = document.activeElement; lbUpdate();
-        lightbox.style.display = 'flex'; lightbox.getBoundingClientRect();
-        lightbox.classList.add('lb-open'); document.body.style.overflow = 'hidden'; lbClose.focus();
+        lbIndex = index;
+        lbPrevFocus = document.activeElement;
+        lbUpdate();
+        lightbox.style.display = "flex";
+        lightbox.getBoundingClientRect();
+        lightbox.classList.add("lb-open");
+        document.body.style.overflow = "hidden";
+        lbClose.focus();
       }
       function lbHide() {
-        lightbox.classList.remove('lb-open');
-        lightbox.addEventListener('transitionend', () => {
-          lightbox.style.display = 'none'; document.body.style.overflow = ''; lbPrevFocus?.focus();
-        }, { once: true });
+        lightbox.classList.remove("lb-open");
+        lightbox.addEventListener(
+          "transitionend",
+          () => {
+            lightbox.style.display = "none";
+            document.body.style.overflow = "";
+            lbPrevFocus?.focus();
+          },
+          { once: true },
+        );
       }
       function lbUpdate() {
         lbImg.src = lbScreenshots[lbIndex];
@@ -759,19 +1265,42 @@ public class SurfaceDropTool : EditorWindow
         lbNext.disabled = lbIndex === lbScreenshots.length - 1;
       }
 
-      document.querySelectorAll('.screenshot-wrap').forEach((wrap) => {
-        const open = () => lbShow(parseInt(wrap.dataset.index ?? '0', 10));
-        wrap.addEventListener('click', open);
-        wrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+      document.querySelectorAll(".screenshot-wrap").forEach((wrap) => {
+        const open = () => lbShow(parseInt(wrap.dataset.index ?? "0", 10));
+        wrap.addEventListener("click", open);
+        wrap.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            open();
+          }
+        });
       });
-      lbClose.addEventListener('click', lbHide);
-      lbBackdrop.addEventListener('click', lbHide);
-      lbPrev.addEventListener('click', () => { if (lbIndex > 0) { lbIndex--; lbUpdate(); } });
-      lbNext.addEventListener('click', () => { if (lbIndex < lbScreenshots.length - 1) { lbIndex++; lbUpdate(); } });
-      lightbox.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') lbHide();
-        else if (e.key === 'ArrowLeft'  && lbIndex > 0)                        { lbIndex--; lbUpdate(); }
-        else if (e.key === 'ArrowRight' && lbIndex < lbScreenshots.length - 1) { lbIndex++; lbUpdate(); }
+      lbClose.addEventListener("click", lbHide);
+      lbBackdrop.addEventListener("click", lbHide);
+      lbPrev.addEventListener("click", () => {
+        if (lbIndex > 0) {
+          lbIndex--;
+          lbUpdate();
+        }
+      });
+      lbNext.addEventListener("click", () => {
+        if (lbIndex < lbScreenshots.length - 1) {
+          lbIndex++;
+          lbUpdate();
+        }
+      });
+      lightbox.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") lbHide();
+        else if (e.key === "ArrowLeft" && lbIndex > 0) {
+          lbIndex--;
+          lbUpdate();
+        } else if (
+          e.key === "ArrowRight" &&
+          lbIndex < lbScreenshots.length - 1
+        ) {
+          lbIndex++;
+          lbUpdate();
+        }
       });
     </script>
   </body>
