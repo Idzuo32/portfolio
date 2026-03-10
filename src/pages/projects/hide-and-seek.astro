@@ -669,15 +669,12 @@ public class SurfaceDropTool : EditorWindow
     </div>
 
     <script>
-      // Syntax highlighting
-      document.addEventListener('DOMContentLoaded', () => {
-        // @ts-ignore
-        if (typeof hljs !== 'undefined') hljs.highlightAll();
-      });
+      // Syntax highlighting — called directly since module scripts run after DOM is parsed
+      // @ts-ignore
+      if (typeof hljs !== 'undefined') hljs.highlightAll();
 
       // Wrap pre blocks in .pre-wrap and add copy button
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('pre').forEach((pre) => {
+      document.querySelectorAll('pre').forEach((pre) => {
           const wrap = document.createElement('div');
           wrap.className = 'pre-wrap';
           pre.parentNode?.insertBefore(wrap, pre);
@@ -702,7 +699,6 @@ public class SurfaceDropTool : EditorWindow
             });
           });
         });
-      });
 
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const revealEls = document.querySelectorAll('.reveal');
