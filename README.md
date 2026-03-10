@@ -46,7 +46,7 @@ A top-down 3D stealth game built around a custom enemy AI system.
 - **Player controller** — Rigidbody-based movement with Cinemachine third-person camera
 - **Editor tooling** — custom Unity Editor scripts for level layout and AI waypoint placement
 
-[View Repository →](#) · [Play Demo →](#)
+[View Repository →](#)
 
 ---
 
@@ -69,12 +69,6 @@ Developed gameplay features and maintained existing Unity codebases. Worked acro
 
 **Game Developer Intern — Inlustris Studio** *(2024)*
 Contributed to Unity 3D projects in a studio environment. Gained experience with team workflows, version control in production, and shipping game builds.
-
----
-
-## GitHub Stats
-
-![Marko's GitHub stats](https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&show_icons=true&theme=dark)
 
 ---
 
