@@ -357,6 +357,12 @@ const articleSchema = {
     </footer>
 
     <script>
+      // Normalise MDX fence language class so hljs uses the full grammar
+      document.querySelectorAll('code.language-cs').forEach(el => {
+        el.classList.remove('language-cs');
+        el.classList.add('language-csharp');
+      });
+
       // Syntax highlighting
       // @ts-ignore
       if (typeof hljs !== 'undefined') hljs.highlightAll();
