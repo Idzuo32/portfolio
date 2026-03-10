@@ -1,5 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import screenshot1 from "../../assets/screenshots/hide-and-seek-1.png";
+import screenshot2 from "../../assets/screenshots/hide-and-seek-2.png";
 const base = import.meta.env.BASE_URL;
 
 const pageTitle = "Hide & Seek — Marko Stankovic";
@@ -383,7 +386,7 @@ const pageDescription =
             muted
             playsinline
             preload="metadata"
-            poster={`${base}assets/screenshots/hide-and-seek-1.png`}
+            poster={screenshot1.src}
           >
             <source
               src={`${base}assets/thumbnails/hide-and-seek-thumb.mp4`}
@@ -850,7 +853,7 @@ public class SurfaceDropTool : EditorWindow
     <section
       id="screenshots"
       class="py-20 border-t border-[#1F1F1F]/50"
-      data-screenshots={`${base}assets/screenshots/hide-and-seek-1.png,${base}assets/screenshots/hide-and-seek-2.png`}
+      data-screenshots={`${screenshot1.src},${screenshot2.src}`}
     >
       <div class="max-w-5xl mx-auto px-6">
         <h2 class="reveal text-2xl font-bold text-[#F0F0F0] mb-10">
@@ -866,10 +869,12 @@ public class SurfaceDropTool : EditorWindow
               aria-label="Open screenshot 1"
               data-index="0"
             >
-              <img
-                src={`${base}assets/screenshots/hide-and-seek-1.png`}
-                alt="Hide and Seek — top-down gameplay view"
+              <Image
+                src={screenshot1}
+                alt="Hide and Seek — top-down gameplay view: patrol route and suspicion meter visible"
                 loading="lazy"
+                widths={[400, 800, 1200]}
+                sizes="(max-width: 640px) 100vw, 50vw"
               />
             </div>
             <p class="text-[#444444] text-xs font-mono mt-2">
@@ -885,10 +890,12 @@ public class SurfaceDropTool : EditorWindow
               aria-label="Open screenshot 2"
               data-index="1"
             >
-              <img
-                src={`${base}assets/screenshots/hide-and-seek-2.png`}
-                alt="Hide and Seek — enemy chase state"
+              <Image
+                src={screenshot2}
+                alt="Hide and Seek — enemy chase state: EnemyChaseState active with suspicion meter at maximum"
                 loading="lazy"
+                widths={[400, 800, 1200]}
+                sizes="(max-width: 640px) 100vw, 50vw"
               />
             </div>
             <p class="text-[#444444] text-xs font-mono mt-2">
