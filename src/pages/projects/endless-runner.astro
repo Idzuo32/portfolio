@@ -1184,10 +1184,11 @@ public class PlayerController : MonoBehaviour
         lbPrevFocus = document.activeElement;
         lbUpdate();
         lightbox.style.display = "flex";
-        lightbox.getBoundingClientRect();
-        lightbox.classList.add("lb-open");
-        document.body.style.overflow = "hidden";
-        lbClose.focus();
+        requestAnimationFrame(() => {
+          lightbox.classList.add("lb-open");
+          document.body.style.overflow = "hidden";
+          lbClose.focus();
+        });
       }
       function lbHide() {
         lightbox.classList.remove("lb-open");
