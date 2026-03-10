@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import screenshot1 from "../../assets/screenshots/hide-and-seek-1.png";
 import screenshot2 from "../../assets/screenshots/hide-and-seek-2.png";
 const base = import.meta.env.BASE_URL;
+const poster1 = await getImage({ src: screenshot1, format: "webp", width: 1280 });
 
 const pageTitle = "Hide & Seek — Marko Stankovic";
 const pageDescription =
@@ -381,15 +382,16 @@ const pageDescription =
         >
           <video
             class="w-full aspect-video object-cover"
+            data-lazy
             autoplay
             loop
             muted
             playsinline
-            preload="metadata"
-            poster={screenshot1.src}
+            preload="none"
+            poster={poster1.src}
           >
             <source
-              src={`${base}assets/thumbnails/hide-and-seek-thumb.mp4`}
+              data-src={`${base}assets/thumbnails/hide-and-seek-thumb.mp4`}
               type="video/mp4"
             />
           </video>
@@ -1158,6 +1160,26 @@ public class SurfaceDropTool : EditorWindow
         revealEls.forEach((el) => obs.observe(el));
       } else {
         revealEls.forEach((el) => el.classList.add("visible"));
+      }
+
+      // Lazy-load gameplay video when it enters the viewport
+      const lazyVideo = document.querySelector<HTMLVideoElement>("video[data-lazy]");
+      if (lazyVideo) {
+        const videoObs = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting) {
+              const source = lazyVideo.querySelector<HTMLSourceElement>("source[data-src]");
+              if (source) {
+                source.src = source.dataset.src!;
+                lazyVideo.load();
+                lazyVideo.play().catch(() => {});
+              }
+              videoObs.unobserve(lazyVideo);
+            }
+          },
+          { rootMargin: "200px" },
+        );
+        videoObs.observe(lazyVideo);
       }
 
       const menuBtn = document.getElementById("menu-btn");
