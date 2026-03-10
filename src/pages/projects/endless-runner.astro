@@ -63,18 +63,14 @@ const ogImageURL = new URL("/og-default.png", Astro.site).href;
         max-width: 100%;
         white-space: pre;
       }
+      .prose pre code.hljs,
       pre code.hljs {
         background: #141414;
         border: 1px solid #1f1f1f;
         border-radius: 0.5rem;
+        display: block;
         font-size: 0.8125rem;
         line-height: 1.6;
-        padding: 1.25rem 1.5rem;
-      }
-      .prose pre code.hljs,
-      pre code.hljs {
-        background: #141414;
-        display: block;
         overflow-x: auto;
         padding: 1.25rem 1.5rem;
       }
