@@ -64,10 +64,10 @@ A 3rd-person 3D runner with systems designed for performance and extensibility.
 
 ## Work Experience
 
-**Unity Developer (Remote)** — Contract *(2023–2024)*
+**Unity Developer (Remote)** — Contract *(2025)*
 Developed gameplay features and maintained existing Unity codebases. Worked across the full development cycle from prototyping to build delivery.
 
-**Game Developer Intern — Inlustris Studio** *(2022–2023)*
+**Game Developer Intern — Inlustris Studio** *(2024)*
 Contributed to Unity 3D projects in a studio environment. Gained experience with team workflows, version control in production, and shipping game builds.
 
 ---
