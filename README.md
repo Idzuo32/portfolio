@@ -4,7 +4,7 @@
 <p align="center">
   <a href="mailto:contact@markostankovic.org">contact@markostankovic.org</a> ·
   <a href="https://markostankovic.org">markostankovic.org</a> ·
-  <a href="https://www.linkedin.com/in/markostankovicepicurl/">LinkedIn</a>
+  <a href="https://www.linkedin.com/in/markostankovic-gamedev/">LinkedIn</a>
 </p>
 
 ---
@@ -65,4 +65,4 @@ Contributed to Unity 3D projects in a studio environment. Gained experience with
 
 - **Email:** [contact@markostankovic.org](mailto:contact@markostankovic.org)
 - **Portfolio:** [markostankovic.org](https://markostankovic.org)
-- **LinkedIn:** [linkedin.com/in/markostankovicepicurl](https://www.linkedin.com/in/markostankovicepicurl/)
+- **LinkedIn:** [linkedin.com/in/markostankovic-gamedev](https://www.linkedin.com/in/markostankovic-gamedev/)
